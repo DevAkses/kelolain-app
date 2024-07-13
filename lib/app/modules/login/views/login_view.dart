@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/widgets/button_widget.dart';
 import 'package:safeloan/app/widgets/input_widget.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
-  const LoginView({Key? key}) : super(key: key);
+  const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,60 +15,80 @@ class LoginView extends GetView<LoginController> {
     var lebar = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.primaryColor,
+      ),
       backgroundColor: AppColors.primaryColor,
-      bottomSheet: SizedBox(
-        height: tinggi/2,
+      body: Container(
+        margin: EdgeInsets.only(top: tinggi*0.05),
         width: lebar,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end, // Align to the bottom
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              width: lebar,
-              height: tinggi / 2,
-              child: Column(
-                children: [
-                  InputWidget(
-                      judul: "Email",
-                      hint: "Masukan email",
-                      controller: controller.emailC),
-                  SizedBox(height: 10,),
-                  InputWidget(
-                    judul: "Password",
-                    controller: controller.passwordC,
-                    hint: "Masukan password",
-                  ),
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: SizedBox(
-                      height: 20,
-                    ),
-                  ),
-                  TextButton(
+            Image.asset(''),
+            const Text("Masuk"),
+          ],
+        ),
+      ),
+      bottomSheet: SizedBox(
+        height: tinggi * 0.6,
+        width: lebar,
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 25,
+            ),
+            InputWidget(
+                judul: "Email",
+                hint: "Masukan email",
+                controller: controller.emailC),
+            const SizedBox(
+              height: 10,
+            ),
+            InputWidget(
+              judul: "Password",
+              controller: controller.passwordC,
+              hint: "Masukan password",
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(right: lebar * 0.1),
+                  child: TextButton(
                     onPressed: () => Get.toNamed(Routes.RESET_PASSWORD),
-                    child: const Text("Lupa Password"),
+                    child: const Text("Lupa Password",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textHijauTua)),
                   ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  ElevatedButton(
-                      onPressed: () => controller.login(
-                          controller.emailC.text, controller.passwordC.text),
-                      child: const Text("Login")),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text("Belum punya akun?"),
-                      TextButton(
-                        onPressed: () => Get.toNamed(Routes.REGISTER),
-                        child: const Text("Daftar"),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                ),
+              ],
+            ),
+            ButtonWidget(
+                onPressed: () => controller.login(
+                    controller.emailC.text, controller.passwordC.text),
+                nama: "Masuk"),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Belum punya akun?",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.primaryColor),
+                ),
+                TextButton(
+                  onPressed: () => Get.toNamed(Routes.REGISTER),
+                  child: const Text("Daftar",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textHijauTua)),
+                ),
+              ],
             ),
           ],
         ),

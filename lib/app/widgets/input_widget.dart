@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safeloan/app/utils/AppColors.dart';
 
 class InputWidget extends StatelessWidget {
   final String judul;
@@ -17,8 +18,8 @@ class InputWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(judul),
-        const SizedBox(height: 8.0),
+        Text(judul, style: const TextStyle(color: AppColors.textHijauTua, fontSize: 16, fontWeight: FontWeight.bold),),
+        const SizedBox(height: 5),
         SizedBox(
           height: 50,
           width: lebar,
@@ -26,7 +27,7 @@ class InputWidget extends StatelessWidget {
             controller: controller,
             decoration: InputDecoration(
               hintText: hint,
-              border: OutlineInputBorder(),
+              border: const OutlineInputBorder()
             ),
           ),
         ),

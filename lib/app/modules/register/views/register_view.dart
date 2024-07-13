@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/widgets/button_widget.dart';
+import 'package:safeloan/app/widgets/input_widget.dart';
 
 import '../controllers/register_controller.dart';
 
 class RegisterView extends GetView<RegisterController> {
-  RegisterView({Key? key}) : super(key: key);
+  RegisterView({super.key});
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
@@ -13,69 +16,68 @@ class RegisterView extends GetView<RegisterController> {
 
   @override
   Widget build(BuildContext context) {
+    var tinggi = MediaQuery.of(context).size.height;
+    var lebar = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('SignupView'),
-        centerTitle: true,
+        backgroundColor: AppColors.primaryColor,
+        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => Get.back(),),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(25),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(labelText: "Email"),
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(labelText: "Password"),
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: confirmPasswordController,
-                obscureText: true,
-                decoration: const InputDecoration(labelText: "Confirm Password"),
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: fullNameController,
-                decoration: const InputDecoration(labelText: "Full Name"),
-              ),
-              const SizedBox(height: 50),
-              ElevatedButton(
-                onPressed: () {
-                  if (passwordController.text == confirmPasswordController.text) {
-                    controller.signup(
-                      emailController.text.trim(),
-                      passwordController.text.trim(),
-                      fullNameController.text.trim(),
-                    );
-                  } else {
-                    Get.defaultDialog(
-                      title: "Error",
-                      middleText: "Password and Confirm Password do not match.",
-                    );
-                  }
-                },
-                child: const Text("Register"),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Already have an account?"),
-                  TextButton(
-                    onPressed: () => Get.back(),
-                    child: const Text("Login"),
-                  ),
-                ],
-              ),
-            ],
-          ),
+      backgroundColor: AppColors.primaryColor,
+      body: Container(
+        margin: EdgeInsets.only(top: tinggi*0.05),
+        width: lebar,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(''),
+            const Text("Masuk"),
+          ],
+        ),
+      ),
+      bottomSheet: SizedBox(
+        height: tinggi*0.65,
+        width: lebar,
+        child: Column(
+          children: [
+            const SizedBox(height: 25,),
+            InputWidget(
+                judul: "Nama Lengkap",
+                hint: "Masukan nama lengkap",
+                controller: fullNameController),
+            const SizedBox(height: 10,),
+            InputWidget(
+              judul: "Alamat Email",
+              controller: emailController,
+              hint: "Masukan alamat email",
+            ),
+            const SizedBox(height: 10,),
+            InputWidget(
+                judul: "Kata Sandi",
+                hint: "Masukan kata sandi",
+                controller: passwordController),
+            const SizedBox(height: 10,),
+            InputWidget(
+              judul: "Konfirmasi Kata Sandi",
+              controller: confirmPasswordController,
+              hint: "Masukan konfirmasi kata sandi",
+            ),
+            const SizedBox(height: 15,),
+            ButtonWidget(onPressed: (){}, nama: "Masuk"),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Sudah punya akun?", style: TextStyle(fontWeight: FontWeight.w400, color: AppColors.primaryColor),),
+                TextButton(
+                  onPressed: () => Get.back(),
+                  child: const Text("Daftar", style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.textHijauTua)),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
