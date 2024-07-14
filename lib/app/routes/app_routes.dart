@@ -9,6 +9,7 @@ abstract class Routes {
   static const NAVIGATION = _Paths.NAVIGATION;
   static const HOMEPAGE = _Paths.HOMEPAGE;
   static const RESET_PASSWORD = _Paths.RESET_PASSWORD;
+  static const COUNSELING = _Paths.COUNSELING;
 }
 
 abstract class _Paths {
@@ -19,4 +20,5 @@ abstract class _Paths {
   static const NAVIGATION = '/navigation';
   static const HOMEPAGE = '/homepage';
   static const RESET_PASSWORD = '/reset-password';
+  static const COUNSELING = '/counseling';
 }

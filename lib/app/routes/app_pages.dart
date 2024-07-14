@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/counseling/bindings/counseling_binding.dart';
+import '../modules/counseling/views/counseling_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/homepage/bindings/homepage_binding.dart';
@@ -50,6 +52,11 @@ class AppPages {
       name: _Paths.RESET_PASSWORD,
       page: () => ResetPasswordView(),
       binding: ResetPasswordBinding(),
+    ),
+    GetPage(
+      name: _Paths.COUNSELING,
+      page: () => const CounselingView(),
+      binding: CounselingBinding(),
     ),
   ];
 }
