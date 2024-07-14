@@ -1,23 +1,24 @@
 import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CounselingController extends GetxController {
-  //TODO: Implement CounselingController
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  var counselingList = <Map<String, dynamic>>[].obs;
+
+  Stream<QuerySnapshot> getListKonseling() {
+    return firestore.collection('counselings').snapshots();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void updateCounselingList(QuerySnapshot snapshot) {
+    counselingList.clear();
+    for (var doc in snapshot.docs) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      if (data['jadwal'] is Timestamp) {
+        data['jadwal'] = (data['jadwal'] as Timestamp).toDate();
+      }
+      counselingList.add(data);
+    }
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }
