@@ -1,23 +1,32 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/modules/quiz/models/quiz_model.dart';
 
 class QuizController extends GetxController {
-  //TODO: Implement QuizController
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  var quizList = <Quiz>[].obs;
+  var questionList = <Question>[].obs;
+
+  Stream<QuerySnapshot> getQuizList() {
+    return firestore.collection('quiz').snapshots();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void updateQuizList(QuerySnapshot snapshot) {
+    quizList.clear();
+    quizList.addAll(snapshot.docs.map((doc) => Quiz.fromDocument(doc)).toList());
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  Stream<QuerySnapshot> getQuestionList(String quizId) {
+    return firestore
+        .collection('quiz')
+        .doc(quizId)
+        .collection('question')
+        .snapshots();
   }
 
-  void increment() => count.value++;
+  void updateQuestionList(QuerySnapshot snapshot) {
+    questionList.clear();
+    questionList.addAll(snapshot.docs.map((doc) => Question.fromDocument(doc)).toList());
+  }
 }
