@@ -10,6 +10,12 @@ abstract class Routes {
   static const HOMEPAGE = _Paths.HOMEPAGE;
   static const RESET_PASSWORD = _Paths.RESET_PASSWORD;
   static const COUNSELING = _Paths.COUNSELING;
+  static const PROFILE = _Paths.PROFILE;
+  static const FINANCE = _Paths.FINANCE;
+  static const QUIZ = _Paths.QUIZ;
+  static const EDUCATION = _Paths.EDUCATION;
+  static const CALCULATOR = _Paths.CALCULATOR;
+  static const LOAN = _Paths.LOAN;
 }
 
 abstract class _Paths {
@@ -21,4 +27,10 @@ abstract class _Paths {
   static const HOMEPAGE = '/homepage';
   static const RESET_PASSWORD = '/reset-password';
   static const COUNSELING = '/counseling';
+  static const PROFILE = '/profile';
+  static const FINANCE = '/finance';
+  static const QUIZ = '/quiz';
+  static const EDUCATION = '/education';
+  static const CALCULATOR = '/calculator';
+  static const LOAN = '/loan';
 }
