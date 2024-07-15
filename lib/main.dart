@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
             title: "Application",
             initialRoute:
                 snapshot.data != null && snapshot.data!.emailVerified == true
-                    ? Routes.COUNSELING
+                    ? Routes.NAVIGATION
                     : Routes.LOGIN,
             getPages: AppPages.routes,
           );
