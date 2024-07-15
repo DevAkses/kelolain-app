@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:safeloan/app/modules/counseling/models/counseling.dart';
 import '../controllers/counseling_controller.dart';
 
 class CounselingView extends GetView<CounselingController> {
@@ -20,13 +21,13 @@ class CounselingView extends GetView<CounselingController> {
         stream: counselingController.getListKonseling(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('No counseling sessions found.'));
+            return const Center(child: Text('No counseling sessions found.'));
           }
           
           counselingController.updateCounselingList(snapshot.data!);
@@ -35,15 +36,15 @@ class CounselingView extends GetView<CounselingController> {
             return ListView.builder(
               itemCount: counselingController.counselingList.length,
               itemBuilder: (context, index) {
-                var counseling = counselingController.counselingList[index];
+                CounselingSession counseling = counselingController.counselingList[index];
                 return ListTile(
-                  title: Text(counseling['konselorId'] ?? 'No Konselor ID'),
+                  title: Text(counseling.konselorId),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Jadwal: ${DateFormat.yMMMMd().add_jm().format(counseling['jadwal'] ?? DateTime.now())}'),
-                      Text('Durasi: ${counseling['durasi'] ?? 'No Durasi'}'),
-                      Text('GMeet Link: ${counseling['tautanGmeet'] ?? 'No GMeet Link'}'),
+                      Text('Jadwal: ${DateFormat.yMMMMd().add_jm().format(counseling.jadwal)}'),
+                      Text('Durasi: ${counseling.durasi}'),
+                      Text('GMeet Link: ${counseling.tautanGmeet}'),
                     ],
                   ),
                   onTap: () {
