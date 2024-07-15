@@ -9,7 +9,6 @@ class EducationView extends GetView<EducationController> {
 
   @override
   Widget build(BuildContext context) {
-    final EducationController educationController = Get.put(EducationController());
 
     return DefaultTabController(
       length: 2,
