@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:safeloan/app/modules/counseling/models/counseling.dart';
 
 class CounselingController extends GetxController {
-
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   var counselingList = <CounselingSession>[].obs;
 
@@ -13,9 +12,8 @@ class CounselingController extends GetxController {
 
   void updateCounselingList(QuerySnapshot snapshot) {
     counselingList.clear();
-    for (var doc in snapshot.docs) {
-      counselingList.add(CounselingSession.fromDocument(doc));
-    }
+    counselingList.addAll(snapshot.docs
+        .map((doc) => CounselingSession.fromDocument(doc))
+        .toList());
   }
-
 }
