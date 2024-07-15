@@ -1,14 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class RegisterController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  void signup(String email, String password, String fullName) async {
+  void signup(String email, String password, String fullName, String role) async {
     try {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -18,6 +17,7 @@ class RegisterController extends GetxController {
       await _firestore.collection('users').doc(userCredential.user!.uid).set({
         'fullName': fullName,
         'email': email,
+        'role': role, // Save the role
       });
 
       await userCredential.user!.sendEmailVerification();
@@ -51,5 +51,4 @@ class RegisterController extends GetxController {
       );
     }
   }
-
 }
