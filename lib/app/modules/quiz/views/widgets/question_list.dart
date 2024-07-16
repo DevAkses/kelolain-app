@@ -1,8 +1,8 @@
-// widgets/question_list.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/quiz/controllers/quiz_controller.dart';
+import 'package:safeloan/app/modules/quiz/views/widgets/result_page.dart';
 
 class QuestionList extends GetView<QuizController> {
   final String quizId;
@@ -34,33 +34,46 @@ class QuestionList extends GetView<QuizController> {
           quizController.updateQuestionList(snapshot.data!);
 
           return Obx(() {
-            return ListView.builder(
-              itemCount: quizController.questionList.length,
-              itemBuilder: (context, index) {
-                var question = quizController.questionList[index];
-                return ListTile(
-                  title: Text(question.pertanyaan),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ...question.opsiJawaban.entries.map((entry) {
-                        return Obx(() {
-                          return RadioListTile<String>(
-                            title: Text('${entry.key}: ${entry.value}'),
-                            value: entry.key,
-                            groupValue: quizController.selectedAnswers[index],
-                            onChanged: (value) {
-                              if (value != null) {
-                                quizController.selectAnswer(index, value);
-                              }
-                            },
-                          );
-                        });
-                      }).toList(),
-                    ],
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: quizController.questionList.length,
+                    itemBuilder: (context, index) {
+                      var question = quizController.questionList[index];
+                      return ListTile(
+                        title: Text(question.pertanyaan),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ...question.opsiJawaban.entries.map((entry) {
+                              return Obx(() {
+                                return RadioListTile<String>(
+                                  title: Text('${entry.key}: ${entry.value}'),
+                                  value: entry.key,
+                                  groupValue: quizController.selectedAnswers[index],
+                                  onChanged: (value) {
+                                    if (value != null) {
+                                      quizController.selectAnswer(index, value);
+                                    }
+                                  },
+                                );
+                              });
+                            }),
+                          ],
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    await quizController.checkAnswer(quizId);
+                    Get.to(ResultPage(quizId: quizId));
+                  },
+                  child: const Text('Submit Quiz'),
+                ),
+              ],
             );
           });
         },

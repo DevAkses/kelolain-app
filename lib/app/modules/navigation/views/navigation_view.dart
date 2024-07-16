@@ -22,12 +22,12 @@ class NavigationView extends GetView<NavigationController> {
     ];
 
     return Obx(() => Scaffold(
-          appBar: AppBar(
-            title: Text(
-              ['Home', 'Finance', 'Quiz', 'Profile'][controller.selectedIndex.value],
-            ),
-            centerTitle: true,
-          ),
+          // appBar: AppBar(
+          //   title: Text(
+          //     ['Home', 'Finance', 'Quiz', 'Profile'][controller.selectedIndex.value],
+          //   ),
+          //   centerTitle: true,
+          // ),
           body: _pages[controller.selectedIndex.value],
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: controller.selectedIndex.value,
