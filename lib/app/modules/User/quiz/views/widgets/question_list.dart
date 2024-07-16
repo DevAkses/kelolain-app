@@ -48,7 +48,7 @@ class QuestionList extends GetView<QuizController> {
                           children: [
                             ...question.opsiJawaban.entries.map((entry) {
                               return Obx(() {
-                                return RadioListTile<String>(
+                                return RadioListTile<String>(            
                                   title: Text('${entry.key}: ${entry.value}'),
                                   value: entry.key,
                                   groupValue: quizController.selectedAnswers[index],

@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:safeloan/app/modules/User/counseling/controllers/counseling_controller.dart';
+import 'package:safeloan/app/modules/User/counseling/models/counseling.dart';
 import 'package:safeloan/app/utils/AppColors.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 
@@ -88,27 +92,47 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
     );
   }
 
-  @override
+   @override
   Widget build(BuildContext context) {
-    return ListView(
-        children: [
-          CardItem(
-            "https://via.placeholder.com/150",
-            "Dev Akses",
-            "Dokter Cinta",
-            "Senin, 20 Januari",
-            "30 Menit",
-            () {},
-          ),
-          CardItem(
-            "https://via.placeholder.com/150",
-            "John Doe",
-            "Psikolog",
-            "Selasa, 21 Januari",
-            "45 Menit",
-            () {},
-          ),
-        ],
+    final CounselingController counselingController =
+        Get.put(CounselingController());
+    return StreamBuilder<QuerySnapshot>(
+      stream: counselingController.getListKonseling(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return const Center(child: Text('No counseling sessions found.'));
+        }
+        counselingController.updateCounselingList(snapshot.data!);
+        return Obx(() {
+          return Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: counselingController.counselingList.length,
+                  itemBuilder: (context, index) {
+                    CounselingSession counseling =
+                        counselingController.counselingList[index];
+                    return CardItem(
+                        "",
+                        counseling.konselorId,
+                        'Psikolog handal',
+                        DateFormat.yMMMMd().add_jm().format(counseling.jadwal),
+                        '${counseling.durasi}',
+                        (){});
+                    
+                  },
+                ),
+              ),
+            ],
+          );
+        });
+      },
     );
   }
 }

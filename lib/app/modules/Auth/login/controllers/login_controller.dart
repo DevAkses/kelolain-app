@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 
 class LoginController extends GetxController {
   TextEditingController emailC =
-      TextEditingController(text: "devaksesmikail12@gmail.com");
+      TextEditingController(text: "devaksesmikail08@gmail.com");
   TextEditingController passwordC = TextEditingController(text: "dev123");
 
   @override
