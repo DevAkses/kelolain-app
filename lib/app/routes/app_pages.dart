@@ -52,6 +52,10 @@ import '../modules/Admin/educationAdmin/bindings/education_admin_binding.dart';
 import '../modules/Admin/educationAdmin/views/education_admin_view.dart';
 import '../modules/Admin/quizAdmin/bindings/quiz_admin_binding.dart';
 import '../modules/Admin/quizAdmin/views/quiz_admin_view.dart';
+import '../modules/User/challange_page/bindings/challange_page_binding.dart';
+import '../modules/User/challange_page/views/challange_page_view.dart';
+import '../modules/User/tab_quiz/bindings/tab_quiz_binding.dart';
+import '../modules/User/tab_quiz/views/tab_quiz_view.dart';
 
 part 'app_routes.dart';
 
@@ -190,6 +194,16 @@ class AppPages {
       name: _Paths.QUIZ_ADMIN,
       page: () => const QuizAdminView(),
       binding: QuizAdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHALLANGE_PAGE,
+      page: () => const ChallangePageView(),
+      binding: ChallangePageBinding(),
+    ),
+    GetPage(
+      name: _Paths.TAB_QUIZ,
+      page: () => const TabQuizView(),
+      binding: TabQuizBinding(),
     ),
   ];
 }
