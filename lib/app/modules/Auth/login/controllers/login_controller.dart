@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:safeloan/app/routes/app_pages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:flutter/foundation.dart';
+import 'package:safeloan/app/routes/app_pages.dart';
 
 class LoginController extends GetxController {
   TextEditingController emailC =
@@ -17,6 +18,7 @@ class LoginController extends GetxController {
   }
 
   FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Stream<User?> get streamAuthStatus => auth.authStateChanges();
 
@@ -26,17 +28,27 @@ class LoginController extends GetxController {
         email: email,
         password: password,
       );
+      
       if (myUser.user!.emailVerified) {
+        DocumentSnapshot userDoc = await firestore.collection('users').doc(myUser.user!.uid).get();
+        String role = userDoc['role'];
+
         Get.defaultDialog(
           title: "Berhasil",
           middleText: "Anda berhasil login.",
         );
-        Get.offAllNamed(Routes.NAVIGATION);
+
+        if (role == 'Pengguna') {
+          Get.offAllNamed(Routes.NAVIGATION);
+        } else if (role == 'Konselor') {
+          Get.offAllNamed(Routes.NAVIGATION_KONSELOR);
+        } else if (role == 'Admin') {
+          Get.offAllNamed(Routes.NAVIGATION_ADMIN);
+        }
       } else {
         Get.defaultDialog(
           title: "Verification Email",
-          middleText:
-              "Kamu perlu verifikasi email terlebih dahulu. Apakah kamu ingin dikirimkan verifikasi ulang?",
+          middleText: "Kamu perlu verifikasi email terlebih dahulu. Apakah kamu ingin dikirimkan verifikasi ulang?",
           onConfirm: () async {
             await myUser.user!.sendEmailVerification();
             Get.back();
@@ -63,7 +75,11 @@ class LoginController extends GetxController {
           middleText: "Email dan Password tidak sesuai. Silahkan cek kembali dengan benar.",
         );
       }
+    } catch (e) {
+      Get.defaultDialog(
+        title: "Terjadi Kesalahan",
+        middleText: "Gagal login. Silakan coba lagi.",
+      );
     }
   }
-
 }

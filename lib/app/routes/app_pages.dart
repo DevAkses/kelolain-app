@@ -1,9 +1,29 @@
 import 'package:get/get.dart';
 
+import '../modules/Admin/homepageAdmin/bindings/homepage_admin_binding.dart';
+import '../modules/Admin/homepageAdmin/views/homepage_admin_view.dart';
+import '../modules/Admin/navigationAdmin/bindings/navigation_admin_binding.dart';
+import '../modules/Admin/navigationAdmin/views/navigation_admin_view.dart';
+import '../modules/Admin/profileAdmin/bindings/profile_admin_binding.dart';
+import '../modules/Admin/profileAdmin/views/profile_admin_view.dart';
+import '../modules/Auth/login/bindings/login_binding.dart';
+import '../modules/Auth/login/views/login_view.dart';
+import '../modules/Auth/register/bindings/register_binding.dart';
+import '../modules/Auth/register/views/register_view.dart';
+import '../modules/Auth/resetPassword/bindings/reset_password_binding.dart';
+import '../modules/Auth/resetPassword/views/reset_password_view.dart';
+import '../modules/Konselor/homepageKonselor/bindings/homepage_konselor_binding.dart';
+import '../modules/Konselor/homepageKonselor/views/homepage_konselor_view.dart';
+import '../modules/Konselor/navigationKonselor/bindings/navigation_konselor_binding.dart';
+import '../modules/Konselor/navigationKonselor/views/navigation_konselor_view.dart';
+import '../modules/Konselor/profileKonselor/bindings/profile_konselor_binding.dart';
+import '../modules/Konselor/profileKonselor/views/profile_konselor_view.dart';
 import '../modules/User/calculator/bindings/calculator_binding.dart';
 import '../modules/User/calculator/views/calculator_view.dart';
 import '../modules/User/counseling/bindings/counseling_binding.dart';
 import '../modules/User/counseling/views/counseling_view.dart';
+import '../modules/User/daftar_konseling/bindings/daftar_konseling_binding.dart';
+import '../modules/User/daftar_konseling/views/daftar_konseling_view.dart';
 import '../modules/User/detailProfile/bindings/detail_profile_binding.dart';
 import '../modules/User/detailProfile/views/detail_profile_view.dart';
 import '../modules/User/editLoan/bindings/edit_loan_binding.dart';
@@ -18,32 +38,24 @@ import '../modules/User/homepage/bindings/homepage_binding.dart';
 import '../modules/User/homepage/views/homepage_view.dart';
 import '../modules/User/loan/bindings/loan_binding.dart';
 import '../modules/User/loan/views/loan_view.dart';
-import '../modules/Auth/login/bindings/login_binding.dart';
-import '../modules/Auth/login/views/login_view.dart';
 import '../modules/User/navigation/bindings/navigation_binding.dart';
 import '../modules/User/navigation/views/navigation_view.dart';
-import '../modules/Admin/navigationAdmin/bindings/navigation_admin_binding.dart';
-import '../modules/Admin/navigationAdmin/views/navigation_admin_view.dart';
-import '../modules/Konselor/navigationKonselor/bindings/navigation_konselor_binding.dart';
-import '../modules/Konselor/navigationKonselor/views/navigation_konselor_view.dart';
 import '../modules/User/notification/bindings/notification_binding.dart';
 import '../modules/User/notification/views/notification_view.dart';
 import '../modules/User/profile/bindings/profile_binding.dart';
 import '../modules/User/profile/views/profile_view.dart';
-import '../modules/Admin/profileAdmin/bindings/profile_admin_binding.dart';
-import '../modules/Admin/profileAdmin/views/profile_admin_view.dart';
-import '../modules/Konselor/profileKonselor/bindings/profile_konselor_binding.dart';
-import '../modules/Konselor/profileKonselor/views/profile_konselor_view.dart';
 import '../modules/User/quiz/bindings/quiz_binding.dart';
 import '../modules/User/quiz/views/quiz_view.dart';
-import '../modules/Auth/register/bindings/register_binding.dart';
-import '../modules/Auth/register/views/register_view.dart';
-import '../modules/Auth/resetPassword/bindings/reset_password_binding.dart';
-import '../modules/Auth/resetPassword/views/reset_password_view.dart';
 import '../modules/User/tab_counseling/bindings/tab_counseling_binding.dart';
 import '../modules/User/tab_counseling/views/tab_counseling_view.dart';
-import '../modules/User/daftar_konseling/bindings/daftar_konseling_binding.dart';
-import '../modules/User/daftar_konseling/views/daftar_konseling_view.dart';
+import '../modules/Admin/educationAdmin/bindings/education_admin_binding.dart';
+import '../modules/Admin/educationAdmin/views/education_admin_view.dart';
+import '../modules/Admin/quizAdmin/bindings/quiz_admin_binding.dart';
+import '../modules/Admin/quizAdmin/views/quiz_admin_view.dart';
+import '../modules/User/challange_page/bindings/challange_page_binding.dart';
+import '../modules/User/challange_page/views/challange_page_view.dart';
+import '../modules/User/tab_quiz/bindings/tab_quiz_binding.dart';
+import '../modules/User/tab_quiz/views/tab_quiz_view.dart';
 
 part 'app_routes.dart';
 
@@ -162,6 +174,36 @@ class AppPages {
       name: _Paths.PROFILE_ADMIN,
       page: () => const ProfileAdminView(),
       binding: ProfileAdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.HOMEPAGE_KONSELOR,
+      page: () => const HomepageKonselorView(),
+      binding: HomepageKonselorBinding(),
+    ),
+    GetPage(
+      name: _Paths.HOMEPAGE_ADMIN,
+      page: () => const HomepageAdminView(),
+      binding: HomepageAdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDUCATION_ADMIN,
+      page: () => const EducationAdminView(),
+      binding: EducationAdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.QUIZ_ADMIN,
+      page: () => const QuizAdminView(),
+      binding: QuizAdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHALLANGE_PAGE,
+      page: () => const ChallangePageView(),
+      binding: ChallangePageBinding(),
+    ),
+    GetPage(
+      name: _Paths.TAB_QUIZ,
+      page: () => const TabQuizView(),
+      binding: TabQuizBinding(),
     ),
   ];
 }

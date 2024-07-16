@@ -25,6 +25,12 @@ abstract class Routes {
   static const PROFILE_KONSELOR = _Paths.PROFILE_KONSELOR;
   static const PROFILE_ADMIN = _Paths.PROFILE_ADMIN;
   static const DAFTAR_KONSELING = _Paths.DAFTAR_KONSELING;
+  static const HOMEPAGE_KONSELOR = _Paths.HOMEPAGE_KONSELOR;
+  static const HOMEPAGE_ADMIN = _Paths.HOMEPAGE_ADMIN;
+  static const EDUCATION_ADMIN = _Paths.EDUCATION_ADMIN;
+  static const QUIZ_ADMIN = _Paths.QUIZ_ADMIN;
+  static const TAB_QUIZ = _Paths.TAB_QUIZ;
+  static const CHALLANGE_PAGE = _Paths.CHALLANGE_PAGE;
 }
 
 abstract class _Paths {
@@ -51,4 +57,10 @@ abstract class _Paths {
   static const PROFILE_KONSELOR = '/profile-konselor';
   static const PROFILE_ADMIN = '/profile-admin';
   static const DAFTAR_KONSELING = '/daftar-konseling';
+  static const HOMEPAGE_KONSELOR = '/homepage-konselor';
+  static const HOMEPAGE_ADMIN = '/homepage-admin';
+  static const EDUCATION_ADMIN = '/education-admin';
+  static const QUIZ_ADMIN = '/quiz-admin';
+  static const TAB_QUIZ = '/tab-quiz';
+  static const CHALLANGE_PAGE = '/challange-page';
 }
