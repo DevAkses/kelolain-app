@@ -34,6 +34,8 @@ import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 import '../modules/resetPassword/bindings/reset_password_binding.dart';
 import '../modules/resetPassword/views/reset_password_view.dart';
+import '../modules/tab_counseling/bindings/tab_counseling_binding.dart';
+import '../modules/tab_counseling/views/tab_counseling_view.dart';
 
 part 'app_routes.dart';
 
@@ -127,6 +129,11 @@ class AppPages {
       name: _Paths.EDIT_LOAN,
       page: () => const EditLoanView(),
       binding: EditLoanBinding(),
+    ),
+    GetPage(
+      name: _Paths.TAB_COUNSELING,
+      page: () => const TabCounselingView(),
+      binding: TabCounselingBinding(),
     ),
   ];
 }

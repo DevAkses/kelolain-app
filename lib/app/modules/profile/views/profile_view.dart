@@ -51,7 +51,7 @@ class ProfileView extends GetView<ProfileController> {
             const Spacer(),
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                primary: Colors.red,
+                backgroundColor: Colors.red,
               ),
               onPressed: () => controller.logout(),
               icon: const Icon(Icons.logout),

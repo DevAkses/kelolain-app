@@ -20,6 +20,7 @@ abstract class Routes {
   static const DETAIL_PROFILE = _Paths.DETAIL_PROFILE;
   static const NOTIFICATION = _Paths.NOTIFICATION;
   static const EDIT_LOAN = _Paths.EDIT_LOAN;
+  static const TAB_COUNSELING = _Paths.TAB_COUNSELING;
 }
 
 abstract class _Paths {
@@ -41,4 +42,5 @@ abstract class _Paths {
   static const DETAIL_PROFILE = '/detail-profile';
   static const NOTIFICATION = '/notification';
   static const EDIT_LOAN = '/edit-loan';
+  static const TAB_COUNSELING = '/tab-counseling';
 }

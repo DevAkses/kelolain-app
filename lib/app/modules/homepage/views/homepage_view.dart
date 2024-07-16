@@ -73,7 +73,7 @@ class HomepageView extends GetView<HomepageController> {
                   _buildMenuItem(
                       icon: Icons.chat,
                       label: 'Counseling',
-                      onTap: () => Get.toNamed('/counseling')),
+                      onTap: () => Get.toNamed('/tab-counseling')),
                   _buildMenuItem(
                       icon: Icons.school,
                       label: 'Education',
