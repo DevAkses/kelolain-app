@@ -38,6 +38,7 @@ class QuizList extends GetView<QuizController> {
             width: 50,
             height: 50,
           ),
+          onTap: onTap,
         ),
       ),
     );
@@ -72,7 +73,7 @@ class QuizList extends GetView<QuizController> {
                 quiz.deskripsiQuiz,
                 '',
                 () {
-                  Get.to(() => QuestionList(quizId: quiz.id));
+                  Get.off(() => QuestionList(quizId: quiz.id));
                 },
               );
               //   title: Text(quiz.titleQuiz),
