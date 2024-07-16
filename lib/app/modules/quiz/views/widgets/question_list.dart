@@ -11,7 +11,7 @@ class QuestionList extends GetView<QuizController> {
 
   @override
   Widget build(BuildContext context) {
-    final QuizController controller = Get.put(QuizController());
+    final QuizController quizController = Get.put(QuizController());
 
     return Scaffold(
       appBar: AppBar(
@@ -19,7 +19,7 @@ class QuestionList extends GetView<QuizController> {
         centerTitle: true,
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: controller.getQuestionList(quizId),
+        stream: quizController.getQuestionList(quizId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -31,21 +31,32 @@ class QuestionList extends GetView<QuizController> {
             return const Center(child: Text('No questions found.'));
           }
 
-          controller.updateQuestionList(snapshot.data!);
+          quizController.updateQuestionList(snapshot.data!);
 
           return Obx(() {
             return ListView.builder(
-              itemCount: controller.questionList.length,
+              itemCount: quizController.questionList.length,
               itemBuilder: (context, index) {
-                var question = controller.questionList[index];
+                var question = quizController.questionList[index];
                 return ListTile(
                   title: Text(question.pertanyaan),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ...question.opsiJawaban.entries
-                          .map((entry) => Text('${entry.key}: ${entry.value}'))
-                          .toList(),
+                      ...question.opsiJawaban.entries.map((entry) {
+                        return Obx(() {
+                          return RadioListTile<String>(
+                            title: Text('${entry.key}: ${entry.value}'),
+                            value: entry.key,
+                            groupValue: quizController.selectedAnswers[index],
+                            onChanged: (value) {
+                              if (value != null) {
+                                quizController.selectAnswer(index, value);
+                              }
+                            },
+                          );
+                        });
+                      }).toList(),
                     ],
                   ),
                 );

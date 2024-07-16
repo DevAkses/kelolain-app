@@ -31,7 +31,7 @@ class LoginController extends GetxController {
           title: "Berhasil",
           middleText: "Anda berhasil login.",
         );
-        Get.offAllNamed(Routes.COUNSELING);
+        Get.offAllNamed(Routes.NAVIGATION);
       } else {
         Get.defaultDialog(
           title: "Verification Email",
