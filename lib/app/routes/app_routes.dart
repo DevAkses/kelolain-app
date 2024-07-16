@@ -16,6 +16,10 @@ abstract class Routes {
   static const EDUCATION = _Paths.EDUCATION;
   static const CALCULATOR = _Paths.CALCULATOR;
   static const LOAN = _Paths.LOAN;
+  static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
+  static const DETAIL_PROFILE = _Paths.DETAIL_PROFILE;
+  static const NOTIFICATION = _Paths.NOTIFICATION;
+  static const EDIT_LOAN = _Paths.EDIT_LOAN;
 }
 
 abstract class _Paths {
@@ -33,4 +37,8 @@ abstract class _Paths {
   static const EDUCATION = '/education';
   static const CALCULATOR = '/calculator';
   static const LOAN = '/loan';
+  static const EDIT_PROFILE = '/edit-profile';
+  static const DETAIL_PROFILE = '/detail-profile';
+  static const NOTIFICATION = '/notification';
+  static const EDIT_LOAN = '/edit-loan';
 }
