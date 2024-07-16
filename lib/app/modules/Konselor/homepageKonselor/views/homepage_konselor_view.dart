@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
 
-import '../controllers/daftar_konseling_controller.dart';
+import '../../../../utils/AppColors.dart';
+import '../controllers/homepage_konselor_controller.dart';
 
-class DaftarKonselingView extends GetView<DaftarKonselingController> {
-  const DaftarKonselingView({Key? key}) : super(key: key);
-
+class HomepageKonselorView extends GetView<HomepageKonselorController> {
+  const HomepageKonselorView({Key? key}) : super(key: key);
   Widget ButtonAjukan(VoidCallback onPressed) {
     return SizedBox(
       width: 150,
@@ -19,7 +19,7 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
           ),
         ),
         onPressed: onPressed,
-        child: Text(
+        child: const Text(
           "Ajukan",
           style: TextStyle(
               color: AppColors.textPutih,
@@ -52,11 +52,14 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(Icons.event, size: 16,),
-                  Text(
+                  const Icon(
+                    Icons.event,
+                    size: 16,
+                  ),
+                  const Text(
                     "Tanggal: ",
-                    style: TextStyle(
-                        fontSize: 16, color: AppColors.textHijauTua),
+                    style:
+                        TextStyle(fontSize: 16, color: AppColors.textHijauTua),
                   ),
                   Text(tanggal)
                 ],
@@ -64,16 +67,19 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(Icons.access_time, size: 16,),
-                  Text(
+                  const Icon(
+                    Icons.access_time,
+                    size: 16,
+                  ),
+                  const Text(
                     " Durasi: ",
-                    style: TextStyle(
-                        fontSize: 16, color: AppColors.textHijauTua),
+                    style:
+                        TextStyle(fontSize: 16, color: AppColors.textHijauTua),
                   ),
                   Text(waktu)
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Align(
@@ -90,24 +96,24 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
   @override
   Widget build(BuildContext context) {
     return ListView(
-        children: [
-          CardItem(
-            "https://via.placeholder.com/150",
-            "Dev Akses",
-            "Dokter Cinta",
-            "Senin, 20 Januari",
-            "30 Menit",
-            () {},
-          ),
-          CardItem(
-            "https://via.placeholder.com/150",
-            "John Doe",
-            "Psikolog",
-            "Selasa, 21 Januari",
-            "45 Menit",
-            () {},
-          ),
-        ],
+      children: [
+        CardItem(
+          "https://via.placeholder.com/150",
+          "Dev Akses",
+          "Dokter Cinta",
+          "Senin, 20 Januari",
+          "30 Menit",
+          () {},
+        ),
+        CardItem(
+          "https://via.placeholder.com/150",
+          "John Doe",
+          "Psikolog",
+          "Selasa, 21 Januari",
+          "45 Menit",
+          () {},
+        ),
+      ],
     );
   }
 }
