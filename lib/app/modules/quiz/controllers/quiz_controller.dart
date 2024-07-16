@@ -7,6 +7,7 @@ class QuizController extends GetxController {
 
   var quizList = <Quiz>[].obs;
   var questionList = <Question>[].obs;
+  var selectedAnswers = <String?>[].obs;
 
   Stream<QuerySnapshot> getQuizList() {
     return firestore.collection('quiz').snapshots();
@@ -28,5 +29,12 @@ class QuizController extends GetxController {
   void updateQuestionList(QuerySnapshot snapshot) {
     questionList.clear();
     questionList.addAll(snapshot.docs.map((doc) => Question.fromDocument(doc)).toList());
+    selectedAnswers.assignAll(List<String?>.filled(questionList.length, null));
   }
+
+  void selectAnswer(int index, String answer) {
+    selectedAnswers[index] = answer;
+    selectedAnswers.refresh();
+  }
+
 }
