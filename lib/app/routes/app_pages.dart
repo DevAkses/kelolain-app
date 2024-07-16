@@ -4,6 +4,12 @@ import '../modules/calculator/bindings/calculator_binding.dart';
 import '../modules/calculator/views/calculator_view.dart';
 import '../modules/counseling/bindings/counseling_binding.dart';
 import '../modules/counseling/views/counseling_view.dart';
+import '../modules/detailProfile/bindings/detail_profile_binding.dart';
+import '../modules/detailProfile/views/detail_profile_view.dart';
+import '../modules/editLoan/bindings/edit_loan_binding.dart';
+import '../modules/editLoan/views/edit_loan_view.dart';
+import '../modules/editProfile/bindings/edit_profile_binding.dart';
+import '../modules/editProfile/views/edit_profile_view.dart';
 import '../modules/education/bindings/education_binding.dart';
 import '../modules/education/views/education_view.dart';
 import '../modules/finance/bindings/finance_binding.dart';
@@ -18,6 +24,8 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/navigation/bindings/navigation_binding.dart';
 import '../modules/navigation/views/navigation_view.dart';
+import '../modules/notification/bindings/notification_binding.dart';
+import '../modules/notification/views/notification_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/quiz/bindings/quiz_binding.dart';
@@ -99,6 +107,26 @@ class AppPages {
       name: _Paths.LOAN,
       page: () => const LoanView(),
       binding: LoanBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_PROFILE,
+      page: () => const EditProfileView(),
+      binding: EditProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL_PROFILE,
+      page: () => const DetailProfileView(),
+      binding: DetailProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.NOTIFICATION,
+      page: () => const NotificationView(),
+      binding: NotificationBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_LOAN,
+      page: () => const EditLoanView(),
+      binding: EditLoanBinding(),
     ),
   ];
 }

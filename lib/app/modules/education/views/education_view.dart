@@ -23,7 +23,7 @@ class EducationView extends GetView<EducationController> {
             ],
           ),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
             ArticleWidget(),
             VideoWidget(),

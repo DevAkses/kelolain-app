@@ -39,7 +39,7 @@ class HomepageView extends GetView<HomepageController> {
                   IconButton(
                     icon: Icon(Icons.notifications),
                     onPressed: () {
-                      Get.toNamed('/notifications');
+                      Get.toNamed('/notification');
                     },
                   ),
                 ],
