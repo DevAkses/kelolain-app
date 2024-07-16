@@ -24,6 +24,7 @@ abstract class Routes {
   static const NAVIGATION_ADMIN = _Paths.NAVIGATION_ADMIN;
   static const PROFILE_KONSELOR = _Paths.PROFILE_KONSELOR;
   static const PROFILE_ADMIN = _Paths.PROFILE_ADMIN;
+  static const DAFTAR_KONSELING = _Paths.DAFTAR_KONSELING;
 }
 
 abstract class _Paths {
@@ -49,4 +50,5 @@ abstract class _Paths {
   static const NAVIGATION_ADMIN = '/navigation-admin';
   static const PROFILE_KONSELOR = '/profile-konselor';
   static const PROFILE_ADMIN = '/profile-admin';
+  static const DAFTAR_KONSELING = '/daftar-konseling';
 }
