@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
-import '../../User/profile/controllers/profile_controller.dart';
 
-class ProfileView extends GetView<ProfileController> {
-  const ProfileView({super.key});
+import '../controllers/profile_konselor_controller.dart';
 
+class ProfileKonselorView extends GetView<ProfileKonselorController> {
+  const ProfileKonselorView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final ProfileController profileController = Get.put(ProfileController());
+    final ProfileKonselorController profileController = Get.put(ProfileKonselorController());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
