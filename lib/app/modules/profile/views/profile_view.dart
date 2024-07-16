@@ -22,7 +22,8 @@ class ProfileView extends GetView<ProfileController> {
               return controller.profileImageUrl.value != null
                   ? CircleAvatar(
                       radius: 50,
-                      backgroundImage: NetworkImage(controller.profileImageUrl.value!),
+                      backgroundImage:
+                          NetworkImage(controller.profileImageUrl.value!),
                     )
                   : const CircleAvatar(
                       radius: 50,
@@ -39,7 +40,7 @@ class ProfileView extends GetView<ProfileController> {
             ListTile(
               leading: const Icon(Icons.edit),
               title: const Text("Profile"),
-             onTap: () {
+              onTap: () {
                 Get.toNamed('/detail-profile');
               },
             ),

@@ -49,7 +49,7 @@ class Question {
       jawaban: data['jawaban'] ?? '',
       opsiJawaban: Map<String, String>.from(data['opsiJawaban'] ?? {}),
       penjelasan: data['penjelasan'] ?? '',
-      poin: data['poin'] ?? 0,
+      poin: data['point'] ?? 0,
     );
   }
 }
