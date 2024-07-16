@@ -3,7 +3,6 @@ part of 'app_pages.dart';
 
 abstract class Routes {
   Routes._();
-  static const HOME = _Paths.HOME;
   static const REGISTER = _Paths.REGISTER;
   static const LOGIN = _Paths.LOGIN;
   static const NAVIGATION = _Paths.NAVIGATION;
@@ -21,11 +20,14 @@ abstract class Routes {
   static const NOTIFICATION = _Paths.NOTIFICATION;
   static const EDIT_LOAN = _Paths.EDIT_LOAN;
   static const TAB_COUNSELING = _Paths.TAB_COUNSELING;
+  static const NAVIGATION_KONSELOR = _Paths.NAVIGATION_KONSELOR;
+  static const NAVIGATION_ADMIN = _Paths.NAVIGATION_ADMIN;
+  static const PROFILE_KONSELOR = _Paths.PROFILE_KONSELOR;
+  static const PROFILE_ADMIN = _Paths.PROFILE_ADMIN;
 }
 
 abstract class _Paths {
   _Paths._();
-  static const HOME = '/home';
   static const REGISTER = '/register';
   static const LOGIN = '/login';
   static const NAVIGATION = '/navigation';
@@ -43,4 +45,8 @@ abstract class _Paths {
   static const NOTIFICATION = '/notification';
   static const EDIT_LOAN = '/edit-loan';
   static const TAB_COUNSELING = '/tab-counseling';
+  static const NAVIGATION_KONSELOR = '/navigation-konselor';
+  static const NAVIGATION_ADMIN = '/navigation-admin';
+  static const PROFILE_KONSELOR = '/profile-konselor';
+  static const PROFILE_ADMIN = '/profile-admin';
 }
