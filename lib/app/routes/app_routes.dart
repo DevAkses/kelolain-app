@@ -21,6 +21,7 @@ abstract class Routes {
   static const NOTIFICATION = _Paths.NOTIFICATION;
   static const EDIT_LOAN = _Paths.EDIT_LOAN;
   static const TAB_COUNSELING = _Paths.TAB_COUNSELING;
+  static const DAFTAR_KONSELING = _Paths.DAFTAR_KONSELING;
 }
 
 abstract class _Paths {
@@ -43,4 +44,5 @@ abstract class _Paths {
   static const NOTIFICATION = '/notification';
   static const EDIT_LOAN = '/edit-loan';
   static const TAB_COUNSELING = '/tab-counseling';
+  static const DAFTAR_KONSELING = '/daftar-konseling';
 }

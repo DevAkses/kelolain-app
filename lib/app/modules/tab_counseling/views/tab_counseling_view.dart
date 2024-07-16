@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/counseling/views/counseling_view.dart';
+import 'package:safeloan/app/modules/daftar_konseling/views/daftar_konseling_view.dart';
 import 'package:safeloan/app/utils/AppColors.dart';
 
 import '../controllers/tab_counseling_controller.dart';
@@ -51,7 +52,6 @@ class TabCounselingView extends GetView<TabCounselingController> {
                 textAlign: TextAlign.center,
               ),
             ),
-            
             Container(
               margin: const EdgeInsets.all(20),
               height: 50,
@@ -87,7 +87,7 @@ class TabCounselingView extends GetView<TabCounselingController> {
               child: TabBarView(
                 children: [
                   CounselingView(),
-                  Center(child: Text("Content of Tab 2")),
+                  DaftarKonselingView(),
                 ],
               ),
             ),

@@ -4,6 +4,8 @@ import '../modules/calculator/bindings/calculator_binding.dart';
 import '../modules/calculator/views/calculator_view.dart';
 import '../modules/counseling/bindings/counseling_binding.dart';
 import '../modules/counseling/views/counseling_view.dart';
+import '../modules/daftar_konseling/bindings/daftar_konseling_binding.dart';
+import '../modules/daftar_konseling/views/daftar_konseling_view.dart';
 import '../modules/detailProfile/bindings/detail_profile_binding.dart';
 import '../modules/detailProfile/views/detail_profile_view.dart';
 import '../modules/editLoan/bindings/edit_loan_binding.dart';
@@ -134,6 +136,11 @@ class AppPages {
       name: _Paths.TAB_COUNSELING,
       page: () => const TabCounselingView(),
       binding: TabCounselingBinding(),
+    ),
+    GetPage(
+      name: _Paths.DAFTAR_KONSELING,
+      page: () => const DaftarKonselingView(),
+      binding: DaftarKonselingBinding(),
     ),
   ];
 }
