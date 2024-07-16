@@ -25,6 +25,8 @@ abstract class Routes {
   static const PROFILE_KONSELOR = _Paths.PROFILE_KONSELOR;
   static const PROFILE_ADMIN = _Paths.PROFILE_ADMIN;
   static const DAFTAR_KONSELING = _Paths.DAFTAR_KONSELING;
+  static const TAB_QUIZ = _Paths.TAB_QUIZ;
+  static const CHALLANGE_PAGE = _Paths.CHALLANGE_PAGE;
 }
 
 abstract class _Paths {
@@ -51,4 +53,6 @@ abstract class _Paths {
   static const PROFILE_KONSELOR = '/profile-konselor';
   static const PROFILE_ADMIN = '/profile-admin';
   static const DAFTAR_KONSELING = '/daftar-konseling';
+  static const TAB_QUIZ = '/tab-quiz';
+  static const CHALLANGE_PAGE = '/challange-page';
 }

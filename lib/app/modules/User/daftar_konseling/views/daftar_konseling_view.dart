@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/utils/AppColors.dart';
-import 'package:safeloan/app/widgets/button_widget.dart';
 
 import '../controllers/daftar_konseling_controller.dart';
 
