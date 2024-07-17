@@ -12,11 +12,10 @@ class NavigationAdminView extends GetView<NavigationAdminController> {
   const NavigationAdminView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final NavigationAdminController controller = Get.put(NavigationAdminController());
 
     final List<Widget> _pages = [
       const HomepageAdminView(),
-      const QuizAdminView(),
+      QuizAdminView(),
       const EducationAdminView(),
       const ProfileAdminView(),
     ];
