@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/quiz/controllers/quiz_controller.dart';
-import 'package:safeloan/app/modules/User/quiz/views/widgets/question_list.dart';
+import 'package:safeloan/app/modules/User/quiz/views/widgets/description_quiz_page.dart';
 import 'package:safeloan/app/utils/AppColors.dart';
 
 class QuizList extends GetView<QuizController> {
@@ -38,6 +38,7 @@ class QuizList extends GetView<QuizController> {
             width: 50,
             height: 50,
           ),
+          onTap: onTap,
         ),
       ),
     );
@@ -72,15 +73,9 @@ class QuizList extends GetView<QuizController> {
                 quiz.deskripsiQuiz,
                 '',
                 () {
-                  Get.to(() => QuestionList(quizId: quiz.id));
+                  Get.off(() => DescriptionQuizPage(quiz: quiz));
                 },
               );
-              //   title: Text(quiz.titleQuiz),
-              //   subtitle: Text(quiz.deskripsiQuiz),
-              //   onTap: () {
-              //     Get.to(() => QuestionList(quizId: quiz.id));
-              //   },
-              // );
             },
           );
         });

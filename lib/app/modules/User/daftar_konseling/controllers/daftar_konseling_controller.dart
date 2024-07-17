@@ -1,23 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class DaftarKonselingController extends GetxController {
-  //TODO: Implement DaftarKonselingController
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  Future<bool> bookSchedule(String counselingId) async {
+    QuerySnapshot isHaveSchedule = await firestore
+        .collection('counselings')
+        .where('userId', isEqualTo: firebaseAuth.currentUser!.uid)
+        .get();
+
+    if (isHaveSchedule.docs.isNotEmpty) {
+      return false;
+    } else {
+      await firestore
+        .collection('counselings')
+          .doc(counselingId)
+          .update({'userId': firebaseAuth.currentUser!.uid});
+      return true;
+    }
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

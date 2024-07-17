@@ -33,30 +33,38 @@ class CounselingView extends GetView<CounselingController> {
                   subtitle: Text(keahlian),
                 ),
                 Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(Icons.event, size: 16,),
-                  Text(
-                    "Tanggal: ",
-                    style: TextStyle(
-                        fontSize: 16, color: AppColors.textHijauTua),
-                  ),
-                  Text(tanggal)
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(Icons.access_time, size: 16,),
-                  Text(
-                    " Durasi: ",
-                    style: TextStyle(
-                        fontSize: 16, color: AppColors.textHijauTua),
-                  ),
-                  Text(waktu)
-                ],
-              ),
-                SizedBox(height: 20,),
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.event,
+                      size: 16,
+                    ),
+                    Text(
+                      "Tanggal: ",
+                      style: TextStyle(
+                          fontSize: 16, color: AppColors.textHijauTua),
+                    ),
+                    Text(tanggal)
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.access_time,
+                      size: 16,
+                    ),
+                    Text(
+                      " Durasi: ",
+                      style: TextStyle(
+                          fontSize: 16, color: AppColors.textHijauTua),
+                    ),
+                    Text(waktu)
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
                 ButtonWidget(onPressed: onPressed, nama: "Tautan Meeting")
               ],
             )),
@@ -68,43 +76,46 @@ class CounselingView extends GetView<CounselingController> {
   Widget build(BuildContext context) {
     final CounselingController counselingController =
         Get.put(CounselingController());
-    return StreamBuilder<QuerySnapshot>(
-      stream: counselingController.getListKonseling(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        }
-        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(child: Text('No counseling sessions found.'));
-        }
-        counselingController.updateCounselingList(snapshot.data!);
-        return Obx(() {
-          return Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: counselingController.counselingList.length,
-                  itemBuilder: (context, index) {
-                    CounselingSession counseling =
-                        counselingController.counselingList[index];
-                    return CardItem(
-                        "",
-                        counseling.konselorId,
-                        'Psikolog handal',
-                        DateFormat.yMMMMd().add_jm().format(counseling.jadwal),
-                        '${counseling.durasi}',
-                        (){});
-                    
+
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
+        stream: counselingController.getCounselingSession(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text('No counseling sessions found.'));
+          }
+
+          counselingController.updateCounselingSession(snapshot.data!);
+
+          return Obx(() {
+            final counseling = counselingController.counselingSession.value;
+            if (counseling == null) {
+              return const Center(child: Text('No counseling sessions found.'));
+            }
+
+            return ListView(
+              children: [
+                CardItem(
+                  "", // Link gambar
+                  counseling.konselorId,
+                  'Psikolog handal',
+                  DateFormat.yMMMMd().add_jm().format(counseling.jadwal),
+                  '${counseling.durasi} menit',
+                  () {
+                    // Logika untuk tautan meeting
                   },
                 ),
-              ),
-            ],
-          );
-        });
-      },
+              ],
+            );
+          });
+        },
+      ),
     );
   }
 }

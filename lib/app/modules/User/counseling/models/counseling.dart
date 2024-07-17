@@ -6,13 +6,15 @@ class CounselingSession{
   final int durasi;
   final String tautanGmeet;
   final String konselorId;
+  final String userId;
 
   CounselingSession({
     required this.id,
     required this.jadwal,
     required this.durasi,
     required this.tautanGmeet,
-    required this.konselorId
+    required this.konselorId,
+    required this.userId
   });
 
   factory CounselingSession.fromDocument(DocumentSnapshot doc){
@@ -23,6 +25,7 @@ class CounselingSession{
       durasi: data['durasi'] ?? 0,
       tautanGmeet: data['tautanGmeet'] ?? '',
       konselorId: data['konselorId'] ?? '',
+      userId: data['userId'] ?? ''
     );
   }
 }

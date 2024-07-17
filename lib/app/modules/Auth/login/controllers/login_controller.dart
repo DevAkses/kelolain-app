@@ -7,7 +7,7 @@ import 'package:safeloan/app/routes/app_pages.dart';
 
 class LoginController extends GetxController {
   TextEditingController emailC =
-      TextEditingController(text: "devaksesmikail12@gmail.com");
+      TextEditingController(text: "devaksesmikail08@gmail.com");
   TextEditingController passwordC = TextEditingController(text: "dev123");
 
   @override
