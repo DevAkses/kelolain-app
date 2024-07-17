@@ -62,4 +62,6 @@ class QuizController extends GetxController {
       'userId': firebaseAuth.currentUser!.uid
     });
   }
+
+  
 }

@@ -10,7 +10,10 @@ class CounselingController extends GetxController {
   var counselingSession = Rxn<CounselingSession>();
 
   Stream<QuerySnapshot> getListKonseling() {
-    return firestore.collection('counselings').snapshots();
+    return firestore
+        .collection('counselings')
+        .where('userId', isEqualTo: "")
+        .snapshots();
   }
 
   void updateCounselingList(QuerySnapshot snapshot) {
@@ -21,12 +24,21 @@ class CounselingController extends GetxController {
   }
 
   Stream<QuerySnapshot> getCounselingSession() {
-    return firestore.collection('counselings')
-    .where('userId', isEqualTo: firebaseAuth.currentUser!.uid)
-    .snapshots();
+    return firestore
+        .collection('counselings')
+        .where('userId', isEqualTo: firebaseAuth.currentUser!.uid)
+        .snapshots();
   }
 
-  void updateCounselingSession(QuerySnapshot snapshot){
-    counselingSession.value = CounselingSession.fromDocument(snapshot.docs.first);
+  void updateCounselingSession(QuerySnapshot snapshot) {
+    counselingSession.value =
+        CounselingSession.fromDocument(snapshot.docs.first);
+  }
+
+  void bookSchedule(String counselingId) {
+    firestore
+        .collection('counselings')
+        .doc(counselingId)
+        .update({'userId': firebaseAuth.currentUser!.uid});
   }
 }
