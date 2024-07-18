@@ -3,11 +3,10 @@ import 'package:safeloan/app/utils/AppColors.dart';
 
 class PemasukanListPage extends StatelessWidget {
   const PemasukanListPage({super.key});
-  Widget cardItem(String title, String deskripsi, VoidCallback onTap) {
+  Widget cardItem(String title, String nominal, String kategori,
+      Color colorCategory, String tanggal, VoidCallback onTap) {
     return Container(
       width: double.infinity,
-      height: 100,
-      padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -15,24 +14,78 @@ class PemasukanListPage extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: const Offset(0, 3), // changes position of shadow
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
-      child: Center(
-        child: ListTile(
-          title: Text(title,
-              style:
-                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-          subtitle:
-              Text(deskripsi, style: const TextStyle(color: AppColors.abuAbu)),
-          trailing: const Icon(
-            Icons.arrow_upward_outlined,
-            color: Colors.green,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(10),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: AppColors.textHijauTua,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Rp $nominal',
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: colorCategory,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            kategori,
+                            style: const TextStyle(
+                                color: AppColors.textPutih, fontSize: 12),
+                          ),
+                        ),
+                        Text(
+                          tanggal,
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                    // const SizedBox(height: 8),
+                  ],
+                ),
+              ),
+              const Icon(
+                Icons.arrow_upward_outlined,
+                color: Colors.green,
+                size: 24,
+              ),
+            ],
           ),
-          onTap: onTap,
         ),
       ),
     );
@@ -44,18 +97,16 @@ class PemasukanListPage extends StatelessWidget {
       children: [
         ListView(
           children: [
-            cardItem("Minggu 1", "Rp 100.000", () {}),
-            cardItem("Minggu 1", "Rp 100.000", () {}),
-            cardItem("Minggu 1", "Rp 100.000", () {}),
-            cardItem("Minggu 1", "Rp 100.000", () {}),
-            cardItem("Minggu 1", "Rp 100.000", () {}),
-            cardItem("Minggu 1", "Rp 100.000", () {}),
-            cardItem("Minggu 1", "Rp 100.000", () {}),
-            cardItem("Minggu 1", "Rp 100.000", () {}),
-            cardItem("Minggu 1", "Rp 100.000", () {}),
-            cardItem("Minggu 1", "Rp 100.000", () {}),
-            cardItem("Minggu 1", "Rp 100.000", () {}),
-            cardItem("Minggu 1", "Rp 100.000", () {}),
+            cardItem(
+                  "Course Javascript",
+                  "99.000",
+                  'Pengembangan diri',
+                  AppColors.primaryColor,
+                  "20 Juli 2024", // Tambahkan tanggal di sini
+                  () {
+                // Tambahkan logika onTap di sini
+                print("Card tapped");
+              }),
           ],
         ),
         Positioned(
