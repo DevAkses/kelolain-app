@@ -1,137 +1,236 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safeloan/app/modules/Admin/quizAdmin/controllers/quiz_admin_controller.dart';
-
-import '../models/question_admin_model.dart';
-import '../models/quiz_admin_model.dart';
-
+import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/widgets/button_widget.dart';
+import '../controllers/quiz_admin_controller.dart';
 
 class QuizAdminView extends GetView<QuizAdminController> {
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
-  final List<Question> questions = List.generate(
-    10,
-    (index) => Question(
-      id: '',
-      pertanyaan: '',
-      jawaban: '',
-      opsiJawaban: {
-        'a': 'ini salah ges',
-        'b': 'yoi bener ges',
-        'c': 'tau ah cape',
-        'd': 'hmmmm',
-      },
-      penjelasan: '',
-      point: 10,
-    ),
-  );
+  const QuizAdminView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final titleController = TextEditingController();
+    final descriptionController = TextEditingController();
+    final questionControllers = List.generate(10, (index) => {
+      'question': TextEditingController(),
+      'explanation': TextEditingController(),
+      'optionA': TextEditingController(),
+      'optionB': TextEditingController(),
+      'optionC': TextEditingController(),
+      'optionD': TextEditingController(),
+      'answer': TextEditingController(),
+      'point': TextEditingController(text: '10'),
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Admin Quiz'),
         centerTitle: true,
+        backgroundColor: AppColors.primaryColor,
+        titleTextStyle: const TextStyle(color: AppColors.textPutih),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Text('Tambah Quiz Baru', style: TextStyle(fontSize: 20)),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: titleController,
-                decoration: const InputDecoration(labelText: 'Judul Quiz'),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
+          children: [
+            Card(
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
               ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: descriptionController,
-                decoration: const InputDecoration(labelText: 'Deskripsi Quiz'),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () async {
-                  if (titleController.text.isEmpty || descriptionController.text.isEmpty) {
-                    Get.snackbar('Error', 'Judul dan Deskripsi Quiz harus diisi');
-                    return;
-                  }
-
-                  Quiz newQuiz = Quiz(
-                    id: '',
-                    title: titleController.text,
-                    description: descriptionController.text,
-                  );
-
-                  await controller.tambahQuizDanPertanyaan(newQuiz, questions);
-
-                  titleController.clear();
-                  descriptionController.clear();
-
-                  Get.snackbar('Sukses', 'Quiz dan Pertanyaan berhasil ditambahkan');
-                },
-                child: const Text('Simpan Quiz dan Pertanyaan'),
-              ),
-              const SizedBox(height: 30),
-              const Text('Tambah Pertanyaan untuk Quiz', style: TextStyle(fontSize: 20)),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: questions.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 3,
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text('Pertanyaan ${index + 1}'),
-                          TextFormField(
-                            decoration: const InputDecoration(labelText: 'Pertanyaan'),
-                            onChanged: (value) {
-                              questions[index].pertanyaan = value;
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          TextFormField(
-                            decoration: const InputDecoration(labelText: 'Jawaban'),
-                            onChanged: (value) {
-                              questions[index].jawaban = value;
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          TextFormField(
-                            decoration: const InputDecoration(labelText: 'Penjelasan'),
-                            onChanged: (value) {
-                              questions[index].penjelasan = value;
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ...questions[index].opsiJawaban.entries.map((entry) {
-                                return Expanded(
-                                  child: TextFormField(
-                                    decoration: InputDecoration(labelText: 'Opsi ${entry.key.toUpperCase()}'),
-                                    onChanged: (value) {
-                                      questions[index].opsiJawaban[entry.key] = value;
-                                    },
-                                  ),
-                                );
-                              }).toList(),
-                            ],
-                          ),
-                        ],
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    const Text(
+                      'Create New Quiz',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textHijauTua,
                       ),
                     ),
-                  );
-                },
+                    const SizedBox(height: 10),
+                    TextField(
+                      controller: titleController,
+                      decoration: InputDecoration(
+                        labelText: 'Quiz Title',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                      controller: descriptionController,
+                      decoration: InputDecoration(
+                        labelText: 'Quiz Description',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    ...questionControllers.map((controllerMap) {
+                      return Card(
+                        elevation: 3,
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextField(
+                                controller: controllerMap['question'],
+                                decoration: InputDecoration(
+                                  labelText: 'Question',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              TextField(
+                                controller: controllerMap['explanation'],
+                                decoration: InputDecoration(
+                                  labelText: 'Explanation',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              TextField(
+                                controller: controllerMap['optionA'],
+                                decoration: InputDecoration(
+                                  labelText: 'Option A',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              TextField(
+                                controller: controllerMap['optionB'],
+                                decoration: InputDecoration(
+                                  labelText: 'Option B',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              TextField(
+                                controller: controllerMap['optionC'],
+                                decoration: InputDecoration(
+                                  labelText: 'Option C',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              TextField(
+                                controller: controllerMap['optionD'],
+                                decoration: InputDecoration(
+                                  labelText: 'Option D',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              TextField(
+                                controller: controllerMap['answer'],
+                                decoration: InputDecoration(
+                                  labelText: 'Answer',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              TextField(
+                                controller: controllerMap['point'],
+                                decoration: InputDecoration(
+                                  labelText: 'Point',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                keyboardType: TextInputType.number,
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    const SizedBox(height: 20),
+                    ButtonWidget(onPressed: () {
+                        final questions = questionControllers.map((controllerMap) {
+                          return {
+                            'pertanyaan': controllerMap['question']?.text,
+                            'penjelasan': controllerMap['explanation']?.text,
+                            'opsiJawaban': {
+                              'a': controllerMap['optionA']?.text,
+                              'b': controllerMap['optionB']?.text,
+                              'c': controllerMap['optionC']?.text,
+                              'd': controllerMap['optionD']?.text,
+                            },
+                            'jawaban': controllerMap['answer']?.text,
+                            'point': int.parse(controllerMap['point']?.text ?? '10'),
+                          };
+                        }).toList();
+
+                        controller.addQuiz(
+                          titleController.text,
+                          descriptionController.text,
+                          questions,
+                        );
+                      }, nama: "Add Quiz")
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     final questions = questionControllers.map((controllerMap) {
+                    //       return {
+                    //         'pertanyaan': controllerMap['question']?.text,
+                    //         'penjelasan': controllerMap['explanation']?.text,
+                    //         'opsiJawaban': {
+                    //           'a': controllerMap['optionA']?.text,
+                    //           'b': controllerMap['optionB']?.text,
+                    //           'c': controllerMap['optionC']?.text,
+                    //           'd': controllerMap['optionD']?.text,
+                    //         },
+                    //         'jawaban': controllerMap['answer']?.text,
+                    //         'point': int.parse(controllerMap['point']?.text ?? '10'),
+                    //       };
+                    //     }).toList();
+
+                    //     controller.addQuiz(
+                    //       titleController.text,
+                    //       descriptionController.text,
+                    //       questions,
+                    //     );
+                    //   },
+                    //   style: ElevatedButton.styleFrom(
+                    //     padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(10),
+                    //     ),
+                    //     backgroundColor: Colors.teal,
+                    //   ),
+                    //   child: const Text(
+                    //     'Add Quiz',
+                    //     style: TextStyle(fontSize: 18),
+                    //   ),
+                    // ),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
