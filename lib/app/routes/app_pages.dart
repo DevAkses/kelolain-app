@@ -127,7 +127,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CALCULATOR,
-      page: () => const CalculatorView(),
+      page: () => CalculatorView(),
       binding: CalculatorBinding(),
     ),
     GetPage(
