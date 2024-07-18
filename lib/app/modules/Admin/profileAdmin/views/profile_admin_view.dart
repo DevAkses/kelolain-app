@@ -8,7 +8,7 @@ class ProfileAdminView extends GetView<ProfileAdminController> {
   const ProfileAdminView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final ProfileAdminController profileController = Get.put(ProfileAdminController());
+    final ProfileAdminController controller = Get.put(ProfileAdminController());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),

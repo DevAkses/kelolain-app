@@ -8,6 +8,7 @@ class ProfileView extends GetView<ProfileController> {
 
   @override
   Widget build(BuildContext context) {
+
     final ProfileController profileController = Get.put(ProfileController());
 
     // Definisi warna

@@ -9,7 +9,7 @@ class EditArticleAdminView extends GetView<EditArticleAdminController> {
 
   @override
   Widget build(BuildContext context) {
-    EditArticleAdminController editArticleAdminController =
+    EditArticleAdminController controller =
         Get.put(EditArticleAdminController());
     return Scaffold(
       appBar: AppBar(
