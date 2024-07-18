@@ -16,7 +16,7 @@ class NavigationView extends GetView<NavigationController> {
     final NavigationController controller = Get.put(NavigationController());
 
     final List<Widget> _pages = [
-      const HomepageView(),
+      HomepageView(),
       const FinanceView(),
       const TabQuizView(),
       const ProfileView(),

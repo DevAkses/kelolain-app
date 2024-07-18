@@ -82,7 +82,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.HOMEPAGE,
-      page: () => const HomepageView(),
+      page: () => HomepageView(),
       binding: HomepageBinding(),
     ),
     GetPage(
