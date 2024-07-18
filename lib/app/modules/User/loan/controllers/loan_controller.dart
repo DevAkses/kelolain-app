@@ -1,23 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class LoanController extends GetxController {
-  //TODO: Implement LoanController
+  late User? _currentuser;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  final count = 0.obs;
+  Stream<QuerySnapshot<Map<String, dynamic>>> listLoans() {
+    return firestore
+        .collection('users')
+        .doc(_currentuser!.uid)
+        .collection('loans')
+        .snapshots();
+  }
+
   @override
   void onInit() {
+    _currentuser = FirebaseAuth.instance.currentUser;
     super.onInit();
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

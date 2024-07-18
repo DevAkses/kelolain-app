@@ -1,124 +1,172 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/modules/User/detailProfile/controllers/detail_profile_controller.dart';
+import 'package:safeloan/app/utils/AppColors.dart';
 import '../controllers/homepage_controller.dart';
 
 class HomepageView extends GetView<HomepageController> {
-   const HomepageView({Key? key}) : super(key: key);
+  const HomepageView({super.key});
 
   @override
   Widget build(BuildContext context) {
     final HomepageController controller = Get.put(HomepageController());
-
+    final DetailProfileController detailController =
+        Get.put(DetailProfileController());
     return Scaffold(
       appBar: AppBar(
-        title: const Text('HomepageView'),
-        centerTitle: true,
+        backgroundColor: AppColors.primaryColor,
+        title: ListTile(
+          leading: CircleAvatar(
+            child: Image.network('https://via.placeholder.com/60'),
+          ),
+          title: const Text(
+            "Selamat Datang",
+            style: TextStyle(color: AppColors.textPutih),
+          ),
+          subtitle: Text(detailController.userData['fullName'] ?? "Anonim",
+              style: const TextStyle(color: AppColors.textPutih)),
+          trailing: IconButton(
+            icon: Icon(
+              Icons.notifications,
+              color: Colors.grey[200],
+            ),
+            onPressed: () {
+              Get.toNamed('/notification');
+            },
+          ),
+        ),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Kotak Poin dan Ikon Notifikasi
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(10),
+        child: Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 180,
+                  width: double.infinity,
+                  color: AppColors.primaryColor,
+                ),
+                const SizedBox(height: 80),
+                // Gambar Geser
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: SizedBox(
+                    height: 200,
+                    child: PageView.builder(
+                      controller: controller.pageController,
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return Image.network(
+                          'https://via.placeholder.com/400x200.png?text=Image+${index + 1}',
+                          fit: BoxFit.cover,
+                        );
+                      },
                     ),
-                    child: Obx(() => Text(
-                          'Points: ${controller.points.value}',
-                          style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                // 6 Kotak Menu
+                const SizedBox(height: 20),
+                // Grafik Penghasilan dan Pengeluaran
+                const Text('Grafik Penghasilan dan Pengeluaran',
+                    style: TextStyle(fontSize: 16)),
+                const SizedBox(height: 10),
+                _buildIncomeExpenseChart(controller),
+              ],
+            ),
+            Positioned(
+              top: 50,
+              left: 0,
+              right: 0,
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                    color: AppColors.textPutih,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 1,
+                        blurRadius: 3,
+                        offset: const Offset(0, 1),
+                      ),
+                    ]),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16.0),
+                      child: const Text(
+                        "Poin: ",
+                        style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textHijauTua),
+                      ),
+                    ),
+                    Obx(() => Padding(
+                          padding: const EdgeInsets.only(left: 16.0),
+                          child: Text(
+                            '${controller.points.value}',
+                            style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.textHijauTua),
+                          ),
                         )),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.notifications),
-                    onPressed: () {
-                      Get.toNamed('/notification');
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              // Gambar Geser
-              Container(
-                height: 200,
-                child: PageView.builder(
-                  controller: controller.pageController,
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return Image.network(
-                      'https://via.placeholder.com/400x200.png?text=Image+${index + 1}',
-                      fit: BoxFit.cover,
-                    );
-                  },
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Divider(),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        _buildMenuItem(
+                            icon: Icons.calculate,
+                            label: 'Calculator',
+                            onTap: () => Get.toNamed('/calculator')),
+                        _buildMenuItem(
+                            icon: Icons.attach_money,
+                            label: 'Loans',
+                            onTap: () => Get.toNamed('/loan')),
+                        _buildMenuItem(
+                            icon: Icons.school,
+                            label: 'Education',
+                            onTap: () => Get.toNamed('/education')),
+                        _buildMenuItem(
+                            icon: Icons.chat,
+                            label: 'Counseling',
+                            onTap: () => Get.toNamed('/tab-counseling')),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(height: 20),
-              // 6 Kotak Menu
-              GridView.count(
-                crossAxisCount: 3,
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                children: [
-                  _buildMenuItem(
-                      icon: Icons.account_balance_wallet,
-                      label: 'Finance',
-                      onTap: () => Get.toNamed('/finance')),
-                  _buildMenuItem(
-                      icon: Icons.chat,
-                      label: 'Counseling',
-                      onTap: () => Get.toNamed('/tab-counseling')),
-                  _buildMenuItem(
-                      icon: Icons.school,
-                      label: 'Education',
-                      onTap: () => Get.toNamed('/education')),
-                  _buildMenuItem(
-                      icon: Icons.calculate,
-                      label: 'Calculator',
-                      onTap: () => Get.toNamed('/calculator')),
-                  _buildMenuItem(
-                      icon: Icons.attach_money,
-                      label: 'Loans',
-                      onTap: () => Get.toNamed('/loan')),
-                  _buildMenuItem(
-                      icon: Icons.info,
-                      label: 'Information',
-                      onTap: () => Get.toNamed('/information')),
-                ],
-              ),
-              SizedBox(height: 20),
-              // Grafik Penghasilan dan Pengeluaran
-              Text('Grafik Penghasilan dan Pengeluaran', style: TextStyle(fontSize: 16)),
-              SizedBox(height: 10),
-              _buildIncomeExpenseChart(controller),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildMenuItem({required IconData icon, required String label, required Function() onTap}) {
+  Widget _buildMenuItem(
+      {required IconData icon,
+      required String label,
+      required Function() onTap}) {
     return GestureDetector(
       onTap: onTap,
       child: Column(
         children: [
-          Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(icon, color: Colors.white),
+          Icon(icon, color: AppColors.primaryColor),
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: TextStyle(fontSize: 12, color: AppColors.textHijauTua),
           ),
-          SizedBox(height: 8),
-          Text(label),
         ],
       ),
     );
@@ -138,7 +186,8 @@ class HomepageView extends GetView<HomepageController> {
                       spots: controller.income
                           .asMap()
                           .entries
-                          .map((e) => FlSpot(e.key.toDouble(), e.value.toDouble()))
+                          .map((e) =>
+                              FlSpot(e.key.toDouble(), e.value.toDouble()))
                           .toList(),
                       isCurved: true,
                       color: Colors.green,
@@ -148,7 +197,8 @@ class HomepageView extends GetView<HomepageController> {
                       spots: controller.expenses
                           .asMap()
                           .entries
-                          .map((e) => FlSpot(e.key.toDouble(), e.value.toDouble()))
+                          .map((e) =>
+                              FlSpot(e.key.toDouble(), e.value.toDouble()))
                           .toList(),
                       isCurved: true,
                       color: Colors.red,
@@ -163,15 +213,15 @@ class HomepageView extends GetView<HomepageController> {
               children: [
                 ElevatedButton(
                   onPressed: () => controller.changeFilter('weekly'),
-                  child: Text('Weekly'),
+                  child: const Text('Weekly'),
                 ),
                 ElevatedButton(
                   onPressed: () => controller.changeFilter('monthly'),
-                  child: Text('Monthly'),
+                  child: const Text('Monthly'),
                 ),
                 ElevatedButton(
                   onPressed: () => controller.changeFilter('yearly'),
-                  child: Text('Yearly'),
+                  child: const Text('Yearly'),
                 ),
               ],
             ),
