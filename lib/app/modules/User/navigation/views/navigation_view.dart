@@ -5,7 +5,6 @@ import 'package:safeloan/app/modules/User/tab_quiz/views/tab_quiz_view.dart';
 import '../../finance/views/finance_view.dart';
 import '../../homepage/views/homepage_view.dart';
 import '../../profile/views/profile_view.dart';
-import '../../quiz/views/quiz_view.dart';
 import '../controllers/navigation_controller.dart';
 
 class NavigationView extends GetView<NavigationController> {
@@ -16,19 +15,13 @@ class NavigationView extends GetView<NavigationController> {
     final NavigationController controller = Get.put(NavigationController());
 
     final List<Widget> _pages = [
-      const HomepageView(),
+      HomepageView(),
       const FinanceView(),
       const TabQuizView(),
       const ProfileView(),
     ];
 
     return Obx(() => Scaffold(
-          // appBar: AppBar(
-          //   title: Text(
-          //     ['Home', 'Finance', 'Quiz', 'Profile'][controller.selectedIndex.value],
-          //   ),
-          //   centerTitle: true,
-          // ),
           body: _pages[controller.selectedIndex.value],
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: controller.selectedIndex.value,

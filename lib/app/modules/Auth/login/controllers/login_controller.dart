@@ -28,10 +28,11 @@ class LoginController extends GetxController {
         email: email,
         password: password,
       );
-      
-      if (myUser.user!.emailVerified) {
-        DocumentSnapshot userDoc = await firestore.collection('users').doc(myUser.user!.uid).get();
-        String role = userDoc['role'];
+
+      if (myUser.user != null && myUser.user!.emailVerified) {
+        DocumentSnapshot? userDoc =
+            await firestore.collection('users').doc(myUser.user!.uid).get();
+        String? role = userDoc.get('role'); 
 
         Get.defaultDialog(
           title: "Berhasil",
@@ -44,11 +45,17 @@ class LoginController extends GetxController {
           Get.offAllNamed(Routes.NAVIGATION_KONSELOR);
         } else if (role == 'Admin') {
           Get.offAllNamed(Routes.NAVIGATION_ADMIN);
+        } else {
+          Get.defaultDialog(
+            title: "Terjadi Kesalahan",
+            middleText: "Unknown role.",
+          );
         }
       } else {
         Get.defaultDialog(
           title: "Verification Email",
-          middleText: "Kamu perlu verifikasi email terlebih dahulu. Apakah kamu ingin dikirimkan verifikasi ulang?",
+          middleText:
+              "Kamu perlu verifikasi email terlebih dahulu. Apakah kamu ingin dikirimkan verifikasi ulang?",
           onConfirm: () async {
             await myUser.user!.sendEmailVerification();
             Get.back();
@@ -72,7 +79,8 @@ class LoginController extends GetxController {
         }
         Get.defaultDialog(
           title: "Terjadi Kesalahan",
-          middleText: "Email dan Password tidak sesuai. Silahkan cek kembali dengan benar.",
+          middleText:
+              "Email dan Password tidak sesuai. Silahkan cek kembali dengan benar.",
         );
       }
     } catch (e) {

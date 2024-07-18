@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:safeloan/app/modules/User/counseling/controllers/counseling_controller.dart';
 import 'package:safeloan/app/modules/User/counseling/models/counseling.dart';
+import 'package:safeloan/app/modules/User/daftar_konseling/views/daftar_sukses.dart';
 import 'package:safeloan/app/utils/AppColors.dart';
 
 import '../controllers/daftar_konseling_controller.dart';
@@ -56,11 +57,14 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(Icons.event, size: 16,),
+                  Icon(
+                    Icons.event,
+                    size: 16,
+                  ),
                   Text(
                     "Tanggal: ",
-                    style: TextStyle(
-                        fontSize: 16, color: AppColors.textHijauTua),
+                    style:
+                        TextStyle(fontSize: 16, color: AppColors.textHijauTua),
                   ),
                   Text(tanggal)
                 ],
@@ -68,11 +72,14 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(Icons.access_time, size: 16,),
+                  Icon(
+                    Icons.access_time,
+                    size: 16,
+                  ),
                   Text(
                     " Durasi: ",
-                    style: TextStyle(
-                        fontSize: 16, color: AppColors.textHijauTua),
+                    style:
+                        TextStyle(fontSize: 16, color: AppColors.textHijauTua),
                   ),
                   Text(waktu)
                 ],
@@ -91,10 +98,12 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
     );
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     final CounselingController counselingController =
         Get.put(CounselingController());
+    final DaftarKonselingController registCounseling =
+        Get.put(DaftarKonselingController());
     return StreamBuilder<QuerySnapshot>(
       stream: counselingController.getListKonseling(),
       builder: (context, snapshot) {
@@ -122,9 +131,23 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
                         counseling.konselorId,
                         'Psikolog handal',
                         DateFormat.yMMMMd().add_jm().format(counseling.jadwal),
-                        '${counseling.durasi}',
-                        (){});
-                    
+                        '${counseling.durasi}', () async {
+                      bool success =
+                          await registCounseling.bookSchedule(counseling.id);
+                      if (success) {
+                        Get.to(const DaftarKonselingSukses());
+                      } else {
+                        Get.defaultDialog(
+                          title: 'Schedule Conflict',
+                          middleText:
+                              'You have another schedule, you can\'t book a new schedule.',
+                          textConfirm: 'OK',
+                          buttonColor: AppColors.primaryColor,
+                          onConfirm: () => Get.back(),
+                          contentPadding: const EdgeInsets.all(25)
+                        );
+                      }
+                    });
                   },
                 ),
               ),

@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
 
+import '../modules/Admin/editArticleAdmin/bindings/edit_article_admin_binding.dart';
+import '../modules/Admin/editArticleAdmin/views/edit_article_admin_view.dart';
+import '../modules/Admin/editVideoAdmin/bindings/edit_video_admin_binding.dart';
+import '../modules/Admin/editVideoAdmin/views/edit_video_admin_view.dart';
 import '../modules/Admin/educationAdmin/bindings/education_admin_binding.dart';
 import '../modules/Admin/educationAdmin/views/education_admin_view.dart';
 import '../modules/Admin/homepageAdmin/bindings/homepage_admin_binding.dart';
@@ -58,6 +62,10 @@ import '../modules/User/tab_quiz/bindings/tab_quiz_binding.dart';
 import '../modules/User/tab_quiz/views/tab_quiz_view.dart';
 import '../modules/User/addLoan/bindings/add_loan_binding.dart';
 import '../modules/User/addLoan/views/add_loan_view.dart';
+import '../modules/Admin/editChallengeAdmin/bindings/edit_challenge_admin_binding.dart';
+import '../modules/Admin/editChallengeAdmin/views/edit_challenge_admin_view.dart';
+import '../modules/Admin/editQuizAdmin/bindings/edit_quiz_admin_binding.dart';
+import '../modules/Admin/editQuizAdmin/views/edit_quiz_admin_view.dart';
 
 part 'app_routes.dart';
 
@@ -84,7 +92,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.HOMEPAGE,
-      page: () => const HomepageView(),
+      page: () => HomepageView(),
       binding: HomepageBinding(),
     ),
     GetPage(
@@ -194,7 +202,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.QUIZ_ADMIN,
-      page: () => const QuizAdminView(),
+      page: () => QuizAdminView(),
       binding: QuizAdminBinding(),
     ),
     GetPage(
@@ -211,6 +219,26 @@ class AppPages {
       name: _Paths.ADD_LOAN,
       page: () => const AddLoanView(),
       binding: AddLoanBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_ARTICLE_ADMIN,
+      page: () => const EditArticleAdminView(),
+      binding: EditArticleAdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_VIDEO_ADMIN,
+      page: () => const EditVideoAdminView(),
+      binding: EditVideoAdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_QUIZ_ADMIN,
+      page: () => const EditQuizAdminView(),
+      binding: EditQuizAdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_CHALLENGE_ADMIN,
+      page: () => const EditChallengeAdminView(),
+      binding: EditChallengeAdminBinding(),
     ),
   ];
 }
