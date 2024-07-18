@@ -60,6 +60,8 @@ import '../modules/User/tab_counseling/bindings/tab_counseling_binding.dart';
 import '../modules/User/tab_counseling/views/tab_counseling_view.dart';
 import '../modules/User/tab_quiz/bindings/tab_quiz_binding.dart';
 import '../modules/User/tab_quiz/views/tab_quiz_view.dart';
+import '../modules/User/addLoan/bindings/add_loan_binding.dart';
+import '../modules/User/addLoan/views/add_loan_view.dart';
 import '../modules/Admin/editChallengeAdmin/bindings/edit_challenge_admin_binding.dart';
 import '../modules/Admin/editChallengeAdmin/views/edit_challenge_admin_view.dart';
 import '../modules/Admin/editQuizAdmin/bindings/edit_quiz_admin_binding.dart';
@@ -212,6 +214,11 @@ class AppPages {
       name: _Paths.TAB_QUIZ,
       page: () => const TabQuizView(),
       binding: TabQuizBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADD_LOAN,
+      page: () => const AddLoanView(),
+      binding: AddLoanBinding(),
     ),
     GetPage(
       name: _Paths.EDIT_ARTICLE_ADMIN,

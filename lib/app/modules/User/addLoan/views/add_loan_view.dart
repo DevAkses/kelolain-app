@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 import 'package:safeloan/app/widgets/input_widget.dart';
-import '../controllers/edit_loan_controller.dart';
 
-class EditLoanView extends GetView<EditLoanController> {
-  const EditLoanView({super.key});
+import '../controllers/add_loan_controller.dart';
+
+class AddLoanView extends GetView<AddLoanController> {
+  const AddLoanView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Input Data Pinjaman'),
+        title: const Text('AddLoanView'),
         centerTitle: true,
       ),
       body: Padding(
@@ -49,8 +51,8 @@ class EditLoanView extends GetView<EditLoanController> {
               ),
               const SizedBox(height: 30),
               ButtonWidget(
-                onPressed: () => controller.updateLoanData(),
-                nama: 'Simpan',
+                onPressed: () => controller.addLoan(),
+                nama: 'Tambah',
               ),
             ],
           ),

@@ -31,6 +31,7 @@ abstract class Routes {
   static const QUIZ_ADMIN = _Paths.QUIZ_ADMIN;
   static const TAB_QUIZ = _Paths.TAB_QUIZ;
   static const CHALLANGE_PAGE = _Paths.CHALLANGE_PAGE;
+  static const ADD_LOAN = _Paths.ADD_LOAN;
   static const EDIT_ARTICLE_ADMIN = _Paths.EDIT_ARTICLE_ADMIN;
   static const EDIT_VIDEO_ADMIN = _Paths.EDIT_VIDEO_ADMIN;
   static const EDIT_QUIZ_ADMIN = _Paths.EDIT_QUIZ_ADMIN;
@@ -67,6 +68,7 @@ abstract class _Paths {
   static const QUIZ_ADMIN = '/quiz-admin';
   static const TAB_QUIZ = '/tab-quiz';
   static const CHALLANGE_PAGE = '/challange-page';
+  static const ADD_LOAN = '/add-loan';
   static const EDIT_ARTICLE_ADMIN = '/edit-article-admin';
   static const EDIT_VIDEO_ADMIN = '/edit-video-admin';
   static const EDIT_QUIZ_ADMIN = '/edit-quiz-admin';
