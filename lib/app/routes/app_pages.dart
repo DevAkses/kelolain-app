@@ -2,6 +2,10 @@ import 'package:get/get.dart';
 
 import '../modules/Admin/editArticleAdmin/bindings/edit_article_admin_binding.dart';
 import '../modules/Admin/editArticleAdmin/views/edit_article_admin_view.dart';
+import '../modules/Admin/editChallengeAdmin/bindings/edit_challenge_admin_binding.dart';
+import '../modules/Admin/editChallengeAdmin/views/edit_challenge_admin_view.dart';
+import '../modules/Admin/editQuizAdmin/bindings/edit_quiz_admin_binding.dart';
+import '../modules/Admin/editQuizAdmin/views/edit_quiz_admin_view.dart';
 import '../modules/Admin/editVideoAdmin/bindings/edit_video_admin_binding.dart';
 import '../modules/Admin/editVideoAdmin/views/edit_video_admin_view.dart';
 import '../modules/Admin/educationAdmin/bindings/education_admin_binding.dart';
@@ -26,6 +30,8 @@ import '../modules/Konselor/navigationKonselor/bindings/navigation_konselor_bind
 import '../modules/Konselor/navigationKonselor/views/navigation_konselor_view.dart';
 import '../modules/Konselor/profileKonselor/bindings/profile_konselor_binding.dart';
 import '../modules/Konselor/profileKonselor/views/profile_konselor_view.dart';
+import '../modules/User/addLoan/bindings/add_loan_binding.dart';
+import '../modules/User/addLoan/views/add_loan_view.dart';
 import '../modules/User/calculator/bindings/calculator_binding.dart';
 import '../modules/User/calculator/views/calculator_view.dart';
 import '../modules/User/challange_page/bindings/challange_page_binding.dart';
@@ -60,12 +66,8 @@ import '../modules/User/tab_counseling/bindings/tab_counseling_binding.dart';
 import '../modules/User/tab_counseling/views/tab_counseling_view.dart';
 import '../modules/User/tab_quiz/bindings/tab_quiz_binding.dart';
 import '../modules/User/tab_quiz/views/tab_quiz_view.dart';
-import '../modules/User/addLoan/bindings/add_loan_binding.dart';
-import '../modules/User/addLoan/views/add_loan_view.dart';
-import '../modules/Admin/editChallengeAdmin/bindings/edit_challenge_admin_binding.dart';
-import '../modules/Admin/editChallengeAdmin/views/edit_challenge_admin_view.dart';
-import '../modules/Admin/editQuizAdmin/bindings/edit_quiz_admin_binding.dart';
-import '../modules/Admin/editQuizAdmin/views/edit_quiz_admin_view.dart';
+import '../modules/Konselor/edit_jadwal/bindings/edit_jadwal_binding.dart';
+import '../modules/Konselor/edit_jadwal/views/edit_jadwal_view.dart';
 
 part 'app_routes.dart';
 
@@ -239,6 +241,11 @@ class AppPages {
       name: _Paths.EDIT_CHALLENGE_ADMIN,
       page: () => const EditChallengeAdminView(),
       binding: EditChallengeAdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_JADWAL,
+      page: () => const EditJadwalView(),
+      binding: EditJadwalBinding(),
     ),
   ];
 }
