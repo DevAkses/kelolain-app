@@ -9,7 +9,7 @@ class EditVideoAdminView extends GetView<EditVideoAdminController> {
 
   @override
   Widget build(BuildContext context) {
-    EditVideoAdminController editVideoAdminController =
+    EditVideoAdminController controller =
         Get.put(EditVideoAdminController());
     return Scaffold(
       appBar: AppBar(
