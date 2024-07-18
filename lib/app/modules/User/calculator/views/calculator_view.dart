@@ -13,9 +13,20 @@ class CalculatorView extends GetView<CalculatorController> {
       appBar: AppBar(
         title: const Text(
           'Kalkulator Simulasi',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontWeight: FontWeight.bold, color: AppColors.textPutih),
+        ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: AppColors.textPutih,
+          ),
+          onPressed: () {
+            Get.back();
+          },
         ),
         centerTitle: true,
+        backgroundColor: AppColors.primaryColor,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -110,7 +121,7 @@ class CalculatorView extends GetView<CalculatorController> {
           Row(
             children: [
               Icon(icon, color: iconColor),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Text(
                 title,
                 style: TextStyle(fontSize: 16, color: Colors.grey[800]),
@@ -120,7 +131,7 @@ class CalculatorView extends GetView<CalculatorController> {
           const SizedBox(height: 8),
           Row(
             children: [
-              if (prefix != null) Text(prefix, style: TextStyle(fontSize: 24)),
+              if (prefix != null) Text(prefix, style: const TextStyle(fontSize: 24)),
               Expanded(
                 child: Obx(() => TextField(
                       style: const TextStyle(fontSize: 24),
@@ -131,7 +142,7 @@ class CalculatorView extends GetView<CalculatorController> {
                       onChanged: onTextFieldChanged,
                     )),
               ),
-              if (suffix != null) Text(suffix, style: TextStyle(fontSize: 24)),
+              if (suffix != null) Text(suffix, style: const TextStyle(fontSize: 24)),
             ],
           ),
           if (onSliderChanged != null) ...[
@@ -182,7 +193,7 @@ class CalculatorView extends GetView<CalculatorController> {
           Row(
             children: [
               Icon(icon, color: iconColor),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Text(
                 title,
                 style: TextStyle(fontSize: 16, color: Colors.grey[800]),
@@ -192,7 +203,7 @@ class CalculatorView extends GetView<CalculatorController> {
           const SizedBox(height: 8),
           Row(
             children: [
-              if (prefix != null) Text(prefix, style: TextStyle(fontSize: 24)),
+              if (prefix != null) Text(prefix, style: const TextStyle(fontSize: 24)),
               Expanded(
                   child: TextField(
                 style: const TextStyle(fontSize: 24),
@@ -201,7 +212,7 @@ class CalculatorView extends GetView<CalculatorController> {
                 keyboardType: TextInputType.number,
                 onChanged: onTextFieldChanged,
               )),
-              if (suffix != null) Text(suffix, style: TextStyle(fontSize: 24)),
+              if (suffix != null) Text(suffix, style: const TextStyle(fontSize: 24)),
             ],
           ),
           if (onSliderChanged != null) ...[
@@ -248,7 +259,7 @@ class CalculatorView extends GetView<CalculatorController> {
           Row(
             children: [
               Icon(icon, color: iconColor),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Text(
                 title,
                 style: TextStyle(fontSize: 16, color: Colors.grey[800]),
