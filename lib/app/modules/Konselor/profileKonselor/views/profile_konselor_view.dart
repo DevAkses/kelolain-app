@@ -8,7 +8,7 @@ class ProfileKonselorView extends GetView<ProfileKonselorController> {
   const ProfileKonselorView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final ProfileKonselorController profileController = Get.put(ProfileKonselorController());
+    final ProfileKonselorController controller = Get.put(ProfileKonselorController());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),

@@ -1,13 +1,41 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/detailProfile/controllers/detail_profile_controller.dart';
 import 'package:safeloan/app/utils/AppColors.dart';
 import '../controllers/homepage_controller.dart';
+import 'package:badges/badges.dart' as badges;
 
 class HomepageView extends GetView<HomepageController> {
-  const HomepageView({super.key});
+  HomepageView({super.key});
+  final RxInt _notifBadgeAmount = 3.obs;
+  final RxBool _showCartBadge = true.obs;
+
+  Widget _notifBadge() {
+    return Obx(() => badges.Badge(
+          position: badges.BadgePosition.topEnd(top: 3, end: 7),
+          badgeAnimation: const badges.BadgeAnimation.slide(),
+          showBadge: _showCartBadge.value,
+          badgeStyle: badges.BadgeStyle(
+            badgeColor: Colors.red,
+            padding: EdgeInsets.all(5),
+          ),
+          badgeContent: Text(
+            _notifBadgeAmount.value.toString(),
+            style: TextStyle(color: Colors.white, fontSize: 10),
+          ),
+          child: IconButton(
+            icon: Icon(
+              Icons.notifications,
+              color: Colors.grey[200],
+              size: 25,
+            ),
+            onPressed: () {
+              Get.toNamed('/notification');
+            },
+          ),
+        ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,25 +46,16 @@ class HomepageView extends GetView<HomepageController> {
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         title: ListTile(
-          leading: CircleAvatar(
-            child: Image.network('https://via.placeholder.com/60'),
-          ),
-          title: const Text(
-            "Selamat Datang",
-            style: TextStyle(color: AppColors.textPutih),
-          ),
-          subtitle: Text(detailController.userData['fullName'] ?? "Anonim",
-              style: const TextStyle(color: AppColors.textPutih)),
-          trailing: IconButton(
-            icon: Icon(
-              Icons.notifications,
-              color: Colors.grey[200],
+            leading: CircleAvatar(
+              child: Image.network('https://via.placeholder.com/60'),
             ),
-            onPressed: () {
-              Get.toNamed('/notification');
-            },
-          ),
-        ),
+            title: const Text(
+              "Selamat Datang",
+              style: TextStyle(color: AppColors.textPutih),
+            ),
+            subtitle: Text(detailController.userData['fullName'] ?? "Anonim",
+                style: const TextStyle(color: AppColors.textPutih)),
+            trailing: _notifBadge()),
       ),
       body: SingleChildScrollView(
         child: Stack(

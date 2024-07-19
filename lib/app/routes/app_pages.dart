@@ -68,6 +68,8 @@ import '../modules/User/tab_quiz/bindings/tab_quiz_binding.dart';
 import '../modules/User/tab_quiz/views/tab_quiz_view.dart';
 import '../modules/User/addFinance/bindings/add_finance_binding.dart';
 import '../modules/User/addFinance/views/add_finance_view.dart';
+import '../modules/Konselor/edit_jadwal/bindings/edit_jadwal_binding.dart';
+import '../modules/Konselor/edit_jadwal/views/edit_jadwal_view.dart';
 
 part 'app_routes.dart';
 
@@ -129,7 +131,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CALCULATOR,
-      page: () => const CalculatorView(),
+      page: () => CalculatorView(),
       binding: CalculatorBinding(),
     ),
     GetPage(
@@ -246,6 +248,11 @@ class AppPages {
       name: _Paths.ADD_FINANCE,
       page: () => const AddFinanceView(),
       binding: AddFinanceBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_JADWAL,
+      page: () => const EditJadwalView(),
+      binding: EditJadwalBinding(),
     ),
   ];
 }

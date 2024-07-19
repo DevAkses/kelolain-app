@@ -1,70 +1,26 @@
-import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import '../models/question_admin_model.dart';
-import '../models/quiz_admin_model.dart';
+import 'package:get/get.dart';
 
 class QuizAdminController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> tambahQuiz(Quiz quiz) async {
+  Future<void> addQuiz(String title, String description, List<Map<String, dynamic>> questions) async {
     try {
-      await _firestore.collection('quiz').add({
-        'createdAt': Timestamp.now(),
-        'deskripsiQuiz': quiz.description,
-        'titleQuiz': quiz.title,
-      });
-    } catch (e) {
-      print('Error tambah quiz: $e');
-      throw e;
-    }
-  }
-
-  Future<void> tambahPertanyaan(String quizId, Question question) async {
-    try {
-      await _firestore
-          .collection('quiz')
-          .doc(quizId)
-          .collection('question')
-          .add({
-            'pertanyaan': question.pertanyaan,
-            'jawaban': question.jawaban,
-            'opsiJawaban': question.opsiJawaban,
-            'penjelasan': question.penjelasan,
-            'point': question.point,
-          });
-    } catch (e) {
-      print('Error tambah pertanyaan: $e');
-      throw e;
-    }
-  }
-
-  Future<void> tambahQuizDanPertanyaan(Quiz quiz, List<Question> questions) async {
-    try {
-      // Simpan quiz
+      // Menambahkan dokumen baru di koleksi quiz
       DocumentReference quizRef = await _firestore.collection('quiz').add({
+        'titleQuiz': title,
+        'deskripsiQuiz': description,
         'createdAt': Timestamp.now(),
-        'deskripsiQuiz': quiz.description,
-        'titleQuiz': quiz.title,
       });
 
-      // Simpan pertanyaan
+      // Menambahkan 10 dokumen di koleksi question di dalam quiz
       for (var question in questions) {
-        await _firestore
-            .collection('quiz')
-            .doc(quizRef.id)
-            .collection('question')
-            .add({
-              'pertanyaan': question.pertanyaan,
-              'jawaban': question.jawaban,
-              'opsiJawaban': question.opsiJawaban,
-              'penjelasan': question.penjelasan,
-              'point': question.point,
-            });
+        await quizRef.collection('question').add(question);
       }
+
+      Get.snackbar('Success', 'Quiz and questions added successfully');
     } catch (e) {
-      print('Error tambah quiz dan pertanyaan: $e');
-      throw e;
+      Get.snackbar('Error', 'Failed to add quiz: $e');
     }
   }
 }

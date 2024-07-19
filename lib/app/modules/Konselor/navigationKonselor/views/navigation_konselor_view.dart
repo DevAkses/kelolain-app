@@ -10,7 +10,6 @@ class NavigationKonselorView extends GetView<NavigationKonselorController> {
   const NavigationKonselorView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-
     final List<Widget> _pages = [
       const HomepageKonselorView(),
       const ProfileKonselorView(),
