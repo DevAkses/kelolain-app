@@ -1,23 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/modules/User/counseling/models/counseling.dart';
 
 class HomepageKonselorController extends GetxController {
-  //TODO: Implement HomepageKonselorController
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  var counselingList = <CounselingSession>[].obs;
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  Stream<QuerySnapshot> getUpcomingMeeting() {
+    return firestore
+    .collection('counselings')
+    .where('konselorId', isEqualTo: firebaseAuth.currentUser!.uid)
+    .snapshots();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void updateCounselingList(QuerySnapshot snapshot) {
+    counselingList.clear();
+    counselingList.addAll(snapshot.docs.where((doc) => doc['userId'] != "" && doc['userId'] != null)
+        .map((doc) => CounselingSession.fromDocument(doc))
+        .toList());
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
-  void increment() => count.value++;
 }

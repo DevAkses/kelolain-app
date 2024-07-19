@@ -1,14 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controllers/detail_profile_controller.dart';
 import 'package:safeloan/app/utils/AppColors.dart';
+import '../controllers/detail_profile_controller.dart';
 
 class DetailProfileView extends GetView<DetailProfileController> {
   const DetailProfileView({Key? key}) : super(key: key);
 
+  Widget dataUser(IconData icon, String title, String data) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: AppColors.primaryColor, size: 28),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  data,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final DetailProfileController controller = Get.put(DetailProfileController());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Detail Profile'),
@@ -16,92 +63,83 @@ class DetailProfileView extends GetView<DetailProfileController> {
         backgroundColor: AppColors.primaryColor,
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Obx(() {
-          if (controller.userData.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            return ListView(
+      body: Obx(() {
+        if (controller.userData.isEmpty) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          return SingleChildScrollView(
+            child: Column(
               children: [
-                Center(
-                  child: Obx(() {
-                    return CircleAvatar(
-                      radius: 60,
-                      backgroundImage: controller.profileImageUrl.value.isNotEmpty
-                          ? NetworkImage(controller.profileImageUrl.value)
-                          : null,
-                      backgroundColor: AppColors.abuAbu,
-                      child: controller.profileImageUrl.value.isEmpty
-                          ? Icon(Icons.person, size: 60, color: AppColors.textPutih)
-                          : null,
-                    );
-                  }),
-                ),
-                const SizedBox(height: 20),
-                buildProfileInfo('Full Name', controller.userData['fullName']),
-                buildProfileInfo('Email', controller.userData['email']),
-                buildProfileInfo('Age', controller.userData['age']),
-                buildProfileInfo('Profession', controller.userData['profession']),
-                buildProfileInfo('Poin Leaderboard', controller.userData['poinLeadherboard']),
-                const SizedBox(height: 30),
-                ElevatedButton(
-                  onPressed: () => Get.toNamed('/edit-profile'),
-                  child: const Text('Edit Profile'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                Container(
+                  height: 200,
+                  decoration: const BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundImage: NetworkImage(
+                            controller.userData['profilePicture'] ?? 'https://via.placeholder.com/150',
+                          ),
+                          backgroundColor: AppColors.abuAbu,
+                          child: controller.userData['profilePicture'] == null
+                              ? const Icon(Icons.person, size: 50, color: AppColors.textPutih)
+                              : null,
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          controller.userData['fullName'] ?? 'N/A',
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      dataUser(Icons.email_rounded, "Email", controller.userData['email'] ?? 'N/A'),
+                      dataUser(Icons.calendar_today, "Age", controller.userData['age'] ?? 'N/A'),
+                      dataUser(Icons.work, "Profession", controller.userData['profession'] ?? 'N/A'),
+                      dataUser(Icons.leaderboard, "Leaderboard Points", controller.userData['poinLeadherboard']?.toString() ?? '0'),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () => Get.toNamed('/edit-profile'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryColor,
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: const Text(
+                            'Edit Profile',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
-            );
-          }
-        }),
-      ),
-    );
-  }
-
-  Widget buildProfileInfo(String label, dynamic value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Container(
-        padding: const EdgeInsets.all(12.0),
-        decoration: BoxDecoration(
-          color: AppColors.textPutih,
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 1,
-              blurRadius: 5,
-              offset: const Offset(0, 3),
             ),
-          ],
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Text(
-                label,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryColor,
-                ),
-              ),
-            ),
-            Expanded(
-              child: Text(
-                value?.toString() ?? '',
-                style: const TextStyle(fontSize: 16),
-              ),
-            ),
-          ],
-        ),
-      ),
+          );
+        }
+      }),
     );
   }
 }
