@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,9 +19,8 @@ class ProfileController extends GetxController {
   void loadProfileImage() async {
     try {
       String uid = FirebaseAuth.instance.currentUser!.uid;
-      String downloadUrl = await FirebaseStorage.instance
-          .ref('profile_images/$uid')
-          .getDownloadURL();
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      String? downloadUrl = userDoc.get('profileImageUrl');
       profileImageUrl.value = downloadUrl;
     } catch (e) {
       profileImageUrl.value = null;
@@ -35,12 +35,17 @@ class ProfileController extends GetxController {
       if (pickedFile != null) {
         File file = File(pickedFile.path);
         String uid = FirebaseAuth.instance.currentUser!.uid;
+        String filePath = 'profile_images/$uid';
 
-        await FirebaseStorage.instance
-            .ref('profile_images/$uid')
-            .putFile(file);
+        await FirebaseStorage.instance.ref(filePath).putFile(file);
 
-        loadProfileImage();
+        String downloadUrl = await FirebaseStorage.instance.ref(filePath).getDownloadURL();
+
+        await FirebaseFirestore.instance.collection('users').doc(uid).update({
+          'profileImageUrl': downloadUrl,
+        });
+
+        profileImageUrl.value = downloadUrl;
         Get.snackbar('Success', 'Profile picture updated successfully');
       }
     } catch (e) {
@@ -57,7 +62,9 @@ class ProfileController extends GetxController {
       confirmTextColor: Colors.white,
       onConfirm: () async {
         try {
+          String uid = FirebaseAuth.instance.currentUser!.uid;
           await FirebaseAuth.instance.currentUser!.delete();
+          await FirebaseFirestore.instance.collection('users').doc(uid).delete();
           Get.offAllNamed(Routes.LOGIN);
           Get.snackbar('Success', 'Account deleted successfully');
         } catch (e) {

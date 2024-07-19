@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:safeloan/app/modules/User/counseling/models/counseling.dart';
 
 import '../../../../utils/AppColors.dart';
 import '../controllers/homepage_konselor_controller.dart';
 
 class HomepageKonselorView extends GetView<HomepageKonselorController> {
   const HomepageKonselorView({Key? key}) : super(key: key);
-  Widget ButtonAjukan(VoidCallback onPressed) {
+  Widget ButtonKonselor(String title, VoidCallback onPressed) {
     return SizedBox(
       width: 150,
       height: 50,
@@ -19,9 +20,10 @@ class HomepageKonselorView extends GetView<HomepageKonselorController> {
           ),
         ),
         onPressed: onPressed,
-        child: const Text(
-          "Ajukan",
-          style: TextStyle(
+        child: Text(
+          title,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
               color: AppColors.textPutih,
               fontSize: 16,
               fontWeight: FontWeight.bold),
@@ -84,7 +86,15 @@ class HomepageKonselorView extends GetView<HomepageKonselorController> {
               ),
               Align(
                 alignment: Alignment.centerRight,
-                child: ButtonAjukan(onPressed),
+                child: Row(
+                  children: [
+                    ButtonKonselor('Meeting', onPressed),
+                    const SizedBox(
+                      width:10,
+                    ),
+                    ButtonKonselor('Selesai', onPressed),
+                  ],
+                ),
               ),
             ],
           ),
@@ -95,25 +105,49 @@ class HomepageKonselorView extends GetView<HomepageKonselorController> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        CardItem(
-          "https://via.placeholder.com/150",
-          "Dev Akses",
-          "Dokter Cinta",
-          "Senin, 20 Januari",
-          "30 Menit",
-          () {},
-        ),
-        CardItem(
-          "https://via.placeholder.com/150",
-          "John Doe",
-          "Psikolog",
-          "Selasa, 21 Januari",
-          "45 Menit",
-          () {},
-        ),
-      ],
+    final HomepageKonselorController counselingController =
+        Get.put(HomepageKonselorController());
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Upcoming Meeting'),
+      ),
+      body: StreamBuilder(
+        stream: counselingController.getUpcomingMeeting(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text('No counseling sessions found.'));
+          }
+
+          counselingController.updateCounselingList(snapshot.data!);
+
+          return Obx(
+            () {
+              return ListView.builder(
+                itemCount: counselingController.counselingList.length,
+                itemBuilder: (context, index) {
+                  CounselingSession counseling =
+                      counselingController.counselingList[index];
+                  return CardItem(
+                    "https://via.placeholder.com/150",
+                    "${counseling.konselorId}",
+                    "${counseling.userId}",
+                    "${counseling.jadwal}",
+                    "${counseling.durasi}",
+                    () {},
+                  );
+                },
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
