@@ -28,7 +28,7 @@ class FinanceView extends GetView<FinanceController> {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 5,
                     blurRadius: 7,
-                    offset: const Offset(0, 3), // changes position of shadow
+                    offset: const Offset(0, 3), 
                   ),
                 ],
               ),
@@ -48,9 +48,9 @@ class FinanceView extends GetView<FinanceController> {
                 ),
               ),
             ),
-            Expanded(
+            const Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(top: 10),
+                padding: EdgeInsets.only(top: 10),
                 child: TabBarView(
                   children: [
                     PemasukanListPage(),

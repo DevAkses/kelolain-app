@@ -5,6 +5,7 @@ import '../controllers/loan_controller.dart';
 
 class LoanView extends GetView<LoanController> {
   const LoanView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
