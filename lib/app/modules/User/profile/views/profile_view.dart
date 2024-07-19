@@ -11,12 +11,6 @@ class ProfileView extends GetView<ProfileController> {
     final ProfileController profileController = Get.put(ProfileController());
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-        centerTitle: true,
-        backgroundColor: AppColors.primaryColor,
-        elevation: 0,
-      ),
       body: Stack(
         children: [
           Column(

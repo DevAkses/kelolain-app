@@ -10,7 +10,8 @@ class EditJadwalView extends GetView<EditJadwalController> {
 
   @override
   Widget build(BuildContext context) {
-    final EditJadwalController scheduleController = Get.put(EditJadwalController());
+    final EditJadwalController scheduleController =
+        Get.put(EditJadwalController());
 
     return Scaffold(
       appBar: AppBar(
@@ -49,7 +50,8 @@ class EditJadwalView extends GetView<EditJadwalController> {
                       child: ListTile(
                         contentPadding: const EdgeInsets.all(8.0),
                         title: Text(counseling.konselorId,
-                            style: const TextStyle(fontWeight: FontWeight.bold)),
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
                         subtitle: Text(counseling.jadwal.toString()),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -63,7 +65,8 @@ class EditJadwalView extends GetView<EditJadwalController> {
                             IconButton(
                               icon: const Icon(Icons.delete, color: Colors.red),
                               onPressed: () {
-                                // Handle delete action
+                                scheduleController
+                                    .deleteSchedule(counseling.id);
                               },
                             ),
                           ],
@@ -95,6 +98,8 @@ class EditJadwalView extends GetView<EditJadwalController> {
   }
 
   void _showAddScheduleDialog(BuildContext context) {
+    final EditJadwalController scheduleController =
+        Get.put(EditJadwalController());
     final TextEditingController dateController = TextEditingController();
     final TextEditingController durationController = TextEditingController();
     final TextEditingController linkController = TextEditingController();
@@ -119,7 +124,8 @@ class EditJadwalView extends GetView<EditJadwalController> {
               ),
               TextField(
                 controller: linkController,
-                decoration: const InputDecoration(labelText: 'Link Google Meet'),
+                decoration:
+                    const InputDecoration(labelText: 'Link Google Meet'),
               ),
             ],
           ),
@@ -137,7 +143,7 @@ class EditJadwalView extends GetView<EditJadwalController> {
                 final String tautanGmeet = linkController.text;
 
                 if (jadwal != null) {
-                  _addSchedule(jadwal, durasi, tautanGmeet);
+                  scheduleController.addSchedule(jadwal, durasi, tautanGmeet);
                   Navigator.of(context).pop();
                 } else {
                   Get.snackbar('Error', 'Tanggal tidak valid');
@@ -149,19 +155,5 @@ class EditJadwalView extends GetView<EditJadwalController> {
         );
       },
     );
-  }
-
-  void _addSchedule(DateTime jadwal, int durasi, String tautanGmeet) {
-    final EditJadwalController scheduleController = Get.find();
-    final String konselorId = scheduleController.firebaseAuth.currentUser!.uid;
-    final DocumentReference docRef = scheduleController.firestore.collection('counselings').doc();
-
-    docRef.set({
-      'jadwal': Timestamp.fromDate(jadwal),
-      'durasi': durasi,
-      'tautanGmeet': tautanGmeet,
-      'konselorId': konselorId,
-      'userId': '', // Default to empty
-    });
   }
 }

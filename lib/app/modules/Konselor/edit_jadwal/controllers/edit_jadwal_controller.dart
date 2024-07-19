@@ -23,4 +23,22 @@ class EditJadwalController extends GetxController {
         .toList();
     counselingList.addAll(schedules);
   }
+
+  void addSchedule(DateTime jadwal, int durasi, String tautanGmeet) {
+    final EditJadwalController scheduleController = Get.find();
+    final String konselorId = scheduleController.firebaseAuth.currentUser!.uid;
+    final DocumentReference docRef = scheduleController.firestore.collection('counselings').doc();
+
+    docRef.set({
+      'jadwal': Timestamp.fromDate(jadwal),
+      'durasi': durasi,
+      'tautanGmeet': tautanGmeet,
+      'konselorId': konselorId,
+      'userId': '', // Default to empty
+    });
+  }
+
+  void deleteSchedule(String counselingId) {
+    firestore.collection('counselings').doc(counselingId).delete();
+  }
 }
