@@ -10,19 +10,20 @@ class HomepageView extends GetView<HomepageController> {
   HomepageView({super.key});
   final RxInt _notifBadgeAmount = 3.obs;
   final RxBool _showCartBadge = true.obs;
+  final RxString _selectedPeriod = 'Weekly'.obs;
 
   Widget _notifBadge() {
     return Obx(() => badges.Badge(
           position: badges.BadgePosition.topEnd(top: 3, end: 7),
           badgeAnimation: const badges.BadgeAnimation.slide(),
           showBadge: _showCartBadge.value,
-          badgeStyle: badges.BadgeStyle(
+          badgeStyle: const badges.BadgeStyle(
             badgeColor: Colors.red,
             padding: EdgeInsets.all(5),
           ),
           badgeContent: Text(
             _notifBadgeAmount.value.toString(),
-            style: TextStyle(color: Colors.white, fontSize: 10),
+            style: const TextStyle(color: Colors.white, fontSize: 10),
           ),
           child: IconButton(
             icon: Icon(
@@ -42,6 +43,7 @@ class HomepageView extends GetView<HomepageController> {
     final HomepageController controller = Get.put(HomepageController());
     final DetailProfileController detailController =
         Get.put(DetailProfileController());
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
@@ -57,119 +59,154 @@ class HomepageView extends GetView<HomepageController> {
                 style: const TextStyle(color: AppColors.textPutih)),
             trailing: _notifBadge()),
       ),
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: 180,
-                  width: double.infinity,
-                  color: AppColors.primaryColor,
-                ),
-                const SizedBox(height: 80),
-                // Gambar Geser
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: SizedBox(
-                    height: 200,
-                    child: PageView.builder(
-                      controller: controller.pageController,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return Image.network(
-                          'https://via.placeholder.com/400x200.png?text=Image+${index + 1}',
-                          fit: BoxFit.cover,
-                        );
-                      },
+      body: Obx(() {
+        return SingleChildScrollView(
+          child: Stack(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 180,
+                    width: double.infinity,
+                    color: AppColors.primaryColor,
+                  ),
+                  const SizedBox(height: 80),
+                  // Gambar Geser
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: SizedBox(
+                      height: 200,
+                      child: PageView.builder(
+                        controller: controller.pageController,
+                        itemCount: controller.articleImages.length,
+                        itemBuilder: (context, index) {
+                          var article = controller.articleImages[index];
+                          return GestureDetector(
+                            onTap: () => controller.navigateToDetailArticle(article),
+                            child: Image.network(
+                              article.image,
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                // 6 Kotak Menu
-                const SizedBox(height: 20),
-                // Grafik Penghasilan dan Pengeluaran
-                const Text('Grafik Penghasilan dan Pengeluaran',
-                    style: TextStyle(fontSize: 16)),
-                const SizedBox(height: 10),
-                _buildIncomeExpenseChart(controller),
-              ],
-            ),
-            Positioned(
-              top: 50,
-              left: 0,
-              right: 0,
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                padding: const EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                    color: AppColors.textPutih,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        spreadRadius: 1,
-                        blurRadius: 3,
-                        offset: const Offset(0, 1),
-                      ),
-                    ]),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16.0),
-                      child: const Text(
-                        "Poin: ",
-                        style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textHijauTua),
-                      ),
-                    ),
-                    Obx(() => Padding(
-                          padding: const EdgeInsets.only(left: 16.0),
-                          child: Text(
-                            '${controller.points.value}',
-                            style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.textHijauTua),
-                          ),
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Divider(),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  const SizedBox(height: 20),
+                  // 6 Kotak Menu
+                  const SizedBox(height: 20),
+                  // Grafik Penghasilan dan Pengeluaran
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildMenuItem(
-                            icon: Icons.calculate,
-                            label: 'Calculator',
-                            onTap: () => Get.toNamed('/calculator')),
-                        _buildMenuItem(
-                            icon: Icons.attach_money,
-                            label: 'Loans',
-                            onTap: () => Get.toNamed('/loan')),
-                        _buildMenuItem(
-                            icon: Icons.school,
-                            label: 'Education',
-                            onTap: () => Get.toNamed('/education')),
-                        _buildMenuItem(
-                            icon: Icons.chat,
-                            label: 'Counseling',
-                            onTap: () => Get.toNamed('/tab-counseling')),
+                        const Text('Grafik Penghasilan dan Pengeluaran',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            )),
+                        const SizedBox(height: 10),
+                        // Dropdown Filter
+                        Obx(() => DropdownButton<String>(
+                          value: _selectedPeriod.value,
+                          items: <String>['Weekly', 'Monthly', 'Yearly']
+                              .map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            if (newValue != null) {
+                              _selectedPeriod.value = newValue;
+                              controller.changeFilter(newValue.toLowerCase());
+                            }
+                          },
+                        )),
+                        const SizedBox(height: 10),
+                        _buildIncomeExpenseChart(controller),
                       ],
                     ),
-                  ],
+                  ),
+                ],
+              ),
+              Positioned(
+                top: 50,
+                left: 0,
+                right: 0,
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                      color: AppColors.textPutih,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 1,
+                          blurRadius: 3,
+                          offset: const Offset(0, 1),
+                        ),
+                      ]),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(left: 16.0),
+                        child: Text(
+                          "Poin: ",
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textHijauTua),
+                        ),
+                      ),
+                      Obx(() => Padding(
+                            padding: const EdgeInsets.only(left: 16.0),
+                            child: Text(
+                              '${controller.points.value}',
+                              style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.textHijauTua),
+                            ),
+                          )),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Divider(),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          _buildMenuItem(
+                              icon: Icons.calculate,
+                              label: 'Calculator',
+                              onTap: () => Get.toNamed('/calculator')),
+                          _buildMenuItem(
+                              icon: Icons.attach_money,
+                              label: 'Loans',
+                              onTap: () => Get.toNamed('/loan')),
+                          _buildMenuItem(
+                              icon: Icons.school,
+                              label: 'Education',
+                              onTap: () => Get.toNamed('/education')),
+                          _buildMenuItem(
+                              icon: Icons.chat,
+                              label: 'Counseling',
+                              onTap: () => Get.toNamed('/tab-counseling')),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      }),
     );
   }
 
@@ -185,7 +222,7 @@ class HomepageView extends GetView<HomepageController> {
           const SizedBox(height: 8),
           Text(
             label,
-            style: TextStyle(fontSize: 12, color: AppColors.textHijauTua),
+            style: const TextStyle(fontSize: 12, color: AppColors.textHijauTua),
           ),
         ],
       ),
@@ -194,58 +231,60 @@ class HomepageView extends GetView<HomepageController> {
 
   Widget _buildIncomeExpenseChart(HomepageController controller) {
     return Container(
-      height: 200,
+      height: 250,
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Obx(() {
-        return Column(
-          children: [
-            Expanded(
-              child: LineChart(
-                LineChartData(
-                  lineBarsData: [
-                    LineChartBarData(
-                      spots: controller.income
-                          .asMap()
-                          .entries
-                          .map((e) =>
-                              FlSpot(e.key.toDouble(), e.value.toDouble()))
-                          .toList(),
-                      isCurved: true,
-                      color: Colors.green,
-                      belowBarData: BarAreaData(show: false),
-                    ),
-                    LineChartBarData(
-                      spots: controller.expenses
-                          .asMap()
-                          .entries
-                          .map((e) =>
-                              FlSpot(e.key.toDouble(), e.value.toDouble()))
-                          .toList(),
-                      isCurved: true,
-                      color: Colors.red,
-                      belowBarData: BarAreaData(show: false),
-                    ),
-                  ],
-                ),
+        return LineChart(
+          LineChartData(
+            gridData: const FlGridData(show: false),
+            borderData: FlBorderData(
+              show: true,
+              border: Border.all(
+                color: const Color(0xff37434d),
+                width: 1,
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () => controller.changeFilter('weekly'),
-                  child: const Text('Weekly'),
-                ),
-                ElevatedButton(
-                  onPressed: () => controller.changeFilter('monthly'),
-                  child: const Text('Monthly'),
-                ),
-                ElevatedButton(
-                  onPressed: () => controller.changeFilter('yearly'),
-                  child: const Text('Yearly'),
-                ),
-              ],
-            ),
-          ],
+            lineBarsData: [
+              LineChartBarData(
+                spots: controller.income
+                    .asMap()
+                    .entries
+                    .map((e) =>
+                        FlSpot(e.key.toDouble(), e.value.toDouble()))
+                    .toList(),
+                isCurved: true,
+                color: Colors.green,
+                belowBarData: BarAreaData(show: false),
+                dotData: const FlDotData(show: true),
+                aboveBarData: BarAreaData(show: false),
+              ),
+              LineChartBarData(
+                spots: controller.expenses
+                    .asMap()
+                    .entries
+                    .map((e) =>
+                        FlSpot(e.key.toDouble(), e.value.toDouble()))
+                    .toList(),
+                isCurved: true,
+                color: Colors.red,
+                belowBarData: BarAreaData(show: false),
+                dotData: const FlDotData(show: true),
+                aboveBarData: BarAreaData(show: false),
+              ),
+            ],
+          ),
         );
       }),
     );

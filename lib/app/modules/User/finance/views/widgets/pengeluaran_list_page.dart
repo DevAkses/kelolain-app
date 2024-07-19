@@ -117,7 +117,6 @@ class PengeluaranListPage extends StatelessWidget {
             right: 20,
             child: FloatingActionButton(
               onPressed: () {
-                // Tambahkan logika untuk tombol tambah di sini
                 print("Add button pressed");
               },
               backgroundColor: AppColors.primaryColor,

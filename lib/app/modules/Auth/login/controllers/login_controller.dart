@@ -6,8 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:safeloan/app/routes/app_pages.dart';
 
 class LoginController extends GetxController {
-  TextEditingController emailC =
-      TextEditingController(text: "devaksesmikail08@gmail.com");
+  TextEditingController emailC = TextEditingController(text: "devaksesmikail08@gmail.com");
   TextEditingController passwordC = TextEditingController(text: "dev123");
 
   @override
@@ -29,39 +28,59 @@ class LoginController extends GetxController {
         password: password,
       );
 
-      if (myUser.user != null && myUser.user!.emailVerified) {
-        DocumentSnapshot? userDoc =
-            await firestore.collection('users').doc(myUser.user!.uid).get();
-        String? role = userDoc.get('role'); 
+      if (myUser.user != null) {
+        if (myUser.user!.emailVerified) {
+          DocumentSnapshot userDoc = await firestore.collection('users').doc(myUser.user!.uid).get();
 
-        Get.defaultDialog(
-          title: "Berhasil",
-          middleText: "Anda berhasil login.",
-        );
+          if (userDoc.exists) {
+            String? role = userDoc.get('role') as String?;
 
-        if (role == 'Pengguna') {
-          Get.offAllNamed(Routes.NAVIGATION);
-        } else if (role == 'Konselor') {
-          Get.offAllNamed(Routes.NAVIGATION_KONSELOR);
-        } else if (role == 'Admin') {
-          Get.offAllNamed(Routes.NAVIGATION_ADMIN);
+            if (role != null) {
+              Get.defaultDialog(
+                title: "Berhasil",
+                middleText: "Anda berhasil login.",
+              );
+
+              if (role == 'Pengguna') {
+                Get.offAllNamed(Routes.NAVIGATION);
+              } else if (role == 'Konselor') {
+                Get.offAllNamed(Routes.NAVIGATION_KONSELOR);
+              } else if (role == 'Admin') {
+                Get.offAllNamed(Routes.NAVIGATION_ADMIN);
+              } else {
+                Get.defaultDialog(
+                  title: "Terjadi Kesalahan",
+                  middleText: "Unknown role.",
+                );
+              }
+            } else {
+              Get.defaultDialog(
+                title: "Terjadi Kesalahan",
+                middleText: "Role is null.",
+              );
+            }
+          } else {
+            Get.defaultDialog(
+              title: "Terjadi Kesalahan",
+              middleText: "User document does not exist.",
+            );
+          }
         } else {
           Get.defaultDialog(
-            title: "Terjadi Kesalahan",
-            middleText: "Unknown role.",
+            title: "Verification Email",
+            middleText: "Kamu perlu verifikasi email terlebih dahulu. Apakah kamu ingin dikirimkan verifikasi ulang?",
+            onConfirm: () async {
+              await myUser.user!.sendEmailVerification();
+              Get.back();
+            },
+            textConfirm: "Kirim ulang",
+            textCancel: "Kembali",
           );
         }
       } else {
         Get.defaultDialog(
-          title: "Verification Email",
-          middleText:
-              "Kamu perlu verifikasi email terlebih dahulu. Apakah kamu ingin dikirimkan verifikasi ulang?",
-          onConfirm: () async {
-            await myUser.user!.sendEmailVerification();
-            Get.back();
-          },
-          textConfirm: "Kirim ulang",
-          textCancel: "Kembali",
+          title: "Terjadi Kesalahan",
+          middleText: "User data is null.",
         );
       }
     } on FirebaseAuthException catch (e) {
@@ -79,8 +98,7 @@ class LoginController extends GetxController {
         }
         Get.defaultDialog(
           title: "Terjadi Kesalahan",
-          middleText:
-              "Email dan Password tidak sesuai. Silahkan cek kembali dengan benar.",
+          middleText: "Email dan Password tidak sesuai. Silahkan cek kembali dengan benar.",
         );
       }
     } catch (e) {
@@ -91,3 +109,4 @@ class LoginController extends GetxController {
     }
   }
 }
+ 

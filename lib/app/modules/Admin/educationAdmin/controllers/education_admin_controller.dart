@@ -32,15 +32,27 @@ class EducationAdminController extends GetxController {
   }
 
   Future<void> addArticle() async {
-    bool confirm = await Get.defaultDialog(
-      title: "Confirmation",
-      middleText: "Are you sure you want to add this article?",
-      textConfirm: "Yes",
-      textCancel: "No",
-    );
+  bool? confirm = await Get.defaultDialog<bool>(
+    title: "Confirmation",
+    content: const Column(
+      children: [
+        Icon(Icons.warning_amber, color: Colors.orange, size: 50),
+        SizedBox(height: 10),
+        Text("Are you sure you want to add this article?"),
+      ],
+    ),
+    textConfirm: "Yes",
+    textCancel: "No",
+    onConfirm: () => Get.back(result: true),
+    onCancel: () => Get.back(result: false),
+    confirmTextColor: Colors.white,
+    buttonColor: Colors.green,
+    cancelTextColor: Colors.red,
+    radius: 10,
+    barrierDismissible: false,
+  );
 
-    if (!confirm) return;
-
+  if (confirm == true) {
     if (articleImage.value == null) {
       Get.snackbar("Error", "Please upload an image");
       return;
@@ -64,6 +76,8 @@ class EducationAdminController extends GetxController {
       Get.snackbar("Error", e.toString());
     }
   }
+}
+
 
   Future<void> addVideo() async {
     bool confirm = await Get.defaultDialog(
@@ -94,7 +108,7 @@ class EducationAdminController extends GetxController {
   }
 
   Future<String> _uploadImage(XFile image) async {
-    Reference ref = storage.ref().child('articles').child(image.name);
+    Reference ref = storage.ref().child('articles').child(DateTime.now().toString() + "_" + image.name);
     UploadTask uploadTask = ref.putFile(File(image.path));
     TaskSnapshot taskSnapshot = await uploadTask;
     return await taskSnapshot.ref.getDownloadURL();
