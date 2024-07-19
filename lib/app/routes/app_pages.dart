@@ -66,6 +66,8 @@ import '../modules/User/tab_counseling/bindings/tab_counseling_binding.dart';
 import '../modules/User/tab_counseling/views/tab_counseling_view.dart';
 import '../modules/User/tab_quiz/bindings/tab_quiz_binding.dart';
 import '../modules/User/tab_quiz/views/tab_quiz_view.dart';
+import '../modules/User/addFinance/bindings/add_finance_binding.dart';
+import '../modules/User/addFinance/views/add_finance_view.dart';
 import '../modules/Konselor/edit_jadwal/bindings/edit_jadwal_binding.dart';
 import '../modules/Konselor/edit_jadwal/views/edit_jadwal_view.dart';
 
@@ -209,7 +211,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CHALLANGE_PAGE,
-      page: () => const ChallangePageView(),
+      page: () => ChallangePageView(),
       binding: ChallangePageBinding(),
     ),
     GetPage(
@@ -241,6 +243,11 @@ class AppPages {
       name: _Paths.EDIT_CHALLENGE_ADMIN,
       page: () => const EditChallengeAdminView(),
       binding: EditChallengeAdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADD_FINANCE,
+      page: () => const AddFinanceView(),
+      binding: AddFinanceBinding(),
     ),
     GetPage(
       name: _Paths.EDIT_JADWAL,
