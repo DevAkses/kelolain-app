@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,11 +9,26 @@ import '../../../../routes/app_pages.dart';
 
 class ProfileController extends GetxController {
   var profileImageUrl = RxnString();
+  var userName = ''.obs;
+  var userEmail = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
+    loadProfileData();
     loadProfileImage();
+  }
+
+  void loadProfileData() async {
+    try {
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      userName.value = userDoc.get('fullName') ?? 'N/A';
+      userEmail.value = userDoc.get('email') ?? 'N/A';
+    } catch (e) {
+      userName.value = 'N/A';
+      userEmail.value = 'N/A';
+    }
   }
 
   void loadProfileImage() async {

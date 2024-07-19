@@ -31,7 +31,7 @@ class ProfileView extends GetView<ProfileController> {
                   ),
                 ),
               ),
-              const SizedBox(height: 150),
+              const SizedBox(height: 180),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: ListTile(
@@ -78,7 +78,7 @@ class ProfileView extends GetView<ProfileController> {
             ],
           ),
           Positioned(
-            top: 150,
+            top: 180,
             left: 0,
             right: 0,
             child: Container(
@@ -102,20 +102,24 @@ class ProfileView extends GetView<ProfileController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text(
-                      "Nama Pengguna",
-                      style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                    ),
-                    Text(
-                      "email Pengguna",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.grey[800]),
-                    ),
+                    Obx(() {
+                      return Text(
+                        profileController.userName.value,
+                        style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      );
+                    }),
+                    Obx(() {
+                      return Text(
+                        profileController.userEmail.value,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.grey[800]),
+                      );
+                    }),
                   ],
                 ),
               ),
@@ -134,7 +138,7 @@ class ProfileView extends GetView<ProfileController> {
                 ),
               ),
               child: Obx(() {
-                final imageUrl = controller.profileImageUrl.value;
+                final imageUrl = profileController.profileImageUrl.value;
                 return CircleAvatar(
                   radius: 60,
                   backgroundImage: imageUrl != null && imageUrl.isNotEmpty
@@ -157,7 +161,7 @@ class ProfileView extends GetView<ProfileController> {
               ),
               child: IconButton(
                 icon: const Icon(Icons.camera_alt, color: Colors.white, size: 20),
-                onPressed: () => controller.updateProfileImage(),
+                onPressed: () => profileController.updateProfileImage(),
                 constraints: const BoxConstraints.tightFor(width: 40, height: 40),
                 padding: EdgeInsets.zero,
               ),
