@@ -32,30 +32,32 @@ class ProfileView extends GetView<ProfileController> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: ListTile(
-                      leading: const Icon(Icons.people,
-                          color: Colors.blueGrey),
+                      leading: const Icon(Icons.person_rounded, color: Colors.blueGrey),
                       title: const Text(
                         "Profil Lengkap",
-                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.w500),
                       ),
+                      trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () {
                         Get.toNamed('/detail-profile');
                       },
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 25.0, left: 25.0),
-                    child: const Divider(),
+                  const Padding(
+                    padding: EdgeInsets.only(right: 25.0, left: 25.0),
+                    child: Divider(),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: ListTile(
-                      leading: const Icon(Icons.delete,
-                          color: Colors.red),
+                      leading: const Icon(Icons.delete, color: Colors.red),
                       title: const Text(
                         "Hapus akun",
-                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.w500),
                       ),
+                      trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () => profileController.updateProfileImage(),
                     ),
                   ),
@@ -100,7 +102,7 @@ class ProfileView extends GetView<ProfileController> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           "Nama Pengguna",
                           style: TextStyle(
                               fontSize: 24,
@@ -127,7 +129,7 @@ class ProfileView extends GetView<ProfileController> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: AppColors.abuAbu,
+                        color: Colors.blueGrey,
                         width: 2,
                       ),
                     ),
@@ -140,9 +142,9 @@ class ProfileView extends GetView<ProfileController> {
                             )
                           : CircleAvatar(
                               radius: 60,
-                              backgroundColor: Colors.white,
+                              backgroundColor: Colors.blueGrey[400],
                               child: Icon(Icons.person,
-                                  size: 60, color: Colors.grey[700]),
+                                  size: 90, color: Colors.grey[200],),
                             );
                     }),
                   )),
@@ -157,9 +159,9 @@ class ProfileView extends GetView<ProfileController> {
                 shape: BoxShape.circle,
               ),
               child: IconButton(
-                icon: Icon(Icons.camera_alt, color: Colors.white, size: 20),
+                icon: const Icon(Icons.camera_alt, color: Colors.white, size: 20),
                 onPressed: () => controller.updateProfileImage(),
-                constraints: BoxConstraints.tightFor(width: 40, height: 40),
+                constraints: const BoxConstraints.tightFor(width: 40, height: 40),
                 padding: EdgeInsets.zero,
               ),
             ),
