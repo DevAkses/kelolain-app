@@ -9,44 +9,46 @@ class ChallangePageView extends GetView<ChallangePageController> {
   @override
   final ChallangePageController controller = Get.put(ChallangePageController());
 
-  Widget CardItem(
-      String title, String deskripsi, String linkGambar, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        height: 180,
-        padding: const EdgeInsets.all(16),
-        margin: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: const Offset(0, 3),
-            ),
+  Widget CardItem(String title, String deskripsi, String linkGambar) {
+    return Container(
+      width: double.infinity,
+      height: 100,
+      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: ListTile(
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (linkGambar.isNotEmpty)
+              Image.network(
+                linkGambar,
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover,
+              ),
+            const SizedBox(width: 10),
+            const Icon(Icons.check_circle, color: Colors.green),
           ],
         ),
-        child: ListTile(
-          title: Text(
-            title,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-          ),
-          subtitle: Text(
-            deskripsi,
-            style: const TextStyle(color: Colors.grey),
-          ),
-          trailing: linkGambar.isNotEmpty
-              ? Image.network(
-                  linkGambar,
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                )
-              : null,
+        title: Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+        subtitle: Text(
+          deskripsi,
+          style: const TextStyle(color: Colors.grey),
         ),
       ),
     );
@@ -78,7 +80,6 @@ class ChallangePageView extends GetView<ChallangePageController> {
                 title,
                 description,
                 imageUrl,
-                () {},
               );
             },
           );

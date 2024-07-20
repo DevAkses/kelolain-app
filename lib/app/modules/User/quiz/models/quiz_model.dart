@@ -5,12 +5,14 @@ class Quiz {
   final String titleQuiz;
   final String deskripsiQuiz;
   final DateTime createdAt;
+  final String imageQuiz;
 
   Quiz({
     required this.id,
     required this.titleQuiz,
     required this.deskripsiQuiz,
     required this.createdAt,
+    required this.imageQuiz,
   });
 
   factory Quiz.fromDocument(DocumentSnapshot doc) {
@@ -20,6 +22,7 @@ class Quiz {
       titleQuiz: data['titleQuiz'] ?? '',
       deskripsiQuiz: data['deskripsiQuiz'] ?? '',
       createdAt: (data['createdAt'] as Timestamp).toDate(),
+      imageQuiz: data['imageQuiz'] ?? '',
     );
   }
 }
