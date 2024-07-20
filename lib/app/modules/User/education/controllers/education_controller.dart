@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/modules/User/challange_page/controllers/challange_page_controller.dart';
 import 'package:safeloan/app/modules/User/education/models/article_model.dart';
 import 'package:safeloan/app/modules/User/education/models/video_model.dart';
 
@@ -36,5 +38,30 @@ class EducationController extends GetxController {
     videoList.clear();
     videoList
         .addAll(snapshot.docs.map((doc) => Video.fromDocument(doc)).toList());
+  }
+
+  Future<void> markArticleAsRead(String articleId, String userId) async {
+    DocumentReference articleRef = firestore
+        .collection('educations')
+        .doc(educationDocumentId)
+        .collection('articles')
+        .doc(articleId);
+
+    await articleRef.collection('readBy').doc(userId).set({
+      'isRead': true,
+      'readAt': FieldValue.serverTimestamp(),
+    });
+
+    await firestore
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('readArticle')
+        .doc(articleId)
+        .set({
+      'readAt': FieldValue.serverTimestamp(),
+    });
+
+    final challengeController = Get.put(ChallangePageController());
+    await challengeController.checkAndCompleteChallenges();
   }
 }

@@ -50,10 +50,10 @@ class TabQuizView extends GetView<TabQuizController> {
                 ),
               ),
             ),
-            const Expanded(
+            Expanded(
               child: TabBarView(
                 children: [
-                  QuizView(),
+                  const QuizView(),
                   ChallangePageView(),
                 ],
               ),
