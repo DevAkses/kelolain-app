@@ -16,7 +16,7 @@ class DescriptionQuizPage extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Get.back(),
         ),
         title: const Text('Kuis Manajemen Keuangan'),
       ),
@@ -27,12 +27,23 @@ class DescriptionQuizPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child: Image.asset("assets/bank_icon.png", height: 100),
+                child: Container(
+                  width: 186,
+                  height: 145,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    image: DecorationImage(
+                      image: NetworkImage(quiz.imageQuiz),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(height: 16),
               Text(
                 quiz.titleQuiz,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               Text(quiz.deskripsiQuiz),
               const SizedBox(height: 16),

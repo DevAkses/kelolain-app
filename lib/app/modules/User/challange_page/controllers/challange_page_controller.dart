@@ -35,7 +35,6 @@ class ChallangePageController extends GetxController {
 
     for (QueryDocumentSnapshot challenge in challenges) {
       int requiredCount = challenge['requiredCount'];
-      int challengePoints = challenge['points'];
       DocumentReference challengeRef =
           firestore.collection('challenges').doc(challenge.id);
 
@@ -45,15 +44,6 @@ class ChallangePageController extends GetxController {
             .doc(_currentUser!.uid)
             .set({
           'completedAt': FieldValue.serverTimestamp(),
-        });
-        await firestore.runTransaction((transaction) async {
-          DocumentSnapshot userDoc = await transaction.get(userRef);
-          if (!userDoc.exists) return;
-
-          int currentPoints = userDoc.get('points') ?? 0;
-          int updatedPoints = currentPoints + challengePoints;
-
-          transaction.update(userRef, {'points': updatedPoints});
         });
       }
     }
