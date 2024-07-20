@@ -110,10 +110,26 @@ class DetailProfileView extends GetView<DetailProfileController> {
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
-                      dataUser(Icons.email_rounded, "Email", controller.userData['email'] ?? 'N/A'),
-                      dataUser(Icons.calendar_today, "Age", controller.userData['age'] ?? 'N/A'),
-                      dataUser(Icons.work, "Profession", controller.userData['profession'] ?? 'N/A'),
-                      dataUser(Icons.leaderboard, "Leaderboard Points", controller.userData['poinLeadherboard']?.toString() ?? '0'),
+                      dataUser(
+                        Icons.email_rounded,
+                        "Email",
+                        controller.userData['email']?.toString() ?? 'N/A',
+                      ),
+                      dataUser(
+                        Icons.calendar_today,
+                        "Age",
+                        (controller.userData['age'] as int?)?.toString() ?? 'N/A',
+                      ),
+                      dataUser(
+                        Icons.work,
+                        "Profession",
+                        controller.userData['profession']?.toString() ?? 'N/A',
+                      ),
+                      dataUser(
+                        Icons.leaderboard,
+                        "Leaderboard Points",
+                        (controller.userData['poinLeadherboard'] as int?)?.toString() ?? '0',
+                      ),
                       const SizedBox(height: 20),
                       SizedBox(
                         width: double.infinity,

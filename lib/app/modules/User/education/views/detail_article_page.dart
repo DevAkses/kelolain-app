@@ -1,11 +1,47 @@
+import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/modules/User/education/controllers/education_controller.dart';
 import 'package:safeloan/app/modules/User/education/models/article_model.dart';
 import 'package:safeloan/app/utils/AppColors.dart';
 
-class DetailArticlePage extends StatelessWidget {
+class DetailArticlePage extends StatefulWidget {
   final Article article;
   const DetailArticlePage({super.key, required this.article});
+
+  @override
+  _DetailArticlePageState createState() => _DetailArticlePageState();
+}
+
+class _DetailArticlePageState extends State<DetailArticlePage> {
+  Timer? _timer;
+  bool _hasMarkedAsRead = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  void _startTimer() {
+    _timer = Timer(Duration(seconds: 10), () async {
+      if (!_hasMarkedAsRead) {
+        final educationController = Get.find<EducationController>();
+        final userId = FirebaseAuth.instance.currentUser!.uid;
+        await educationController.markArticleAsRead(widget.article.id, userId);
+        setState(() {
+          _hasMarkedAsRead = true;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +61,9 @@ class DetailArticlePage extends StatelessWidget {
       body: ListView(
         children: [
           // Gambar Artikel
-          article.image.isNotEmpty
+          widget.article.image.isNotEmpty
               ? Image.network(
-                  article.image,
+                  widget.article.image,
                   width: double.infinity,
                   height: 200,
                   fit: BoxFit.cover,
@@ -48,35 +84,23 @@ class DetailArticlePage extends StatelessWidget {
                 ),
           // Judul Artikel
           Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              article.title,
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            padding: const EdgeInsets.all(12.0),
+            child: Text(widget.article.title,
+                style:
+                    const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
           ),
           // Sumber Artikel
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(
-              "Sumber: ${article.source}",
-              style: TextStyle(
-                fontSize: 14,
-                color: AppColors.abuAbu,
-              ),
-            ),
+            padding: const EdgeInsets.only(left: 12.0, bottom: 20.0),
+            child: Text("Sumber : ${widget.article.source}",
+                style: const TextStyle(fontSize: 12, color: AppColors.abuAbu)),
           ),
           const SizedBox(height: 16),
           // Konten Artikel
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              article.content,
-              style: TextStyle(
-                fontSize: 16,
-              ),
+              widget.article.content,
             ),
           ),
           const SizedBox(height: 20),

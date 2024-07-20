@@ -32,7 +32,10 @@ class MyApp extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.data != null && snapshot.data!.emailVerified == true) {
             return FutureBuilder<DocumentSnapshot>(
-              future: FirebaseFirestore.instance.collection('users').doc(snapshot.data!.uid).get(),
+              future: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(snapshot.data!.uid)
+                  .get(),
               builder: (context, userSnapshot) {
                 if (userSnapshot.connectionState == ConnectionState.done) {
                   if (userSnapshot.data != null && userSnapshot.data!.exists) {

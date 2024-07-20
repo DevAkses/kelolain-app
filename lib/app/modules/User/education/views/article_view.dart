@@ -110,40 +110,41 @@ class ArticleWidget extends GetView<EducationController> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final EducationController educationController =
-        Get.put(EducationController());
+Widget build(BuildContext context) {
+  final EducationController educationController =
+      Get.put(EducationController());
 
-    return StreamBuilder<QuerySnapshot>(
-      stream: educationController.getArticleList(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        }
-        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(child: Text('No articles found.'));
-        }
+  return StreamBuilder<QuerySnapshot>(
+    stream: educationController.getArticleList(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator());
+      }
+      if (snapshot.hasError) {
+        return Center(child: Text('Error: ${snapshot.error}'));
+      }
+      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+        return const Center(child: Text('No articles found.'));
+      }
 
-        educationController.updateArticleList(snapshot.data!);
+      educationController.updateArticleList(snapshot.data!);
 
-        return Obx(() {
-          return ListView.builder(
-            itemCount: educationController.articleList.length,
-            itemBuilder: (context, index) {
-              Article article = educationController.articleList[index];
-              return cardItem(
-                article,
-                () {
-                  Get.to(DetailArticlePage(article: article));
-                },
-              );
-            },
-          );
-        });
-      },
-    );
-  }
+      return Obx(() {
+        return ListView.builder(
+          itemCount: educationController.articleList.length,
+          itemBuilder: (context, index) {
+            Article article = educationController.articleList[index];
+            return cardItem(
+              article,
+              () {
+                Get.to(DetailArticlePage(article: article));
+              },
+            );
+          },
+        );
+      });
+    },
+  );
+}
+
 }
