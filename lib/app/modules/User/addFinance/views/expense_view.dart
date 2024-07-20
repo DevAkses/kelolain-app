@@ -14,72 +14,74 @@ class ExpenseView extends GetView<AddFinanceController> {
 
     return Scaffold(
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-          child: Column(
-            children: [
-              InputWidget(
-                judul: 'Nominal',
-                hint: '0',
-                controller: controller.nominalC,
-              ),
-              const SizedBox(height: 10),
-              const Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Kategori',
-                  style: TextStyle(
-                    color: AppColors.textHijauTua,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+            child: Column(
+              children: [
+                InputWidget(
+                  judul: 'Nominal',
+                  hint: '0',
+                  controller: controller.nominalC,
+                ),
+                const SizedBox(height: 10),
+                const Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Kategori',
+                    style: TextStyle(
+                      color: AppColors.textHijauTua,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 7, bottom: 3),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _buildCategoryColumn(
-                      category: 'pendidikan',
-                      icon: Icons.cast_for_education,
-                      controller: controller,
-                    ),
-                    _buildCategoryColumn(
-                      category: 'kesehatan',
-                      icon: Icons.health_and_safety,
-                      controller: controller,
-                    ),
-                    _buildCategoryColumn(
-                      category: 'transportasi',
-                      icon: Icons.directions_car,
-                      controller: controller,
-                    ),
-                    _buildCategoryColumn(
-                      category: 'lainnya',
-                      icon: Icons.more_horiz,
-                      controller: controller,
-                    ),
-                  ],
+                Container(
+                  margin: const EdgeInsets.only(top: 7, bottom: 3),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _buildCategoryColumn(
+                        category: 'pendidikan',
+                        icon: Icons.cast_for_education,
+                        controller: controller,
+                      ),
+                      _buildCategoryColumn(
+                        category: 'kesehatan',
+                        icon: Icons.health_and_safety,
+                        controller: controller,
+                      ),
+                      _buildCategoryColumn(
+                        category: 'transportasi',
+                        icon: Icons.directions_car,
+                        controller: controller,
+                      ),
+                      _buildCategoryColumn(
+                        category: 'harian',
+                        icon: Icons.production_quantity_limits_rounded,
+                        controller: controller,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              InputWidget(
-                judul: 'Tanggal',
-                hint: '15/07/2024',
-                controller: controller.nominalC,
-              ),
-              const SizedBox(height: 10),
-              InputWidget(
-                judul: 'Catatan',
-                hint: 'Masukkan Catatan',
-                controller: controller.nominalC,
-              ),
-              const SizedBox(height: 30),
-              ButtonWidget(
-                onPressed: () {},
-                nama: 'Tambah',
-              ),
-            ],
+                InputWidget(
+                  judul: 'Tanggal',
+                  hint: '15/07/2024',
+                  controller: controller.nominalC,
+                ),
+                const SizedBox(height: 10),
+                InputWidget(
+                  judul: 'Catatan',
+                  hint: 'Masukkan Catatan',
+                  controller: controller.nominalC,
+                ),
+                const SizedBox(height: 30),
+                ButtonWidget(
+                  onPressed: () {},
+                  nama: 'Tambah',
+                ),
+              ],
+            ),
           ),
         ),
       ),
