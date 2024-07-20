@@ -60,8 +60,8 @@ class DetailProfileView extends GetView<DetailProfileController> {
       appBar: AppBar(
         title: const Text('Detail Profile'),
         centerTitle: true,
-        elevation: 0,
         backgroundColor: AppColors.primaryColor,
+        elevation: 0,
       ),
       body: Obx(() {
         if (controller.userData.isEmpty) {
@@ -72,9 +72,9 @@ class DetailProfileView extends GetView<DetailProfileController> {
               children: [
                 Container(
                   height: 200,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: AppColors.primaryColor,
-                    borderRadius: const BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(30),
                       bottomRight: Radius.circular(30),
                     ),
@@ -85,11 +85,17 @@ class DetailProfileView extends GetView<DetailProfileController> {
                       children: [
                         CircleAvatar(
                           radius: 50,
-                          backgroundImage: NetworkImage(controller.userData['profilePicture'] ?? 'https://via.placeholder.com/150'),
+                          backgroundImage: NetworkImage(
+                            controller.userData['profilePicture'] ?? 'https://via.placeholder.com/150',
+                          ),
+                          backgroundColor: AppColors.abuAbu,
+                          child: controller.userData['profilePicture'] == null
+                              ? const Icon(Icons.person, size: 50, color: AppColors.textPutih)
+                              : null,
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          controller.userData['fullName'],
+                          controller.userData['fullName'] ?? 'N/A',
                           style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -101,13 +107,29 @@ class DetailProfileView extends GetView<DetailProfileController> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
-                      dataUser(Icons.email_rounded, "Email", controller.userData['email']),
-                      dataUser(Icons.calendar_today, "Age", controller.userData['age']),
-                      dataUser(Icons.work, "Profession", controller.userData['profession']),
-                      dataUser(Icons.leaderboard, "Leaderboard Points", controller.userData['poinLeadherboard']),
+                      dataUser(
+                        Icons.email_rounded,
+                        "Email",
+                        controller.userData['email']?.toString() ?? 'N/A',
+                      ),
+                      dataUser(
+                        Icons.calendar_today,
+                        "Age",
+                        (controller.userData['age'] as int?)?.toString() ?? 'N/A',
+                      ),
+                      dataUser(
+                        Icons.work,
+                        "Profession",
+                        controller.userData['profession']?.toString() ?? 'N/A',
+                      ),
+                      dataUser(
+                        Icons.leaderboard,
+                        "Leaderboard Points",
+                        (controller.userData['poinLeadherboard'] as int?)?.toString() ?? '0',
+                      ),
                       const SizedBox(height: 20),
                       SizedBox(
                         width: double.infinity,

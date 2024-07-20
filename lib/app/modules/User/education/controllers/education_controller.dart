@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/challange_page/controllers/challange_page_controller.dart';
 import 'package:safeloan/app/modules/User/education/models/article_model.dart';
 import 'package:safeloan/app/modules/User/education/models/video_model.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class EducationController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -11,6 +12,8 @@ class EducationController extends GetxController {
   var articleList = <Article>[].obs;
   var videoList = <Video>[].obs;
   String educationDocumentId = 'q02NZjM7bwuOI9RDM226';
+  final Rx<YoutubePlayerController?> youtubeController = Rx<YoutubePlayerController?>(null);
+  final RxBool isFullScreen = false.obs;
 
   Stream<QuerySnapshot> getArticleList() {
     return firestore
@@ -18,6 +21,10 @@ class EducationController extends GetxController {
         .doc(educationDocumentId)
         .collection('articles')
         .snapshots();
+  }
+
+  void toggleFullScreen(bool isFullScreen) {
+    this.isFullScreen.value = isFullScreen;
   }
 
   void updateArticleList(QuerySnapshot snapshot) {

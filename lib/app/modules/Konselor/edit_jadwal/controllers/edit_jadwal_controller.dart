@@ -1,23 +1,44 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/modules/User/counseling/models/counseling.dart';
 
 class EditJadwalController extends GetxController {
-  //TODO: Implement EditJadwalController
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  var counselingList = <CounselingSession>[].obs;
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  Stream<QuerySnapshot> getAllSchedule() {
+    return firestore
+        .collection('counselings')
+        .where('konselorId', isEqualTo: firebaseAuth.currentUser!.uid)
+        .snapshots();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void updateCounselingList(QuerySnapshot snapshot) {
+    counselingList.clear();
+    var schedules = snapshot.docs
+        .where((doc) => doc['userId'] == "" || doc['userId'] == null)
+        .map((doc) => CounselingSession.fromDocument(doc))
+        .toList();
+    counselingList.addAll(schedules);
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  void addSchedule(DateTime jadwal, int durasi, String tautanGmeet) {
+    final EditJadwalController scheduleController = Get.find();
+    final String konselorId = scheduleController.firebaseAuth.currentUser!.uid;
+    final DocumentReference docRef = scheduleController.firestore.collection('counselings').doc();
+
+    docRef.set({
+      'jadwal': Timestamp.fromDate(jadwal),
+      'durasi': durasi,
+      'tautanGmeet': tautanGmeet,
+      'konselorId': konselorId,
+      'userId': '', // Default to empty
+    });
   }
 
-  void increment() => count.value++;
+  void deleteSchedule(String counselingId) {
+    firestore.collection('counselings').doc(counselingId).delete();
+  }
 }
