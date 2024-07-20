@@ -47,6 +47,16 @@ class EducationController extends GetxController {
         .addAll(snapshot.docs.map((doc) => Video.fromDocument(doc)).toList());
   }
 
+  void initializeYoutubePlayer(String videoId) {
+    youtubeController.value = YoutubePlayerController(
+      initialVideoId: videoId,
+      flags: const YoutubePlayerFlags(
+        autoPlay: true,
+        mute: false,
+      ),
+    );
+  }
+
   Future<void> markArticleAsRead(String articleId, String userId) async {
     DocumentReference articleRef = firestore
         .collection('educations')
@@ -70,5 +80,11 @@ class EducationController extends GetxController {
 
     final challengeController = Get.put(ChallangePageController());
     await challengeController.checkAndCompleteChallenges();
+  }
+
+  @override
+  void onClose() {
+    youtubeController.value?.dispose();
+    super.onClose();
   }
 }

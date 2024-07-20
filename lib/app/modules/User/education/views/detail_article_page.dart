@@ -61,9 +61,9 @@ class _DetailArticlePageState extends State<DetailArticlePage> {
       body: ListView(
         children: [
           // Gambar Artikel
-          article.image.isNotEmpty
+          widget.article.image.isNotEmpty
               ? Image.network(
-                  article.image,
+                  widget.article.image,
                   width: double.infinity,
                   height: 200,
                   fit: BoxFit.cover,
