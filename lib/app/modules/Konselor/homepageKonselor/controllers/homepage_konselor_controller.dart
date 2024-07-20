@@ -2,25 +2,39 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/counseling/models/counseling.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomepageKonselorController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  var counselingList = <CounselingSession>[].obs;
+  var counselingList = <CounselingSessionWithUserData>[].obs;
 
-  Stream<QuerySnapshot> getUpcomingMeeting() {
+  Stream<List<CounselingSessionWithUserData>> getUpcomingMeeting() {
     return firestore
-    .collection('counselings')
-    .where('konselorId', isEqualTo: firebaseAuth.currentUser!.uid)
-    .snapshots();
+        .collection('counselings')
+        .where('konselorId', isEqualTo: firebaseAuth.currentUser!.uid)
+        .snapshots()
+        .asyncMap((snapshot) async {
+      List<CounselingSessionWithUserData> sessions = [];
+      for (var doc in snapshot.docs) {
+        if (doc['userId'] != "" && doc['userId'] != null) {
+          CounselingSession counseling = CounselingSession.fromDocument(doc);
+          DocumentSnapshot userDoc =
+              await firestore.collection('users').doc(counseling.userId).get();
+          Map<String, dynamic> userData =
+              userDoc.data() as Map<String, dynamic>;
+          sessions.add(CounselingSessionWithUserData(
+              counseling: counseling, userData: userData));
+        }
+      }
+      return sessions;
+    });
   }
 
-  void updateCounselingList(QuerySnapshot snapshot) {
+  void updateCounselingList(List<CounselingSessionWithUserData> sessions) {
     counselingList.clear();
-    counselingList.addAll(snapshot.docs.where((doc) => doc['userId'] != "" && doc['userId'] != null)
-        .map((doc) => CounselingSession.fromDocument(doc))
-        .toList());
+    counselingList.addAll(sessions);
   }
 
-
+  
 }
