@@ -59,7 +59,7 @@ class EditJadwalView extends GetView<EditJadwalController> {
                             IconButton(
                               icon: const Icon(Icons.edit, color: Colors.blue),
                               onPressed: () {
-                                // Handle edit action
+                                _showEditScheduleDialog(context, counseling);
                               },
                             ),
                             IconButton(
@@ -96,64 +96,126 @@ class EditJadwalView extends GetView<EditJadwalController> {
       ),
     );
   }
+}
 
-  void _showAddScheduleDialog(BuildContext context) {
-    final EditJadwalController scheduleController =
-        Get.put(EditJadwalController());
-    final TextEditingController dateController = TextEditingController();
-    final TextEditingController durationController = TextEditingController();
-    final TextEditingController linkController = TextEditingController();
+void _showAddScheduleDialog(BuildContext context) {
+  final EditJadwalController scheduleController =
+      Get.put(EditJadwalController());
+  final TextEditingController dateController = TextEditingController();
+  final TextEditingController durationController = TextEditingController();
+  final TextEditingController linkController = TextEditingController();
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Tambah Jadwal Baru'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: dateController,
-                decoration: const InputDecoration(labelText: 'Tanggal Jadwal'),
-                keyboardType: TextInputType.datetime,
-              ),
-              TextField(
-                controller: durationController,
-                decoration: const InputDecoration(labelText: 'Durasi (menit)'),
-                keyboardType: TextInputType.number,
-              ),
-              TextField(
-                controller: linkController,
-                decoration:
-                    const InputDecoration(labelText: 'Link Google Meet'),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Batal'),
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Tambah Jadwal Baru'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: dateController,
+              decoration: const InputDecoration(labelText: 'Tanggal Jadwal'),
+              keyboardType: TextInputType.datetime,
             ),
-            ElevatedButton(
-              onPressed: () {
-                final DateTime? jadwal = DateTime.tryParse(dateController.text);
-                final int durasi = int.tryParse(durationController.text) ?? 0;
-                final String tautanGmeet = linkController.text;
-
-                if (jadwal != null) {
-                  scheduleController.addSchedule(jadwal, durasi, tautanGmeet);
-                  Navigator.of(context).pop();
-                } else {
-                  Get.snackbar('Error', 'Tanggal tidak valid');
-                }
-              },
-              child: const Text('Simpan'),
+            TextField(
+              controller: durationController,
+              decoration: const InputDecoration(labelText: 'Durasi (menit)'),
+              keyboardType: TextInputType.number,
+            ),
+            TextField(
+              controller: linkController,
+              decoration: const InputDecoration(labelText: 'Link Google Meet'),
             ),
           ],
-        );
-      },
-    );
-  }
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Batal'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final DateTime? jadwal = DateTime.tryParse(dateController.text);
+              final int durasi = int.tryParse(durationController.text) ?? 0;
+              final String tautanGmeet = linkController.text;
+
+              if (jadwal != null) {
+                scheduleController.addSchedule(jadwal, durasi, tautanGmeet);
+                Navigator.of(context).pop();
+              } else {
+                Get.snackbar('Error', 'Tanggal tidak valid');
+              }
+            },
+            child: const Text('Simpan'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void _showEditScheduleDialog(BuildContext context, CounselingSession schedule) {
+  final EditJadwalController scheduleController =
+      Get.put(EditJadwalController());
+  final TextEditingController dateController =
+      TextEditingController(text: schedule.jadwal.toString().split(' ')[0]);
+  final TextEditingController durationController =
+      TextEditingController(text: schedule.durasi.toString());
+  final TextEditingController linkController =
+      TextEditingController(text: schedule.tautanGmeet);
+
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Edit Jadwal'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: dateController,
+              decoration: const InputDecoration(labelText: 'Tanggal Jadwal'),
+              keyboardType: TextInputType.datetime,
+            ),
+            TextField(
+              controller: durationController,
+              decoration: const InputDecoration(labelText: 'Durasi (menit)'),
+              keyboardType: TextInputType.number,
+            ),
+            TextField(
+              controller: linkController,
+              decoration: const InputDecoration(labelText: 'Link Google Meet'),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Batal'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final DateTime? jadwal = DateTime.tryParse(dateController.text);
+              final int durasi = int.tryParse(durationController.text) ?? 0;
+              final String tautanGmeet = linkController.text;
+
+              if (jadwal != null) {
+                scheduleController.updateSchedule(
+                    schedule.id, jadwal, durasi, tautanGmeet);
+                Navigator.of(context).pop();
+              } else {
+                Get.snackbar('Error', 'Tanggal tidak valid');
+              }
+            },
+            child: const Text('Simpan'),
+          ),
+        ],
+      );
+    },
+  );
 }

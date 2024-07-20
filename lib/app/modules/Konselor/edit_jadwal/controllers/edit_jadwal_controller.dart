@@ -41,4 +41,13 @@ class EditJadwalController extends GetxController {
   void deleteSchedule(String counselingId) {
     firestore.collection('counselings').doc(counselingId).delete();
   }
+
+  void updateSchedule(String id, DateTime jadwal, int durasi, String tautanGmeet) {
+  firestore.collection('counselings').doc(id).update({
+    'jadwal': Timestamp.fromDate(jadwal),
+    'durasi': durasi,
+    'tautanGmeet': tautanGmeet,
+  });
+}
+
 }
