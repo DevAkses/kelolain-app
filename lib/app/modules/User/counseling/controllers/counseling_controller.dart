@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:safeloan/app/modules/User/counseling/models/counseling.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CounselingController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -40,5 +41,12 @@ class CounselingController extends GetxController {
         .collection('counselings')
         .doc(counselingId)
         .update({'userId': firebaseAuth.currentUser!.uid});
+  }
+
+  Future<void> launchURL(String urlString) async {
+    final Uri url = Uri.parse(urlString);
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $url');
+    }
   }
 }
