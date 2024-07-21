@@ -103,42 +103,55 @@ class EducationAdminView extends GetView<EducationAdminController> {
   }
 
   Widget _buildImagePicker() {
-    return Obx(() {
-      return controller.articleImage.value != null
-          ? Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    spreadRadius: 1,
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
+  return Obx(() {
+    return Stack(
+      children: [
+        controller.articleImage.value != null
+            ? Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 1,
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.file(
+                    File(controller.articleImage.value!.path),
+                    height: 150,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
                   ),
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.file(
-                  File(controller.articleImage.value!.path),
-                  height: 150,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
+                ),
+              )
+            : Container(
+                height: 150,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppColors.abuAbu.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppColors.abuAbu),
+                ),
+                child: Center(
+                  child: const Text('No image selected', style: TextStyle(color: AppColors.abuAbu)),
                 ),
               ),
-            )
-          : Container(
-              height: 150,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: AppColors.abuAbu.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.abuAbu),
-              ),
-              child: Center(
-                child: const Text('No image selected', style: TextStyle(color: AppColors.abuAbu)),
-              ),
-            );
-    });
-  }
+        Positioned(
+          bottom: 8,
+          right: 8,
+          child: ElevatedButton(
+            onPressed: () => controller.pickImage(),
+            child: const Text('Pick Image'),
+          ),
+        ),
+      ],
+    );
+  });
+}
+
 }

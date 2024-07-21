@@ -38,6 +38,7 @@ abstract class Routes {
   static const EDIT_CHALLENGE_ADMIN = _Paths.EDIT_CHALLENGE_ADMIN;
   static const ADD_FINANCE = _Paths.ADD_FINANCE;
   static const EDIT_JADWAL = _Paths.EDIT_JADWAL;
+  static const DETAIL_LOAN = _Paths.DETAIL_LOAN;
 }
 
 abstract class _Paths {
@@ -77,4 +78,5 @@ abstract class _Paths {
   static const EDIT_CHALLENGE_ADMIN = '/edit-challenge-admin';
   static const ADD_FINANCE = '/add-finance';
   static const EDIT_JADWAL = '/edit-jadwal';
+  static const DETAIL_LOAN = '/detail-loan';
 }

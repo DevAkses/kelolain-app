@@ -41,22 +41,27 @@ class HomepageView extends GetView<HomepageController> {
   @override
   Widget build(BuildContext context) {
     final HomepageController controller = Get.put(HomepageController());
-    final DetailProfileController detailController =
-        Get.put(DetailProfileController());
+    final DetailProfileController detailController = Get.put(DetailProfileController());
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         title: ListTile(
-            leading: CircleAvatar(
-              child: Image.network('https://via.placeholder.com/60'),
-            ),
-            title: const Text(
-              "Selamat Datang",
-              style: TextStyle(color: AppColors.textPutih),
-            ),
-            subtitle: Text(detailController.userData['fullName'] ?? "Anonim",
-                style: const TextStyle(color: AppColors.textPutih)),
+            leading: Obx(() => CircleAvatar(
+                  backgroundImage: NetworkImage(detailController.profileImageUrl.value),
+                )),
+            title: Obx(() => Column(crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                      "Selamat Datang",
+                      style: TextStyle(color: AppColors.textPutih),
+                    ),
+                    Text(
+                      "${detailController.userData['fullName'] ?? 'Anonim'}",
+                      style: const TextStyle(color: AppColors.textPutih),
+                    ),
+              ],
+            )),
             trailing: _notifBadge()),
       ),
       body: Obx(() {
