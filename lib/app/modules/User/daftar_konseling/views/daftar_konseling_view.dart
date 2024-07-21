@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
 import 'package:safeloan/app/modules/User/counseling/controllers/counseling_controller.dart';
 import 'package:safeloan/app/modules/User/counseling/models/counseling.dart';
 import 'package:safeloan/app/modules/User/daftar_konseling/views/daftar_sukses.dart';
@@ -104,7 +105,7 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
         Get.put(CounselingController());
     final DaftarKonselingController registCounseling =
         Get.put(DaftarKonselingController());
-    return StreamBuilder<QuerySnapshot>(
+    return StreamBuilder<List<CounselingSessionWithUserData>>(
       stream: counselingController.getListKonseling(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -113,7 +114,7 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
         if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         }
-        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Center(child: Text('No counseling sessions found.'));
         }
         counselingController.updateCounselingList(snapshot.data!);
@@ -124,28 +125,29 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
                 child: ListView.builder(
                   itemCount: counselingController.counselingList.length,
                   itemBuilder: (context, index) {
-                    CounselingSession counseling =
+                    CounselingSessionWithUserData session =
                         counselingController.counselingList[index];
                     return CardItem(
                         "",
-                        counseling.konselorId,
-                        'Psikolog handal',
-                        DateFormat.yMMMMd().add_jm().format(counseling.jadwal),
-                        '${counseling.durasi}', () async {
-                      bool success =
-                          await registCounseling.bookSchedule(counseling.id);
+                        session.userData['fullName'],
+                        session.userData['profession'],
+                        DateFormat.yMMMMd()
+                            .add_jm()
+                            .format(session.counseling.jadwal),
+                        '${session.counseling.durasi}', () async {
+                      bool success = await registCounseling
+                          .bookSchedule(session.counseling.id);
                       if (success) {
                         Get.to(const DaftarKonselingSukses());
                       } else {
                         Get.defaultDialog(
-                          title: 'Schedule Conflict',
-                          middleText:
-                              'You have another schedule, you can\'t book a new schedule.',
-                          textConfirm: 'OK',
-                          buttonColor: AppColors.primaryColor,
-                          onConfirm: () => Get.back(),
-                          contentPadding: const EdgeInsets.all(25)
-                        );
+                            title: 'Schedule Conflict',
+                            middleText:
+                                'You have another schedule, you can\'t book a new schedule.',
+                            textConfirm: 'OK',
+                            buttonColor: AppColors.primaryColor,
+                            onConfirm: () => Get.back(),
+                            contentPadding: const EdgeInsets.all(25));
                       }
                     });
                   },

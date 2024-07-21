@@ -42,7 +42,7 @@ class NavigationView extends GetView<NavigationController> {
             children: [
               _buildNavigationBarItem(Icons.home, 'Home', 0, controller),
               _buildNavigationBarItem(Icons.account_balance_wallet, 'Finance', 1, controller),
-              _buildNavigationBarItem(Icons.quiz, 'Quiz', 2, controller),
+              _buildNavigationBarItem(Icons.quiz, 'Games', 2, controller),
               _buildNavigationBarItem(Icons.person, 'Profile', 3, controller),
             ],
           )),
