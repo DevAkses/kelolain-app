@@ -7,7 +7,7 @@ import 'package:safeloan/app/modules/User/education/views/detail_article_page.da
 class HomepageController extends GetxController {
   var points = 60.obs;
   var currentImageIndex = 0.obs;
-  PageController pageController = PageController();
+  late PageController pageController; // Changed to late
 
   var income = [1000, 1500, 1200, 1700, 1300].obs;
   var expenses = [800, 1100, 900, 1400, 1000].obs;
@@ -15,15 +15,19 @@ class HomepageController extends GetxController {
   var articleImages = <Article>[].obs; // Daftar artikel
 
   void startImageSlider() {
-    Future.delayed(Duration(seconds: 4)).then((_) {
-      currentImageIndex.value =
-          (currentImageIndex.value + 1) % articleImages.length; 
-      pageController.animateToPage(
-        currentImageIndex.value,
-        duration: Duration(milliseconds: 500),
-        curve: Curves.easeInOut,
-      );
-      startImageSlider(); 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(Duration(seconds: 4)).then((_) {
+        if (articleImages.isNotEmpty) {
+          currentImageIndex.value =
+              (currentImageIndex.value + 1) % articleImages.length;
+          pageController.animateToPage(
+            currentImageIndex.value,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+          );
+          startImageSlider(); // Restart the slider
+        }
+      });
     });
   }
 
@@ -38,8 +42,8 @@ class HomepageController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    pageController = PageController(); // Initialize pageController
     loadArticles();
-    startImageSlider();
   }
 
   void loadArticles() async {
@@ -53,6 +57,7 @@ class HomepageController extends GetxController {
         .listen((snapshot) {
       var articles = snapshot.docs.map((doc) => Article.fromDocument(doc)).toList();
       articleImages.assignAll(articles);
+      startImageSlider(); // Start slider after articles are loaded
     });
   }
 }

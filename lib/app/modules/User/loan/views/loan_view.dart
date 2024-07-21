@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../controllers/loan_controller.dart';
 
 class LoanView extends GetView<LoanController> {
@@ -34,33 +35,71 @@ class LoanView extends GetView<LoanController> {
                   itemCount: loanDocs.length,
                   itemBuilder: (context, index) {
                     var loanData = loanDocs[index].data();
+                    var loanId = loanDocs[index].id;
 
-                    return Card(
-                      elevation: 2,
-                      child: Container(
-                        padding: const EdgeInsets.all(15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(loanData['namaPinjaman'] ?? 'Pinjaman'),
-                                GestureDetector(
-                                  onTap: () => Get.toNamed('/edit-loan', arguments: loanDocs[index].id),
-                                  child: const Text(
-                                    'ubah',
-                                    style: TextStyle(
-                                      decoration: TextDecoration.underline,
+                    return GestureDetector(
+                      onTap: () => Get.toNamed('/detail-loan', arguments: loanId),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        elevation: 4,
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    loanData['namaPinjaman'] ?? 'Pinjaman',
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            Text('Rp. ${loanData['jumlahPinjaman'] ?? 0}'),
-                            Text('Bunga ${loanData['bunga'] ?? 0}%'),
-                            Text('Total Angsuran: ${loanData['angsuran'] ?? 0}'),
-                          ],
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(FontAwesomeIcons.penToSquare, color: Colors.blue),
+                                        onPressed: () => Get.toNamed('/edit-loan', arguments: loanId),
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(FontAwesomeIcons.trashCan, color: Colors.red),
+                                        onPressed: () => _showDeleteConfirmationDialog(context, loanId),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  const Icon(FontAwesomeIcons.moneyBillWave, color: Colors.green),
+                                  const SizedBox(width: 10),
+                                  Text('Rp. ${loanData['jumlahPinjaman'] ?? 0}'),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  const Icon(FontAwesomeIcons.percent, color: Colors.orange),
+                                  const SizedBox(width: 10),
+                                  Text('Bunga ${loanData['bunga'] ?? 0}%'),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  const Icon(FontAwesomeIcons.calendarDays, color: Colors.purple),
+                                  const SizedBox(width: 10),
+                                  Text('Total Angsuran: ${loanData['angsuran'] ?? 0} bulan'),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );
@@ -74,8 +113,8 @@ class LoanView extends GetView<LoanController> {
               child: GestureDetector(
                 onTap: () => Get.toNamed('/add-loan'),
                 child: Container(
-                  width: 50,
-                  height: 50,
+                  width: 60,
+                  height: 60,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.green,
@@ -83,6 +122,7 @@ class LoanView extends GetView<LoanController> {
                   child: const Icon(
                     Icons.add,
                     color: Colors.white,
+                    size: 30,
                   ),
                 ),
               ),
@@ -90,6 +130,33 @@ class LoanView extends GetView<LoanController> {
           ],
         ),
       ),
+    );
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context, String loanId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Hapus Pinjaman'),
+          content: const Text('Apakah Anda yakin ingin menghapus pinjaman ini?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Tidak'),
+            ),
+            TextButton(
+              onPressed: () {
+                controller.deleteLoan(loanId);
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Ya'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

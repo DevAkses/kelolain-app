@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/utils/AppColors.dart';
 
 import '../controllers/edit_video_admin_controller.dart';
 
@@ -13,8 +14,10 @@ class EditVideoAdminView extends GetView<EditVideoAdminController> {
         Get.put(EditVideoAdminController());
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Videos'),
+        title: const Text('Edit Videos', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         centerTitle: true,
+        leading: IconButton(icon: const Icon(Icons.arrow_back, color: Colors.white,), onPressed: ()=> Get.back(),),
+        backgroundColor: AppColors.primaryColor,
       ),
       body: StreamBuilder(
         stream: controller.getVideosStream(),
@@ -29,26 +32,40 @@ class EditVideoAdminView extends GetView<EditVideoAdminController> {
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
               var video = snapshot.data!.docs[index];
-              return Card(
-                child: ListTile(
-                  title: Text(video['title']),
-                  subtitle: Text(video['description']),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.edit),
-                        onPressed: () {
-                          _editVideo(video);
-                        },
+              return Container(
+                margin: const EdgeInsets.symmetric(vertical: 0.6, horizontal: 5),
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: Card.outlined(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  elevation: 2,
+                  child: ListTile(
+                    title: Text(
+                      video['title'],
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () {
-                          controller.deleteVideo(video.id);
-                        },
-                      ),
-                    ],
+                    ),
+                    subtitle: Text(video['description'], maxLines: 2, overflow: TextOverflow.ellipsis,),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.edit, color: Colors.blue),
+                          onPressed: () {
+                            _editVideo(video);
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          onPressed: () {
+                            controller.deleteVideo(video.id);
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -69,21 +86,24 @@ class EditVideoAdminView extends GetView<EditVideoAdminController> {
 
     Get.defaultDialog(
       title: "Edit Video",
-      content: Column(
-        children: [
-          TextField(
-            controller: titleController,
-            decoration: const InputDecoration(labelText: 'Title'),
-          ),
-          TextField(
-            controller: descriptionController,
-            decoration: const InputDecoration(labelText: 'Description'),
-          ),
-          TextField(
-            controller: linkController,
-            decoration: const InputDecoration(labelText: 'Link'),
-          ),
-        ],
+      content: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: titleController,
+              decoration: const InputDecoration(labelText: 'Title'),
+            ),
+            TextField(
+              controller: descriptionController,
+              decoration: const InputDecoration(labelText: 'Description'),
+            ),
+            TextField(
+              controller: linkController,
+              decoration: const InputDecoration(labelText: 'Link'),
+            ),
+          ],
+        ),
       ),
       textConfirm: "Save",
       onConfirm: () {

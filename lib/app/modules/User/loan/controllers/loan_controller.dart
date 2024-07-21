@@ -3,20 +3,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class LoanController extends GetxController {
-  late User? _currentuser;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Stream<QuerySnapshot<Map<String, dynamic>>> listLoans() {
-    return firestore
-        .collection('users')
-        .doc(_currentuser!.uid)
+    return firestore.collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection('loans')
+        .orderBy('createdAt', descending: true)
         .snapshots();
   }
 
-  @override
-  void onInit() {
-    _currentuser = FirebaseAuth.instance.currentUser;
-    super.onInit();
+  Future<void> deleteLoan(String loanId) async {
+    await firestore.collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('loans')
+        .doc(loanId)
+        .delete();
   }
 }
