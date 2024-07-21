@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
                       return GetMaterialApp(
                         debugShowCheckedModeBanner: false,
                         title: "Application",
-                        initialRoute: Routes.NAVIGATION,
+                        initialRoute: Routes.NAVIGATION_ADMIN,
                         getPages: AppPages.routes,
                       );
                     } else if (role == 'Konselor') {

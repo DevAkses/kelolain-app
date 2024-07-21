@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/Admin/educationAdmin/views/education_admin_view.dart';
-
+import 'package:safeloan/app/utils/AppColors.dart';
 import '../../homepageAdmin/views/homepage_admin_view.dart';
 import '../../profileAdmin/views/profile_admin_view.dart';
 import '../../quizAdmin/views/quiz_admin_view.dart';
@@ -12,36 +11,40 @@ class NavigationAdminView extends GetView<NavigationAdminController> {
   const NavigationAdminView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-
     final List<Widget> _pages = [
       const HomepageAdminView(),
-      QuizAdminView(),
+      const QuizAdminView(),
       const EducationAdminView(),
       const ProfileAdminView(),
     ];
 
     return Obx(() => Scaffold(
           body: _pages[controller.selectedIndex.value],
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: controller.selectedIndex.value,
-            onTap: controller.changePage,
-            selectedItemColor: Colors.blue,
-            unselectedItemColor: Colors.grey,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
+          bottomNavigationBar: NavigationBar(
+            onDestinationSelected: (int index) {
+              controller.selectedIndex.value = index;
+            },
+            indicatorColor: AppColors.primaryColor,
+            selectedIndex: controller.selectedIndex.value,
+            destinations: const [
+              NavigationDestination(
+                selectedIcon: Icon(Icons.home, color: Colors.white,),
+                icon: Icon(Icons.home_outlined),
                 label: 'Home',
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.quiz),
+              NavigationDestination(
+                selectedIcon: Icon(Icons.quiz, color: Colors.white),
+                icon: Icon(Icons.quiz_outlined),
                 label: 'Quiz',
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.cast_for_education),
+              NavigationDestination(
+                selectedIcon: Icon(Icons.cast_for_education, color: Colors.white),
+                icon: Icon(Icons.cast_for_education_outlined),
                 label: 'Education',
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
+              NavigationDestination(
+                selectedIcon: Icon(Icons.person, color: Colors.white),
+                icon: Icon(Icons.person_outlined),
                 label: 'Profile',
               ),
             ],
@@ -49,4 +52,3 @@ class NavigationAdminView extends GetView<NavigationAdminController> {
         ));
   }
 }
-
