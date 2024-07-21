@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:safeloan/app/utils/AppColors.dart';
 
 import '../controllers/challange_page_controller.dart';
 
@@ -9,7 +10,8 @@ class ChallangePageView extends GetView<ChallangePageController> {
   @override
   final ChallangePageController controller = Get.put(ChallangePageController());
 
-  Widget CardItem(String title, String deskripsi, String linkGambar) {
+  Widget CardItem(
+      String title, String deskripsi, IconData icon, Color iconColor) {
     return Container(
       width: double.infinity,
       height: 100,
@@ -28,20 +30,6 @@ class ChallangePageView extends GetView<ChallangePageController> {
         ],
       ),
       child: ListTile(
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (linkGambar.isNotEmpty)
-              Image.network(
-                linkGambar,
-                width: 50,
-                height: 50,
-                fit: BoxFit.cover,
-              ),
-            const SizedBox(width: 10),
-            const Icon(Icons.check_circle, color: Colors.green),
-          ],
-        ),
         title: Text(
           title,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
@@ -49,6 +37,10 @@ class ChallangePageView extends GetView<ChallangePageController> {
         subtitle: Text(
           deskripsi,
           style: const TextStyle(color: Colors.grey),
+        ),
+        trailing: Icon(
+          icon,
+          color: iconColor,
         ),
       ),
     );
@@ -66,23 +58,48 @@ class ChallangePageView extends GetView<ChallangePageController> {
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
             return const Center(child: Text('No challenges found'));
           }
-          final challenges = snapshot.data!.docs;
+          controller.updateChallengeList(snapshot.data!);
 
-          return ListView.builder(
-            itemCount: challenges.length,
-            itemBuilder: (context, index) {
-              final challenge = challenges[index].data();
-              final title = challenge['title'] ?? 'No title';
-              final description = challenge['description'] ?? 'No description';
-              final imageUrl = challenge['imageUrl'] ?? '';
+          return Obx(() {
+            return ListView.builder(
+              itemCount: controller.challengeList.length,
+              itemBuilder: (context, index) {
+                var challenge = controller.challengeList[index];
 
-              return CardItem(
-                title,
-                description,
-                imageUrl,
-              );
-            },
-          );
+                return FutureBuilder<bool>(
+                  future: controller.isChallengeCompletedByUser(challenge.id),
+                  builder: (context, completedSnapshot) {
+                    if (completedSnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return CardItem(
+                        challenge.title,
+                        challenge.description,
+                        Icons.hourglass_empty,
+                        AppColors.abuAbu,
+                      );
+                    }
+
+                    if (completedSnapshot.hasData &&
+                        completedSnapshot.data == true) {
+                      return CardItem(
+                        challenge.title,
+                        challenge.description,
+                        Icons.check_circle,
+                        Colors.green,
+                      );
+                    } else {
+                      return CardItem(
+                        challenge.title,
+                        challenge.description,
+                        Icons.history,
+                        AppColors.abuAbu,
+                      );
+                    }
+                  },
+                );
+              },
+            );
+          });
         },
       ),
     );

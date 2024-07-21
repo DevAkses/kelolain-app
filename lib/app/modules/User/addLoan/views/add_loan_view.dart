@@ -21,6 +21,7 @@ class AddLoanView extends GetView<AddLoanController> {
               TextField(
                 controller: controller.namaPinjamanC,
                 decoration: const InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Nama Pinjaman',
                   hintText: 'Masukkan Nama Pinjaman',
                   border: OutlineInputBorder(),
@@ -28,6 +29,22 @@ class AddLoanView extends GetView<AddLoanController> {
               ),
               const SizedBox(height: 20),
               Obx(() => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                          'Jumlah Pinjaman: Rp ${controller.jumlahPinjaman.value}'),
+                      Slider(
+                        value: controller.jumlahPinjaman.value.toDouble(),
+                        min: 0,
+                        max: 100000000,
+                        divisions: 1000,
+                        label: controller.jumlahPinjaman.value.toString(),
+                        onChanged: (value) {
+                          controller.jumlahPinjaman.value = value.toInt();
+                        },
+                      ),
+                    ],
+                  )),
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -64,6 +81,21 @@ class AddLoanView extends GetView<AddLoanController> {
                   )),
               const SizedBox(height: 20),
               Obx(() => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Bunga: ${controller.bunga.value}%'),
+                      Slider(
+                        value: controller.bunga.value.toDouble(),
+                        min: 0,
+                        max: 25,
+                        divisions: 25,
+                        label: controller.bunga.value.toString(),
+                        onChanged: (value) {
+                          controller.bunga.value = value.toInt();
+                        },
+                      ),
+                    ],
+                  )),
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Bunga: ${controller.bunga.value}%'),

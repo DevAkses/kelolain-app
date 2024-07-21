@@ -5,7 +5,7 @@ import '../modules/Admin/editArticleAdmin/views/edit_article_admin_view.dart';
 import '../modules/Admin/editChallengeAdmin/bindings/edit_challenge_admin_binding.dart';
 import '../modules/Admin/editChallengeAdmin/views/edit_challenge_admin_view.dart';
 import '../modules/Admin/editQuizAdmin/bindings/edit_quiz_admin_binding.dart';
-import '../modules/Admin/editQuizAdmin/views/edit_quiz_admin_view.dart';
+import '../modules/Admin/editQuizAdmin/views/list_quiz_admin_view.dart';
 import '../modules/Admin/editVideoAdmin/bindings/edit_video_admin_binding.dart';
 import '../modules/Admin/editVideoAdmin/views/edit_video_admin_view.dart';
 import '../modules/Admin/educationAdmin/bindings/education_admin_binding.dart';
@@ -238,7 +238,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.EDIT_QUIZ_ADMIN,
-      page: () => const EditQuizAdminView(),
+      page: () => const ListQuizAdminView(),
       binding: EditQuizAdminBinding(),
     ),
     GetPage(
