@@ -14,7 +14,7 @@ class EditVideoAdminView extends GetView<EditVideoAdminController> {
         Get.put(EditVideoAdminController());
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Videos', style: TextStyle(color: Colors.white)),
+        title: const Text('Edit Videos', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         centerTitle: true,
         leading: IconButton(icon: const Icon(Icons.arrow_back, color: Colors.white,), onPressed: ()=> Get.back(),),
         backgroundColor: AppColors.primaryColor,
@@ -39,7 +39,7 @@ class EditVideoAdminView extends GetView<EditVideoAdminController> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
-                  elevation: 5,
+                  elevation: 2,
                   child: ListTile(
                     title: Text(
                       video['title'],

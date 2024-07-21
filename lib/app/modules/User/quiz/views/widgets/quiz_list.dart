@@ -7,14 +7,13 @@ import 'package:safeloan/app/modules/User/quiz/views/widgets/description_quiz_pa
 import 'package:safeloan/app/utils/AppColors.dart';
 
 class QuizList extends GetView<QuizController> {
-  const QuizList({Key? key}) : super(key: key);
+  const QuizList({super.key});
 
   Widget CardItem(
       String title, String deskripsi, String linkGambar, VoidCallback onTap) {
     return Container(
       width: double.infinity,
-      height: 180,
-      padding: const EdgeInsets.all(16),
+      height: 120,
       margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -24,19 +23,27 @@ class QuizList extends GetView<QuizController> {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 5,
             blurRadius: 7,
-            offset: const Offset(0, 3), // changes position of shadow
+            offset: const Offset(0, 3),
           ),
         ],
       ),
       child: Center(
         child: ListTile(
-          title: Text(title,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-          subtitle: Text(deskripsi, style: TextStyle(color: AppColors.abuAbu)),
-          trailing: Image.asset(
+          title: Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+          subtitle: Text(
+            deskripsi,
+            style: const TextStyle(color: AppColors.abuAbu),
+          ),
+          trailing: Image.network(
             linkGambar,
-            width: 50,
-            height: 50,
+            width: 75,
+            height: 75,
           ),
           onTap: onTap,
         ),
@@ -71,9 +78,9 @@ class QuizList extends GetView<QuizController> {
               return CardItem(
                 quiz.titleQuiz,
                 quiz.deskripsiQuiz,
-                '',
+                quiz.imageQuiz,
                 () {
-                  Get.off(() => DescriptionQuizPage(quiz: quiz));
+                  Get.to(() => DescriptionQuizPage(quiz: quiz));
                 },
               );
             },

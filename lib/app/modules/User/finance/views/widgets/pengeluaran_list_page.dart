@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:safeloan/app/utils/AppColors.dart';
 
 class PengeluaranListPage extends StatelessWidget {
@@ -76,7 +77,6 @@ class PengeluaranListPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // const SizedBox(height: 8),
                   ],
                 ),
               ),
@@ -99,17 +99,8 @@ class PengeluaranListPage extends StatelessWidget {
         children: [
           ListView(
             children: [
-              cardItem(
-                  "Course Javascript",
-                  "99.000",
-                  'Pengembangan diri',
-                  AppColors.primaryColor,
-                  "20 Juli 2024", // Tambahkan tanggal di sini
-                  () {
-                // Tambahkan logika onTap di sini
-                print("Card tapped");
-              }),
-              // Tambahkan lebih banyak cardItem di sini jika diperlukan
+              cardItem("Course Javascript", "99.000", 'Pengembangan diri',
+                  AppColors.primaryColor, "20 Juli 2024", () {}),
             ],
           ),
           Positioned(
@@ -117,7 +108,7 @@ class PengeluaranListPage extends StatelessWidget {
             right: 20,
             child: FloatingActionButton(
               onPressed: () {
-                print("Add button pressed");
+                Get.toNamed('/add-finance', arguments: 1);
               },
               backgroundColor: AppColors.primaryColor,
               child: const Icon(Icons.add, color: AppColors.textPutih),

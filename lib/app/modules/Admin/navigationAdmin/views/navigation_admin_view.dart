@@ -8,9 +8,12 @@ import '../../quizAdmin/views/quiz_admin_view.dart';
 import '../controllers/navigation_admin_controller.dart';
 
 class NavigationAdminView extends GetView<NavigationAdminController> {
-  const NavigationAdminView({Key? key}) : super(key: key);
+  const NavigationAdminView({super.key});
+
   @override
   Widget build(BuildContext context) {
+    final NavigationAdminController controller = Get.put(NavigationAdminController());
+
     final List<Widget> _pages = [
       const HomepageAdminView(),
       const QuizAdminView(),
@@ -48,7 +51,9 @@ class NavigationAdminView extends GetView<NavigationAdminController> {
                 label: 'Profile',
               ),
             ],
-          ),
-        ));
+          
+        ),
+      ),
+    );
   }
 }

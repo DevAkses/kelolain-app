@@ -29,3 +29,10 @@ class CounselingSession{
     );
   }
 }
+
+class CounselingSessionWithUserData {
+  final CounselingSession counseling;
+  final Map<String, dynamic> userData;
+
+  CounselingSessionWithUserData({required this.counseling, required this.userData});
+}

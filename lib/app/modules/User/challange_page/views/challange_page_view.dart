@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:safeloan/app/utils/AppColors.dart';
 
 import '../controllers/challange_page_controller.dart';
 
@@ -10,43 +11,36 @@ class ChallangePageView extends GetView<ChallangePageController> {
   final ChallangePageController controller = Get.put(ChallangePageController());
 
   Widget CardItem(
-      String title, String deskripsi, String linkGambar, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        height: 180,
-        padding: const EdgeInsets.all(16),
-        margin: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: const Offset(0, 3),
-            ),
-          ],
+      String title, String deskripsi, IconData icon, Color iconColor) {
+    return Container(
+      width: double.infinity,
+      height: 100,
+      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: ListTile(
+        title: Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        child: ListTile(
-          title: Text(
-            title,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-          ),
-          subtitle: Text(
-            deskripsi,
-            style: const TextStyle(color: Colors.grey),
-          ),
-          trailing: linkGambar.isNotEmpty
-              ? Image.network(
-                  linkGambar,
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                )
-              : null,
+        subtitle: Text(
+          deskripsi,
+          style: const TextStyle(color: Colors.grey),
+        ),
+        trailing: Icon(
+          icon,
+          color: iconColor,
         ),
       ),
     );
@@ -64,24 +58,48 @@ class ChallangePageView extends GetView<ChallangePageController> {
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
             return const Center(child: Text('No challenges found'));
           }
-          final challenges = snapshot.data!.docs;
+          controller.updateChallengeList(snapshot.data!);
 
-          return ListView.builder(
-            itemCount: challenges.length,
-            itemBuilder: (context, index) {
-              final challenge = challenges[index].data();
-              final title = challenge['title'] ?? 'No title';
-              final description = challenge['description'] ?? 'No description';
-              final imageUrl = challenge['imageUrl'] ?? '';
+          return Obx(() {
+            return ListView.builder(
+              itemCount: controller.challengeList.length,
+              itemBuilder: (context, index) {
+                var challenge = controller.challengeList[index];
 
-              return CardItem(
-                title,
-                description,
-                imageUrl,
-                () {},
-              );
-            },
-          );
+                return FutureBuilder<bool>(
+                  future: controller.isChallengeCompletedByUser(challenge.id),
+                  builder: (context, completedSnapshot) {
+                    if (completedSnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return CardItem(
+                        challenge.title,
+                        challenge.description,
+                        Icons.hourglass_empty,
+                        AppColors.abuAbu,
+                      );
+                    }
+
+                    if (completedSnapshot.hasData &&
+                        completedSnapshot.data == true) {
+                      return CardItem(
+                        challenge.title,
+                        challenge.description,
+                        Icons.check_circle,
+                        Colors.green,
+                      );
+                    } else {
+                      return CardItem(
+                        challenge.title,
+                        challenge.description,
+                        Icons.history,
+                        AppColors.abuAbu,
+                      );
+                    }
+                  },
+                );
+              },
+            );
+          });
         },
       ),
     );

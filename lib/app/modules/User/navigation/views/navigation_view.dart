@@ -15,7 +15,7 @@ class NavigationView extends GetView<NavigationController> {
   Widget build(BuildContext context) {
     final NavigationController controller = Get.put(NavigationController());
 
-    final List<Widget> _pages = [
+    final List<Widget> pages = [
       HomepageView(),
       const FinanceView(),
       const TabQuizView(),
@@ -23,7 +23,7 @@ class NavigationView extends GetView<NavigationController> {
     ];
 
     return Obx(() => Scaffold(
-          body: _pages[controller.selectedIndex.value],
+          body: pages[controller.selectedIndex.value],
           bottomNavigationBar: Container(
             decoration: BoxDecoration(
               color: AppColors.primaryColor,

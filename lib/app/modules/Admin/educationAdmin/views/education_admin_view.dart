@@ -10,8 +10,6 @@ class EducationAdminView extends GetView<EducationAdminController> {
 
   @override
   Widget build(BuildContext context) {
-    final EducationAdminController controller =
-        Get.put(EducationAdminController());
 
     return DefaultTabController(
       length: 2, // Number of tabs
