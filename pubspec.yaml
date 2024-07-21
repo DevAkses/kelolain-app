@@ -5,12 +5,10 @@ description: A new Flutter project.
 environment: 
   sdk: '>=3.2.6 <4.0.0'
 
-dependencies:
+dependencies: 
   web: ^0.4.0
   cupertino_icons: ^1.0.2
   get: 4.6.6
-  flutter:
-    sdk: flutter
   firebase_auth: ^4.17.8
   http: ^1.2.0
   firebase_core: ^2.27.0
@@ -24,6 +22,9 @@ dependencies:
   badges: ^3.1.2
   youtube_player_flutter: ^9.0.1
   url_launcher: ^6.3.0
+  chat_bubbles: 1.6.0
+  flutter: 
+    sdk: flutter
 
 dev_dependencies: 
   flutter_lints: 4.0.0
@@ -31,7 +32,7 @@ dev_dependencies:
     sdk: flutter
 
 flutter: 
-  uses-material-design: true
-  assets:
+  assets: 
     - assets/images/
+  uses-material-design: true
 
