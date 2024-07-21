@@ -9,7 +9,7 @@ class AddLoanController extends GetxController {
   var jumlahPinjaman = 0.obs;
   var angsuran = 0.obs;
   var bunga = 0.obs;
-  var tanggalPembayaran = ''.obs;
+  var tanggalPembayaran = 'dd/mm/yyyy'.obs;
 
   late User? _currentuser;
   FirebaseFirestore firestore = FirebaseFirestore.instance;

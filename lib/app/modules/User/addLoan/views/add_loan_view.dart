@@ -20,73 +20,78 @@ class AddLoanView extends GetView<AddLoanController> {
             children: [
               TextField(
                 controller: controller.namaPinjamanC,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Nama Pinjaman',
                   hintText: 'Masukkan Nama Pinjaman',
                 ),
               ),
               const SizedBox(height: 20),
               Obx(() => Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Jumlah Pinjaman: Rp ${controller.jumlahPinjaman.value}'),
-                  Slider(
-                    value: controller.jumlahPinjaman.value.toDouble(),
-                    min: 0,
-                    max: 100000000,
-                    divisions: 1000,
-                    label: controller.jumlahPinjaman.value.toString(),
-                    onChanged: (value) {
-                      controller.jumlahPinjaman.value = value.toInt();
-                    },
-                  ),
-                ],
-              )),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                          'Jumlah Pinjaman: Rp ${controller.jumlahPinjaman.value}'),
+                      Slider(
+                        value: controller.jumlahPinjaman.value.toDouble(),
+                        min: 0,
+                        max: 100000000,
+                        divisions: 1000,
+                        label: controller.jumlahPinjaman.value.toString(),
+                        onChanged: (value) {
+                          controller.jumlahPinjaman.value = value.toInt();
+                        },
+                      ),
+                    ],
+                  )),
               const SizedBox(height: 20),
               Obx(() => Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Jumlah Angsuran: ${controller.angsuran.value} bulan'),
-                  Slider(
-                    value: controller.angsuran.value.toDouble(),
-                    min: 0,
-                    max: 36,
-                    divisions: 12,
-                    label: controller.angsuran.value.toString(),
-                    onChanged: (value) {
-                      controller.angsuran.value = value.toInt();
-                    },
-                  ),
-                ],
-              )),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                          'Jumlah Angsuran: ${controller.angsuran.value} bulan'),
+                      Slider(
+                        value: controller.angsuran.value.toDouble(),
+                        min: 0,
+                        max: 36,
+                        divisions: 12,
+                        label: controller.angsuran.value.toString(),
+                        onChanged: (value) {
+                          controller.angsuran.value = value.toInt();
+                        },
+                      ),
+                    ],
+                  )),
               const SizedBox(height: 20),
               Obx(() => Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Bunga: ${controller.bunga.value}%'),
-                  Slider(
-                    value: controller.bunga.value.toDouble(),
-                    min: 0,
-                    max: 25,
-                    divisions: 25,
-                    label: controller.bunga.value.toString(),
-                    onChanged: (value) {
-                      controller.bunga.value = value.toInt();
-                    },
-                  ),
-                ],
-              )),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Bunga: ${controller.bunga.value}%'),
+                      Slider(
+                        value: controller.bunga.value.toDouble(),
+                        min: 0,
+                        max: 25,
+                        divisions: 25,
+                        label: controller.bunga.value.toString(),
+                        onChanged: (value) {
+                          controller.bunga.value = value.toInt();
+                        },
+                      ),
+                    ],
+                  )),
               const SizedBox(height: 20),
-              Obx(() => Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Tanggal Pembayaran: ${controller.tanggalPembayaran.value}'),
-                  ElevatedButton(
-                    onPressed: () => controller.pickDate(context),
-                    child: const Text('Pilih Tanggal'),
-                  ),
-                ],
-              )),
+              Obx(
+                () => Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                        'Tanggal Pembayaran: ${controller.tanggalPembayaran.value}'),
+                    IconButton(
+                      onPressed: () => controller.pickDate(context),
+                      icon: const Icon(Icons.calendar_month),
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(height: 30),
               ButtonWidget(
                 onPressed: () => controller.addLoan(),
