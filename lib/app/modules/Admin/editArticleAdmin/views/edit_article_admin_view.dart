@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/utils/AppColors.dart';
 
 import '../controllers/edit_article_admin_controller.dart';
 
@@ -13,8 +14,10 @@ class EditArticleAdminView extends GetView<EditArticleAdminController> {
         Get.put(EditArticleAdminController());
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Articles'),
+        title: const Text('Edit Articles', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
         centerTitle: true,
+        leading: IconButton(icon: const Icon(Icons.arrow_back, color: Colors.white,), onPressed: ()=> Get.back(),),
+        backgroundColor: AppColors.primaryColor,
       ),
       body: StreamBuilder(
         stream: controller.getArticlesStream(),
@@ -29,26 +32,33 @@ class EditArticleAdminView extends GetView<EditArticleAdminController> {
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
               var article = snapshot.data!.docs[index];
-              return Card(
-                child: ListTile(
-                  title: Text(article['title']),
-                  subtitle: Text(article['content']),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.edit),
-                        onPressed: () {
-                          _editArticle(article);
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () {
-                          controller.deleteArticle(article.id);
-                        },
-                      ),
-                    ],
+              return Container(
+                margin: const EdgeInsets.symmetric(vertical: 0.6, horizontal: 5),
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: Card.outlined(
+                  child: ListTile(
+                    title: Text(article['title'],  style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),),
+                    subtitle: Text(article['content'],  maxLines: 2, overflow: TextOverflow.ellipsis,),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.edit, color: Colors.blue,),
+                          onPressed: () {
+                            _editArticle(article);
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.red,),
+                          onPressed: () {
+                            controller.deleteArticle(article.id);
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

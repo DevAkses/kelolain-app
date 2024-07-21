@@ -41,22 +41,27 @@ class HomepageView extends GetView<HomepageController> {
   @override
   Widget build(BuildContext context) {
     final HomepageController controller = Get.put(HomepageController());
-    final DetailProfileController detailController =
-        Get.put(DetailProfileController());
+    final DetailProfileController detailController = Get.put(DetailProfileController());
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         title: ListTile(
-            leading: CircleAvatar(
-              child: Image.network('https://via.placeholder.com/60'),
-            ),
-            title: const Text(
-              "Selamat Datang",
-              style: TextStyle(color: AppColors.textPutih),
-            ),
-            subtitle: Text(detailController.userData['fullName'] ?? "Anonim",
-                style: const TextStyle(color: AppColors.textPutih)),
+            leading: Obx(() => CircleAvatar(
+                  backgroundImage: NetworkImage(detailController.profileImageUrl.value),
+                )),
+            title: Obx(() => Column(crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                      "Selamat Datang",
+                      style: TextStyle(color: AppColors.textPutih),
+                    ),
+                    Text(
+                      "${detailController.userData['fullName'] ?? 'Anonim'}",
+                      style: const TextStyle(color: AppColors.textPutih),
+                    ),
+              ],
+            )),
             trailing: _notifBadge()),
       ),
       body: Obx(() {
@@ -83,7 +88,8 @@ class HomepageView extends GetView<HomepageController> {
                         itemBuilder: (context, index) {
                           var article = controller.articleImages[index];
                           return GestureDetector(
-                            onTap: () => controller.navigateToDetailArticle(article),
+                            onTap: () =>
+                                controller.navigateToDetailArticle(article),
                             child: Image.network(
                               article.image,
                               fit: BoxFit.cover,
@@ -104,27 +110,50 @@ class HomepageView extends GetView<HomepageController> {
                       children: [
                         const Text('Grafik Penghasilan dan Pengeluaran',
                             style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            )),
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.textHijauTua)),
                         const SizedBox(height: 10),
                         // Dropdown Filter
                         Obx(() => DropdownButton<String>(
-                          value: _selectedPeriod.value,
-                          items: <String>['Weekly', 'Monthly', 'Yearly']
-                              .map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            if (newValue != null) {
-                              _selectedPeriod.value = newValue;
-                              controller.changeFilter(newValue.toLowerCase());
-                            }
-                          },
-                        )),
+                              value: _selectedPeriod.value,
+                              icon: Icon(Icons.arrow_drop_down,
+                                  color: Colors.blue),
+                              iconSize: 24,
+                              elevation: 16,
+                              style: TextStyle(
+                                  color: AppColors.textHijauTua,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                              dropdownColor: Colors.white,
+                              underline: Container(
+                                height: 2,
+                                color: AppColors.textHijauTua,
+                              ),
+                              items: <String>['Weekly', 'Monthly', 'Yearly']
+                                  .map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: Text(value),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                if (newValue != null) {
+                                  _selectedPeriod.value = newValue;
+                                  controller
+                                      .changeFilter(newValue.toLowerCase());
+                                }
+                              },
+                              hint: Text(
+                                "Select Period",
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 16),
+                              ),
+                            )),
                         const SizedBox(height: 10),
                         _buildIncomeExpenseChart(controller),
                       ],
@@ -261,8 +290,7 @@ class HomepageView extends GetView<HomepageController> {
                 spots: controller.income
                     .asMap()
                     .entries
-                    .map((e) =>
-                        FlSpot(e.key.toDouble(), e.value.toDouble()))
+                    .map((e) => FlSpot(e.key.toDouble(), e.value.toDouble()))
                     .toList(),
                 isCurved: true,
                 color: Colors.green,
@@ -274,8 +302,7 @@ class HomepageView extends GetView<HomepageController> {
                 spots: controller.expenses
                     .asMap()
                     .entries
-                    .map((e) =>
-                        FlSpot(e.key.toDouble(), e.value.toDouble()))
+                    .map((e) => FlSpot(e.key.toDouble(), e.value.toDouble()))
                     .toList(),
                 isCurved: true,
                 color: Colors.red,

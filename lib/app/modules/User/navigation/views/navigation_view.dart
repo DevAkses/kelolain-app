@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/tab_quiz/views/tab_quiz_view.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:safeloan/app/utils/AppColors.dart';
-
 import '../../finance/views/finance_view.dart';
 import '../../homepage/views/homepage_view.dart';
 import '../../profile/views/profile_view.dart';
@@ -22,66 +22,57 @@ class NavigationView extends GetView<NavigationController> {
       const ProfileView(),
     ];
 
-    return Scaffold(
-      body: Obx(() => pages[controller.selectedIndex.value]),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: AppColors.primaryColor,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 10,
-              offset: const Offset(0, -5),
+    return Obx(() => Scaffold(
+          body: pages[controller.selectedIndex.value],
+          bottomNavigationBar: Container(
+            decoration: BoxDecoration(
+              color: AppColors.primaryColor,
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 20,
+                  color: Colors.black.withOpacity(.1),
+                )
+              ],
             ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Obx(() => Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildNavigationBarItem(Icons.home, 'Home', 0, controller),
-              _buildNavigationBarItem(Icons.account_balance_wallet, 'Finance', 1, controller),
-              _buildNavigationBarItem(Icons.quiz, 'Quiz', 2, controller),
-              _buildNavigationBarItem(Icons.person, 'Profile', 3, controller),
-            ],
-          )),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavigationBarItem(IconData icon, String label, int index, NavigationController controller) {
-    final isSelected = controller.selectedIndex.value == index;
-    return GestureDetector(
-      onTap: () => controller.changePage(index),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: isSelected ? BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-        ) : null,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              color: isSelected ? AppColors.primaryColor : Colors.white,
-              size: 24,
-            ),
-            if (isSelected) ...[
-              const SizedBox(width: 8),
-              Text(
-                label,
-                style: const TextStyle(
-                  color: AppColors.primaryColor,
-                  fontWeight: FontWeight.bold,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+                child: GNav(
+                  rippleColor: Colors.grey[300]!,
+                  hoverColor: Colors.grey[100]!,
+                  gap: 8,
+                  activeColor: AppColors.textHijauTua,
+                  iconSize: 24,
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  duration: const Duration(milliseconds: 400),
+                  tabBackgroundColor: Colors.grey[300]!,
+                  color: AppColors.textPutih,
+                  tabs: const [
+                    GButton(
+                      icon: Icons.home,
+                      text: 'Home',
+                    ),
+                    GButton(
+                      icon: Icons.attach_money,
+                      text: 'Finance',
+                    ),
+                    GButton(
+                      icon: Icons.quiz,
+                      text: 'Quiz',
+                    ),
+                    GButton(
+                      icon: Icons.person,
+                      text: 'Profile',
+                    ),
+                  ],
+                  selectedIndex: controller.selectedIndex.value,
+                  onTabChange: (index) {
+                    controller.changePage(index);
+                  },
                 ),
               ),
-            ],
-          ],
-        ),
-      ),
-    );
+            ),
+          ),
+        ));
   }
 }

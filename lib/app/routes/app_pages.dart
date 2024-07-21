@@ -5,7 +5,7 @@ import '../modules/Admin/editArticleAdmin/views/edit_article_admin_view.dart';
 import '../modules/Admin/editChallengeAdmin/bindings/edit_challenge_admin_binding.dart';
 import '../modules/Admin/editChallengeAdmin/views/edit_challenge_admin_view.dart';
 import '../modules/Admin/editQuizAdmin/bindings/edit_quiz_admin_binding.dart';
-import '../modules/Admin/editQuizAdmin/views/edit_quiz_admin_view.dart';
+import '../modules/Admin/editQuizAdmin/views/list_quiz_admin_view.dart';
 import '../modules/Admin/editVideoAdmin/bindings/edit_video_admin_binding.dart';
 import '../modules/Admin/editVideoAdmin/views/edit_video_admin_view.dart';
 import '../modules/Admin/educationAdmin/bindings/education_admin_binding.dart';
@@ -74,6 +74,8 @@ import '../modules/User/tab_quiz/bindings/tab_quiz_binding.dart';
 import '../modules/User/tab_quiz/views/tab_quiz_view.dart';
 import '../modules/User/analysis_result/bindings/analysis_result_binding.dart';
 import '../modules/User/analysis_result/views/analysis_result_view.dart';
+import '../modules/User/detailLoan/bindings/detail_loan_binding.dart';
+import '../modules/User/detailLoan/views/detail_loan_view.dart';
 
 part 'app_routes.dart';
 
@@ -210,7 +212,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.QUIZ_ADMIN,
-      page: () => QuizAdminView(),
+      page: () => const QuizAdminView(),
       binding: QuizAdminBinding(),
     ),
     GetPage(
@@ -240,7 +242,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.EDIT_QUIZ_ADMIN,
-      page: () => const EditQuizAdminView(),
+      page: () => const ListQuizAdminView(),
       binding: EditQuizAdminBinding(),
     ),
     GetPage(
@@ -267,6 +269,11 @@ class AppPages {
       name: _Paths.ANALYSIS_RESULT,
       page: () => const AnalysisResultView(),
       binding: AnalysisResultBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL_LOAN,
+      page: () => const DetailLoanView(),
+      binding: DetailLoanBinding(),
     ),
   ];
 }
