@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/addFinance/controllers/add_finance_controller.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 import 'package:safeloan/app/widgets/input_akun_widget.dart';
 
@@ -30,7 +30,7 @@ class ExpenseView extends GetView<AddFinanceController> {
                   child: Text(
                     'Kategori',
                     style: TextStyle(
-                      color: AppColors.textHijauTua,
+                      color: Utils.biruSatu,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),

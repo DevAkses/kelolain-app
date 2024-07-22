@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/addFinance/views/expense_view.dart';
 import 'package:safeloan/app/modules/User/addFinance/views/income_view.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import '../controllers/add_finance_controller.dart';
 
 class AddFinanceView extends GetView<AddFinanceController> {
@@ -18,19 +18,8 @@ class AddFinanceView extends GetView<AddFinanceController> {
         appBar: AppBar(
           title: const Text(
             'Tambah Transaksi',
-            style: TextStyle(color: AppColors.textPutih),
+            style: Utils.header,
           ),
-          backgroundColor: AppColors.primaryColor,
-          iconTheme: const IconThemeData(color: AppColors.textPutih),
-          // bottom: const TabBar(
-          //   labelColor: AppColors.textHijauTua,
-          //   unselectedLabelColor: Colors.black,
-          //   indicatorColor: AppColors.primaryColor,
-          //   tabs: [
-          //     Tab(text: 'Pemasukan'),
-          //     Tab(text: 'Pengeluaran'),
-          //   ],
-          // ),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -47,7 +36,7 @@ class AddFinanceView extends GetView<AddFinanceController> {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 5,
                     blurRadius: 7,
-                    offset: const Offset(0, 3), 
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),

@@ -219,7 +219,7 @@ class CalculatorView extends GetView<CalculatorController> {
             const SizedBox(height: 8),
             Obx(() => Slider(
                   inactiveColor: Utils.biruDua,
-                  activeColor: AppColors.textHijauTua,
+                  activeColor: Utils.biruSatu,
                   value: sliderValue.value,
                   min: min,
                   max: max,
@@ -289,7 +289,7 @@ class CalculatorView extends GetView<CalculatorController> {
           const SizedBox(height: 8),
           Obx(() => Slider(
                 inactiveColor: Utils.biruDua,
-                activeColor: AppColors.textHijauTua,
+                activeColor: Utils.biruSatu,
                 value: sliderValue.value.toDouble(),
                 min: 1,
                 max: 360,
