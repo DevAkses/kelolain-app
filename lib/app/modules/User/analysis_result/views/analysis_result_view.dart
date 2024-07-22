@@ -16,13 +16,13 @@ class AnalysisResultView extends GetView<AnalysisResultController> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+      body: const SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Column(
-              children: const [
+              children: [
                 Image(
                   image: AssetImage('assets/images/maskot.png'),
                   width: 40,
@@ -30,17 +30,17 @@ class AnalysisResultView extends GetView<AnalysisResultController> {
                 ),
               ],
             ),
-            const SizedBox(width: 3),
+            SizedBox(width: 3),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   SizedBox(height: 10),
                   BubbleSpecialOne(
                     text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet aspernatur mollitia repudiandae officia magnam beatae molestiae libero culpa, accusamus dolorum maiores id quasi consectetur magni voluptatibus vitae, ipsa assumenda velit! Fugiat nemo quasi distinctio accusamus dignissimos corporis rerum magni obcaecati excepturi possimus, autem ut deserunt velit molestiae sequi repudiandae doloribus optio perspiciatis ipsa. Porro doloremque ut in facere aperiam possimus veniam, quaerat dolores ipsum alias quisquam ad, eius eligendi. Inventore aperiam magni modi accusamus, harum nisi enim quidem eveniet repudiandae, esse quaerat minima ipsum voluptas cupiditate odio sunt repellat ipsa assumenda! Quod quibusdam voluptate incidunt asperiores aliquam tempore voluptatibus explicabo. sfhbhdbhdsghvgdhvfgsdvgvdsgvfdsvhjsfbbbbbbbbbbhfrurugygydvuuvsdvsasavyysa',
                     isSender: false,
-                    color: Color.fromRGBO(100, 177, 108, 1),
-                    textStyle: TextStyle(color: Colors.white),
+                    color: Utils.biruLima,
+                    textStyle: TextStyle(fontSize: 14),
                   ),
                 ],
               ),
