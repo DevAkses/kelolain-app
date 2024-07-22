@@ -1,7 +1,7 @@
 import 'package:chat_bubbles/bubbles/bubble_special_one.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import '../controllers/analysis_result_controller.dart';
 
 class AnalysisResultView extends GetView<AnalysisResultController> {
@@ -12,11 +12,9 @@ class AnalysisResultView extends GetView<AnalysisResultController> {
       appBar: AppBar(
         title: const Text(
           'Hasil Analisis',
-          style: TextStyle(color: AppColors.textPutih),
+          style: Utils.header,
         ),
         centerTitle: true,
-        backgroundColor: AppColors.primaryColor,
-        iconTheme: const IconThemeData(color: AppColors.textPutih),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),

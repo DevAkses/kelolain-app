@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 import '../controllers/analysis_controller.dart';
 
@@ -12,11 +12,9 @@ class AnalysisView extends GetView<AnalysisController> {
       appBar: AppBar(
         title: const Text(
           'Analisis Keuangan',
-          style: TextStyle(color: AppColors.textPutih),
+          style: Utils.header,
         ),
         centerTitle: true,
-        backgroundColor: AppColors.primaryColor,
-        iconTheme: const IconThemeData(color: AppColors.textPutih),
       ),
       body: Center(
         child: Padding(

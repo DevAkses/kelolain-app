@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:safeloan/app/modules/User/addFinance/controllers/add_finance_controller.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 import 'package:safeloan/app/widgets/input_akun_widget.dart';
 
@@ -28,7 +28,7 @@ class IncomeView extends GetView<AddFinanceController> {
                   child: Text(
                     'Kategori',
                     style: TextStyle(
-                      color: AppColors.textHijauTua,
+                      color: Utils.biruSatu,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
