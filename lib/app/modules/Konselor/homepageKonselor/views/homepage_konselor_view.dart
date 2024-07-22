@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/Konselor/edit_jadwal/controllers/edit_jadwal_controller.dart';
 import 'package:safeloan/app/modules/User/counseling/models/counseling.dart';
-import '../../../../utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import '../controllers/homepage_konselor_controller.dart';
 
 class HomepageKonselorView extends GetView<HomepageKonselorController> {
@@ -25,7 +25,7 @@ class HomepageKonselorView extends GetView<HomepageKonselorController> {
           title,
           textAlign: TextAlign.center,
           style: const TextStyle(
-            color: AppColors.textPutih,
+            color: Colors.white,
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -65,12 +65,12 @@ class HomepageKonselorView extends GetView<HomepageKonselorController> {
               Row(
                 children: [
                   const Icon(Icons.event,
-                      size: 16, color: AppColors.textHijauTua),
+                      size: 16, color: Utils.biruSatu),
                   const SizedBox(width: 8),
                   Text(
                     "Tanggal: $tanggal",
                     style:
-                        TextStyle(fontSize: 16, color: AppColors.textHijauTua),
+                        TextStyle(fontSize: 16, color: Utils.biruSatu),
                   ),
                 ],
               ),
@@ -78,12 +78,12 @@ class HomepageKonselorView extends GetView<HomepageKonselorController> {
               Row(
                 children: [
                   const Icon(Icons.access_time,
-                      size: 16, color: AppColors.textHijauTua),
+                      size: 16, color: Utils.biruSatu),
                   const SizedBox(width: 8),
                   Text(
                     "Durasi: $waktu menit",
                     style:
-                        TextStyle(fontSize: 16, color: AppColors.textHijauTua),
+                        TextStyle(fontSize: 16, color: Utils.biruSatu),
                   ),
                 ],
               ),
