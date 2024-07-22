@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/finance/views/widgets/pemasukan_list_page.dart';
 import 'package:safeloan/app/modules/User/finance/views/widgets/pengeluaran_list_page.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import '../controllers/finance_controller.dart';
 
 class FinanceView extends GetView<FinanceController> {
@@ -12,7 +12,13 @@ class FinanceView extends GetView<FinanceController> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: AppBar(backgroundColor: AppColors.primaryColor,),
+        appBar: AppBar(
+          title: const Text(
+            "Keuangan",
+            style: Utils.header,
+          ),
+          centerTitle: true,
+        ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -28,7 +34,7 @@ class FinanceView extends GetView<FinanceController> {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 5,
                     blurRadius: 7,
-                    offset: const Offset(0, 3), 
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),

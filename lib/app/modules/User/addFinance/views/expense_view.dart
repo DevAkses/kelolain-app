@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/addFinance/controllers/add_finance_controller.dart';
 import 'package:safeloan/app/utils/AppColors.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
-import 'package:safeloan/app/widgets/input_widget.dart';
+import 'package:safeloan/app/widgets/input_akun_widget.dart';
 
 class ExpenseView extends GetView<AddFinanceController> {
   const ExpenseView({super.key});

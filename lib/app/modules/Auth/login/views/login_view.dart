@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/utils/AppColors.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
-import 'package:safeloan/app/widgets/input_widget.dart';
+import 'package:safeloan/app/widgets/input_akun_widget.dart';
 import '../../../../routes/app_pages.dart';
 import '../controllers/login_controller.dart';
 

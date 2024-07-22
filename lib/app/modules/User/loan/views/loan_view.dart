@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/utils/warna.dart';
+import 'package:safeloan/app/widgets/button_back_leading.dart';
 import '../controllers/loan_controller.dart';
 
 class LoanView extends GetView<LoanController> {
@@ -10,8 +12,9 @@ class LoanView extends GetView<LoanController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Daftar Pinjaman'),
+        title: const Text('Daftar Pinjaman', style: Utils.header,),
         centerTitle: true,
+        leading: ButtonBackLeading(),
       ),
       body: Padding(
         padding: const EdgeInsets.all(30),

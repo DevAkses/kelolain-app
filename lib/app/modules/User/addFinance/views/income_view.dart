@@ -4,7 +4,7 @@ import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:safeloan/app/modules/User/addFinance/controllers/add_finance_controller.dart';
 import 'package:safeloan/app/utils/AppColors.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
-import 'package:safeloan/app/widgets/input_widget.dart';
+import 'package:safeloan/app/widgets/input_akun_widget.dart';
 
 class IncomeView extends GetView<AddFinanceController> {
   const IncomeView({super.key});

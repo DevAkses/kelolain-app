@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/challange_page/views/challange_page_view.dart';
 import 'package:safeloan/app/modules/User/quiz/views/quiz_view.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 
 import '../controllers/tab_quiz_controller.dart';
 
@@ -15,7 +15,7 @@ class TabQuizView extends GetView<TabQuizController> {
       length: 2, // Number of tabs
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: AppColors.primaryColor,
+          title: Text("Gamifikasi", style: Utils.header,),
         ),
         body: Column(
           children: [
@@ -35,10 +35,10 @@ class TabQuizView extends GetView<TabQuizController> {
                 ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(15),
                 child: const TabBar(
                   indicator: BoxDecoration(
-                    color: Colors.green,
+                    color: Utils.biruTiga,
                   ),
                   labelColor: Colors.white,
                   unselectedLabelColor: Colors.black,

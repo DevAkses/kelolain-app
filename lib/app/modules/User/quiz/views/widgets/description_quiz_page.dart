@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/quiz/models/quiz_model.dart';
 import 'package:safeloan/app/modules/User/quiz/views/widgets/question_list.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
+import 'package:safeloan/app/widgets/button_back_leading.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 
 class DescriptionQuizPage extends StatelessWidget {
@@ -14,11 +15,9 @@ class DescriptionQuizPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Get.back(),
-        ),
-        title: const Text('Kuis Manajemen Keuangan'),
+        leading: ButtonBackLeading(),
+        title: const Text('Kuis Keuangan', style: Utils.header,),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -78,8 +77,8 @@ class DescriptionQuizPage extends StatelessWidget {
                 child: ButtonWidget(
                   onPressed: () {},
                   nama: "Kerjakan Kuis Lain",
-                  colorBackground: AppColors.primaryColor,
-                  colorText: Colors.white,
+                  colorBackground: Utils.biruLima,
+                  colorText: Utils.biruSatu,
                 ),
               ),
             ],

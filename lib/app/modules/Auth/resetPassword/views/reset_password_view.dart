@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/utils/AppColors.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
-import 'package:safeloan/app/widgets/input_widget.dart';
+import 'package:safeloan/app/widgets/input_akun_widget.dart';
 import '../controllers/reset_password_controller.dart';
 
 class ResetPasswordView extends GetView<ResetPasswordController> {

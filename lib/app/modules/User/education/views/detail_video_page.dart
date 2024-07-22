@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/education/controllers/education_controller.dart';
 import 'package:safeloan/app/modules/User/education/models/video_model.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
+import 'package:safeloan/app/widgets/button_back_leading.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class YouTubePlayerScreen extends GetView<EducationController> {
@@ -33,7 +34,7 @@ class YouTubePlayerScreen extends GetView<EducationController> {
         player: YoutubePlayer(
           controller: youtubeController,
           showVideoProgressIndicator: true,
-          progressIndicatorColor: Colors.blueAccent,
+          progressIndicatorColor: Utils.biruDua,
           topActions: <Widget>[
             const SizedBox(width: 8.0),
             Expanded(
@@ -64,7 +65,7 @@ class YouTubePlayerScreen extends GetView<EducationController> {
         ),
         builder: (context, player) {
           return Scaffold(
-            appBar: AppBar(backgroundColor: AppColors.primaryColor, leading: IconButton(icon: const Icon(Icons.arrow_back, color: AppColors.textPutih,), onPressed: (){Get.back();},),),
+            appBar: AppBar(leading: const ButtonBackLeading(), title: const Text("Edukasi", style: Utils.header,), centerTitle: true,),
             body: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -82,10 +83,13 @@ class YouTubePlayerScreen extends GetView<EducationController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          video.title,style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold,),
+                          video.title,style: Utils.titleStyle,
                         ),
                         const SizedBox(height: 8),
-                        Text('Posted: ${video.postAt.toString()}'),
+                        Text(
+                          video.description,style: Utils.subtitle,
+                        ),
+                        Text('Posted: ${video.postAt.toString()}', style: Utils.subtitle,),
                         // Add other video details here
                       ],
                     ),

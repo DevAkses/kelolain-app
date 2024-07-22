@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 
 class PengeluaranListPage extends StatelessWidget {
   const PengeluaranListPage({super.key});
@@ -39,7 +39,7 @@ class PengeluaranListPage extends StatelessWidget {
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
-                        color: AppColors.textHijauTua,
+                        color: Utils.biruSatu,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -65,7 +65,7 @@ class PengeluaranListPage extends StatelessWidget {
                           child: Text(
                             kategori,
                             style: const TextStyle(
-                                color: AppColors.textPutih, fontSize: 12),
+                                color: Colors.white, fontSize: 12),
                           ),
                         ),
                         Text(
@@ -100,7 +100,7 @@ class PengeluaranListPage extends StatelessWidget {
           ListView(
             children: [
               cardItem("Course Javascript", "99.000", 'Pengembangan diri',
-                  AppColors.primaryColor, "20 Juli 2024", () {}),
+                  Utils.biruDua, "20 Juli 2024", () {}),
             ],
           ),
           Positioned(
@@ -110,8 +110,8 @@ class PengeluaranListPage extends StatelessWidget {
               onPressed: () {
                 Get.toNamed('/add-finance', arguments: 1);
               },
-              backgroundColor: AppColors.primaryColor,
-              child: const Icon(Icons.add, color: AppColors.textPutih),
+              backgroundColor: Utils.biruDua,
+              child: const Icon(Icons.add, color: Colors.white),
             ),
           )
         ],

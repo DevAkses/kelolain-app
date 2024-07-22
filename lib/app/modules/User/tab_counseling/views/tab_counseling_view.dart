@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/counseling/views/counseling_view.dart';
 import 'package:safeloan/app/modules/User/daftar_konseling/views/daftar_konseling_view.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
+import 'package:safeloan/app/widgets/button_back_leading.dart';
 
 import '../controllers/tab_counseling_controller.dart';
 
@@ -16,18 +17,10 @@ class TabCounselingView extends GetView<TabCounselingController> {
         appBar: AppBar(
           title: const Text(
             'Konseling Keuangan',
-            style: TextStyle(
-                color: AppColors.textPutih, fontWeight: FontWeight.bold),
+            style: Utils.header
           ),
           centerTitle: true,
-          backgroundColor: AppColors.primaryColor,
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: AppColors.textPutih,
-            ),
-            onPressed: () => Get.back(),
-          ),
+          leading: const ButtonBackLeading()
         ),
         body: Column(
           children: [
@@ -46,9 +39,14 @@ class TabCounselingView extends GetView<TabCounselingController> {
                   ),
                 ],
               ),
-              child: const Text(
-                "Ayo konsultasikan kondisi dan rencana finansial-mu dengan konselur keuangan yang tersedia. Jadikan finansialmu sehat sehingga terhindar dari lilitan pinjaman online beresiko!",
-                textAlign: TextAlign.center,
+              child: Row(
+                children: [
+                  const Text(
+                    "Ayo konsultasikan kondisi dan rencana finansial-mu dengan konselur keuangan yang tersedia. Jadikan finansialmu sehat sehingga terhindar dari lilitan pinjaman online beresiko!",
+                    textAlign: TextAlign.start,
+                  ),
+                  Image.asset('')
+                ],
               ),
             ),
             Container(
@@ -67,10 +65,10 @@ class TabCounselingView extends GetView<TabCounselingController> {
                 ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(15),
                 child: const TabBar(
                   indicator: BoxDecoration(
-                    color: Colors.green,
+                    color: Utils.biruTiga,
                   ),
                   labelColor: Colors.white,
                   unselectedLabelColor: Colors.black,

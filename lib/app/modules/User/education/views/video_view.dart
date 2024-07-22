@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/education/controllers/education_controller.dart';
 import 'package:safeloan/app/modules/User/education/models/video_model.dart';
 import 'package:safeloan/app/modules/User/education/views/detail_video_page.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class VideoWidget extends GetView<EducationController> {
@@ -35,10 +36,11 @@ Widget _buildVideoItem(Video video, VoidCallback onTap) {
           ),
           title: Text(
             video.title,
+            style: Utils.titleStyle,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
-          subtitle: Text('sumber • ${_getTimeAgo(video.postAt)}'),
+          subtitle: Text('sumber • ${_getTimeAgo(video.postAt)}', style: Utils.subtitle,),
           trailing: Icon(Icons.more_vert),
         ),
       ],

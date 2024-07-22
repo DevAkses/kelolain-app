@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 
 import '../controllers/challange_page_controller.dart';
 
@@ -75,7 +75,7 @@ class ChallangePageView extends GetView<ChallangePageController> {
                         challenge.title,
                         challenge.description,
                         Icons.hourglass_empty,
-                        AppColors.abuAbu,
+                        Utils.backgroundCard,
                       );
                     }
 
@@ -92,7 +92,7 @@ class ChallangePageView extends GetView<ChallangePageController> {
                         challenge.title,
                         challenge.description,
                         Icons.history,
-                        AppColors.abuAbu,
+                        Utils.backgroundCard,
                       );
                     }
                   },

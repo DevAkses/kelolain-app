@@ -4,7 +4,7 @@ import 'package:safeloan/app/modules/User/navigation/controllers/navigation_cont
 import 'package:safeloan/app/modules/User/navigation/views/navigation_view.dart';
 import 'package:safeloan/app/modules/User/quiz/controllers/quiz_controller.dart';
 import 'package:safeloan/app/modules/User/tab_quiz/views/tab_quiz_view.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 
 class ResultPage extends GetView<QuizController> {
   final String quizId;
@@ -27,7 +27,7 @@ class ResultPage extends GetView<QuizController> {
         child: Text(
           nama,
           style: const TextStyle(
-              color: AppColors.textPutih,
+              color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.bold),
         ),
@@ -60,7 +60,7 @@ class ResultPage extends GetView<QuizController> {
                 children: [
                   Button(
                     "Kembali",
-                    AppColors.primaryColor,
+                    Utils.biruLima,
                     () => Get.offAll(
                       () => const NavigationView(),
                       binding: BindingsBuilder(
@@ -70,7 +70,7 @@ class ResultPage extends GetView<QuizController> {
                       ),
                     ),
                   ),
-                  Button("Kuis Selanjutnya", AppColors.textHijauTua,
+                  Button("Kuis Selanjutnya", Utils.biruDua,
                       () => Get.off(const TabQuizView())),
                 ],
               )

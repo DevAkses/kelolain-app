@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 
 class PemasukanListPage extends StatelessWidget {
   const PemasukanListPage({super.key});
@@ -38,7 +38,7 @@ class PemasukanListPage extends StatelessWidget {
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
-                        color: AppColors.textHijauTua,
+                        color: Utils.biruSatu,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -64,7 +64,7 @@ class PemasukanListPage extends StatelessWidget {
                           child: Text(
                             kategori,
                             style: const TextStyle(
-                                color: AppColors.textPutih, fontSize: 12),
+                                color: Colors.white, fontSize: 12),
                           ),
                         ),
                         Text(
@@ -102,7 +102,7 @@ class PemasukanListPage extends StatelessWidget {
               "Course Javascript",
               "99.000",
               'Pengembangan diri',
-              AppColors.primaryColor,
+              Utils.biruDua,
               "20 Juli 2024",
               () {},
             ),
@@ -113,8 +113,8 @@ class PemasukanListPage extends StatelessWidget {
           right: 20,
           child: FloatingActionButton(
             onPressed: () => Get.toNamed('/add-finance'),
-            backgroundColor: AppColors.primaryColor,
-            child: const Icon(Icons.add, color: AppColors.textPutih),
+            backgroundColor: Utils.biruDua,
+            child: const Icon(Icons.add, color: Colors.white),
           ),
         )
       ],
