@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 
 class ButtonWidget extends StatelessWidget {
   final VoidCallback onPressed;
@@ -12,8 +12,8 @@ class ButtonWidget extends StatelessWidget {
       {super.key,
       required this.onPressed,
       required this.nama,
-      this.colorText = Colors.blue,
-      this.colorBackground = AppColors.textHijauTua // Warna default adalah biru
+      this.colorText = Colors.white,
+      this.colorBackground = Utils.biruDua // Warna default adalah biru
       });
 
   @override
@@ -21,7 +21,7 @@ class ButtonWidget extends StatelessWidget {
     var lebar = MediaQuery.of(context).size.width * 0.8;
     return SizedBox(
       width: lebar,
-      height: 50,
+      height: 40,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: colorBackground, // Mengatur warna tombol
@@ -34,7 +34,7 @@ class ButtonWidget extends StatelessWidget {
         child: Text(
           nama,
           style: const TextStyle(
-              color: AppColors.textPutih,
+              color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.bold),
         ),
