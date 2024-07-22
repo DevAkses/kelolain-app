@@ -259,61 +259,130 @@ class HomepageView extends GetView<HomepageController> {
   }
 
   Widget _buildIncomeExpenseChart(HomepageController controller) {
-    return Container(
-      height: 250,
-      padding: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 1,
-            blurRadius: 4,
-            offset: const Offset(0, 2),
+  return Container(
+    height: 250,
+    padding: const EdgeInsets.all(8.0),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.2),
+          spreadRadius: 1,
+          blurRadius: 4,
+          offset: const Offset(0, 2),
+        ),
+      ],
+    ),
+    child: Obx(() {
+      return LineChart(
+        LineChartData(
+          gridData: FlGridData(
+            show: true,
+            drawVerticalLine: true,
+            horizontalInterval: 1,
+            verticalInterval: 1,
+            getDrawingHorizontalLine: (value) {
+              return FlLine(
+                color: const Color(0xffe7e8ec),
+                strokeWidth: 1,
+              );
+            },
+            getDrawingVerticalLine: (value) {
+              return FlLine(
+                color: const Color(0xffe7e8ec),
+                strokeWidth: 1,
+              );
+            },
           ),
-        ],
-      ),
-      child: Obx(() {
-        return LineChart(
-          LineChartData(
-            gridData: const FlGridData(show: false),
-            borderData: FlBorderData(
-              show: true,
-              border: Border.all(
-                color: const Color(0xff37434d),
-                width: 1,
+          titlesData: FlTitlesData(
+            show: true,
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                reservedSize: 22,
+                getTitlesWidget: (value, meta) {
+                  return Text(
+                    (value.toInt() % 2 == 0) ? '${value.toInt()}' : '',
+                    style: const TextStyle(
+                      color: Color(0xff68737d),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  );
+                },
+                interval: 1,
               ),
             ),
-            lineBarsData: [
-              LineChartBarData(
-                spots: controller.income
-                    .asMap()
-                    .entries
-                    .map((e) => FlSpot(e.key.toDouble(), e.value.toDouble()))
-                    .toList(),
-                isCurved: true,
-                color: Colors.green,
-                belowBarData: BarAreaData(show: false),
-                dotData: const FlDotData(show: true),
-                aboveBarData: BarAreaData(show: false),
+            leftTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                reservedSize: 28,
+                getTitlesWidget: (value, meta) {
+                  return Text(
+                    (value % 500 == 0) ? '${value.toInt()}' : '',
+                    style: const TextStyle(
+                      color: Color(0xff67727d),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  );
+                },
+                interval: 500,
               ),
-              LineChartBarData(
-                spots: controller.expenses
-                    .asMap()
-                    .entries
-                    .map((e) => FlSpot(e.key.toDouble(), e.value.toDouble()))
-                    .toList(),
-                isCurved: true,
-                color: Colors.red,
-                belowBarData: BarAreaData(show: false),
-                dotData: const FlDotData(show: true),
-                aboveBarData: BarAreaData(show: false),
-              ),
-            ],
+            ),
+            topTitles: AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
+            rightTitles: AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
           ),
-        );
-      }),
-    );
-  }
+          borderData: FlBorderData(
+            show: true,
+            border: Border.all(
+              color: const Color(0xffe7e8ec),
+              width: 1,
+            ),
+          ),
+          minX: 0,
+          maxX: controller.income.length.toDouble() - 1,
+          minY: 0,
+          maxY: (controller.income + controller.expenses).reduce((a, b) => a > b ? a : b).toDouble(),
+          lineBarsData: [
+            LineChartBarData(
+              spots: controller.income
+                  .asMap()
+                  .entries
+                  .map((e) => FlSpot(e.key.toDouble(), e.value.toDouble()))
+                  .toList(),
+              isCurved: true,
+              color: Colors.green,
+              belowBarData: BarAreaData(
+                show: true,
+                color: Colors.green.withOpacity(0.2),
+              ),
+              dotData: FlDotData(show: false),
+            ),
+            LineChartBarData(
+              spots: controller.expenses
+                  .asMap()
+                  .entries
+                  .map((e) => FlSpot(e.key.toDouble(), e.value.toDouble()))
+                  .toList(),
+              isCurved: true,
+              color: Colors.red,
+              belowBarData: BarAreaData(
+                show: true,
+                color: Colors.red.withOpacity(0.2),
+              ),
+              dotData: FlDotData(show: false),
+            ),
+          ],
+        ),
+      );
+    }),
+  );
+}
+
 }
