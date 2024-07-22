@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
-
+import 'package:safeloan/app/utils/warna.dart';
 import '../controllers/edit_article_admin_controller.dart';
 
 class EditArticleAdminView extends GetView<EditArticleAdminController> {
-  const EditArticleAdminView({Key? key}) : super(key: key);
+  const EditArticleAdminView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +16,7 @@ class EditArticleAdminView extends GetView<EditArticleAdminController> {
         title: const Text('Edit Articles', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
         centerTitle: true,
         leading: IconButton(icon: const Icon(Icons.arrow_back, color: Colors.white,), onPressed: ()=> Get.back(),),
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: Utils.biruDua,
       ),
       body: StreamBuilder(
         stream: controller.getArticlesStream(),
@@ -37,7 +36,7 @@ class EditArticleAdminView extends GetView<EditArticleAdminController> {
                 padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                 child: Card.outlined(
                   child: ListTile(
-                    title: Text(article['title'],  style: TextStyle(
+                    title: Text(article['title'],  style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),),

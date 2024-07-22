@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/Admin/educationAdmin/views/education_admin_view.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import '../../homepageAdmin/views/homepage_admin_view.dart';
 import '../../profileAdmin/views/profile_admin_view.dart';
 import '../../quizAdmin/views/quiz_admin_view.dart';
@@ -27,7 +27,7 @@ class NavigationAdminView extends GetView<NavigationAdminController> {
             onDestinationSelected: (int index) {
               controller.selectedIndex.value = index;
             },
-            indicatorColor: AppColors.primaryColor,
+            indicatorColor: Utils.biruDua,
             selectedIndex: controller.selectedIndex.value,
             destinations: const [
               NavigationDestination(

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
-
+import 'package:safeloan/app/utils/warna.dart';
 import '../controllers/edit_challenge_admin_controller.dart';
 
 class EditChallengeAdminView extends GetView<EditChallengeAdminController> {
-  const EditChallengeAdminView({Key? key}) : super(key: key);
+  const EditChallengeAdminView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +12,7 @@ class EditChallengeAdminView extends GetView<EditChallengeAdminController> {
         title: const Text('Edit Challenges', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
         centerTitle: true,
         leading: IconButton(icon: const Icon(Icons.arrow_back, color: Colors.white,), onPressed: ()=> Get.back(),),
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: Utils.biruDua,
       ),
       body: const Center(
         child: Text(
