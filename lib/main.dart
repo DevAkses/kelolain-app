@@ -4,9 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:safeloan/app/widgets/loading.dart';
-import 'package:safeloan/firebase_options.dart';
-import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
 import 'app/modules/Auth/login/controllers/login_controller.dart';
 import 'app/routes/app_pages.dart';
 
@@ -22,16 +19,14 @@ class MyApp extends StatelessWidget {
   final authC = Get.put(LoginController(), permanent: true);
 
   MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
       stream: authC.streamAuthStatus,
       builder: (context, snapshot) {
-        if (kDebugMode) {
-          print(snapshot);
-        }
         if (snapshot.connectionState == ConnectionState.active) {
-          if (snapshot.data != null && snapshot.data!.emailVerified == true) {
+          if (snapshot.data != null && snapshot.data!.emailVerified) {
             return FutureBuilder<DocumentSnapshot>(
               future: FirebaseFirestore.instance
                   .collection('users')
@@ -41,6 +36,7 @@ class MyApp extends StatelessWidget {
                 if (userSnapshot.connectionState == ConnectionState.done) {
                   if (userSnapshot.data != null && userSnapshot.data!.exists) {
                     String role = userSnapshot.data!['role'];
+                    String nextRoute;
                     if (role == 'Pengguna') {
                       return GetMaterialApp(
                         debugShowCheckedModeBanner: false,
@@ -74,7 +70,7 @@ class MyApp extends StatelessWidget {
                     }
                   }
                 }
-                return const LoadingView();
+                return LoadingView();
               },
             );
           } else {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/utils/warna.dart';
+import 'package:safeloan/app/widgets/button_back_leading.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 import 'package:safeloan/app/widgets/input_akun_widget.dart';
 import '../controllers/reset_password_controller.dart';
@@ -14,25 +15,29 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
     var lebar = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => Get.back(),),
-          backgroundColor: Utils.backgroundCard,
-        ),
         backgroundColor: Utils.backgroundCard,
-        body: Container(
-          margin: EdgeInsets.only(top: 20),
-          width: lebar,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.asset(''),
-              const Text("Masuk"),
-            ],
-          ),
+        body: Stack(
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 30),
+              width: lebar,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset('assets/images/logo.png'),
+                ],
+              ),
+            ),
+            const Positioned(top: 20, left: 20, child: ButtonBackLeading()),
+
+          ],
         ),
         bottomSheet: Container(
+          decoration: BoxDecoration(
           color: Colors.white,
-          height: tinggi*0.75,
+          borderRadius: BorderRadius.circular(15)
+          ),
+          height: tinggi*0.7,
           width: lebar,
           child: SizedBox(
             width: lebar,
@@ -40,7 +45,6 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
             child: Column(
               children: [
                  Container(
-                  height: 80,
                   width: lebar,
                   margin: EdgeInsets.only(left:lebar *0.1, top: 20, bottom: 20, right:lebar *0.1),
                   child: const Column(
@@ -48,7 +52,7 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
                     children: [
                       Text(
                         "Lupa Kata Sandi? 🔒",
-                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                       Text(
                         "Masukkan email Anda untuk menerima tautan reset.",
@@ -58,8 +62,8 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
                   ),
                 ),
                 InputAkunWidget(controller: emailController, nama: "Alamat email", hintText: "Masukan alamat email", leadingIcon: Icons.email),
-                const SizedBox(height: 15,),
-                ButtonWidget(onPressed: () => (), nama: "Kirim OTP"),
+                const SizedBox(height: 20,),
+                ButtonWidget(onPressed: () => (), nama: "Kirim Email"),
                 const SizedBox(
                   height: 10,
                 ),
