@@ -4,26 +4,26 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/quiz/controllers/quiz_controller.dart';
 import 'package:safeloan/app/modules/User/quiz/views/widgets/description_quiz_page.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 
 class QuizList extends GetView<QuizController> {
   const QuizList({super.key});
 
-  Widget CardItem(
+  Widget cardItem(
       String title, String deskripsi, String linkGambar, VoidCallback onTap) {
     return Container(
       width: double.infinity,
-      height: 120,
+      height: 150,
       margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: const Offset(0, 3),
+            color: Colors.grey.withOpacity(0.05),
+            spreadRadius: 0,
+            blurRadius: 30,
+            offset: const Offset(0, 5),
           ),
         ],
       ),
@@ -31,19 +31,21 @@ class QuizList extends GetView<QuizController> {
         child: ListTile(
           title: Text(
             title,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
+            style: Utils.titleStyle,
           ),
           subtitle: Text(
             deskripsi,
-            style: const TextStyle(color: AppColors.abuAbu),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: Utils.subtitle,
           ),
-          trailing: Image.network(
-            linkGambar,
-            width: 75,
-            height: 75,
+          trailing: SizedBox(
+              width: 75,
+              height: 75,
+            child: Image.network(
+              linkGambar,
+              fit: BoxFit.fitHeight,
+            ),
           ),
           onTap: onTap,
         ),
@@ -71,19 +73,22 @@ class QuizList extends GetView<QuizController> {
         controller.updateQuizList(snapshot.data!);
 
         return Obx(() {
-          return ListView.builder(
-            itemCount: controller.quizList.length,
-            itemBuilder: (context, index) {
-              var quiz = controller.quizList[index];
-              return CardItem(
-                quiz.titleQuiz,
-                quiz.deskripsiQuiz,
-                quiz.imageQuiz,
-                () {
-                  Get.to(() => DescriptionQuizPage(quiz: quiz));
-                },
-              );
-            },
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: ListView.builder(
+              itemCount: controller.quizList.length,
+              itemBuilder: (context, index) {
+                var quiz = controller.quizList[index];
+                return cardItem(
+                  quiz.titleQuiz,
+                  quiz.deskripsiQuiz,
+                  quiz.imageQuiz,
+                  () {
+                    Get.to(() => DescriptionQuizPage(quiz: quiz));
+                  },
+                );
+              },
+            ),
           );
         });
       },

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -6,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:safeloan/app/modules/User/counseling/controllers/counseling_controller.dart';
 import 'package:safeloan/app/modules/User/counseling/models/counseling.dart';
 import 'package:safeloan/app/modules/User/daftar_konseling/views/daftar_sukses.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 
 import '../controllers/daftar_konseling_controller.dart';
 
@@ -19,7 +18,7 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
       height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.textHijauTua,
+          backgroundColor: Utils.biruSatu,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
@@ -28,7 +27,7 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
         child: const Text(
           "Ajukan",
           style: TextStyle(
-              color: AppColors.textPutih,
+              color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.bold),
         ),
@@ -42,6 +41,7 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
       width: double.infinity,
       margin: const EdgeInsets.all(10),
       child: Card.outlined(
+        color: Utils.backgroundCard,
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -65,7 +65,7 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
                   const Text(
                     "Tanggal: ",
                     style:
-                        TextStyle(fontSize: 16, color: AppColors.textHijauTua),
+                        TextStyle(fontSize: 16, color: Utils.biruSatu),
                   ),
                   Text(tanggal)
                 ],
@@ -80,7 +80,7 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
                   const Text(
                     " Durasi: ",
                     style:
-                        TextStyle(fontSize: 16, color: AppColors.textHijauTua),
+                        TextStyle(fontSize: 16, color: Utils.biruSatu),
                   ),
                   Text(waktu)
                 ],
@@ -145,7 +145,7 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
                             middleText:
                                 'You have another schedule, you can\'t book a new schedule.',
                             textConfirm: 'OK',
-                            buttonColor: AppColors.primaryColor,
+                            buttonColor: Utils.biruDua,
                             onConfirm: () => Get.back(),
                             contentPadding: const EdgeInsets.all(25));
                       }

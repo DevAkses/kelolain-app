@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 import '../controllers/quiz_admin_controller.dart';
 
@@ -32,7 +32,7 @@ class QuizAdminView extends GetView<QuizAdminController> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create Quiz', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: Utils.biruDua,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -53,7 +53,7 @@ class QuizAdminView extends GetView<QuizAdminController> {
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.textHijauTua,
+                          color: Utils.biruSatu,
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -62,7 +62,7 @@ class QuizAdminView extends GetView<QuizAdminController> {
                         decoration: InputDecoration(
                           labelText: 'Quiz Title',
                           prefixIcon:
-                              Icon(Icons.title, color: AppColors.primaryColor),
+                              const Icon(Icons.title, color: Utils.biruDua),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -74,8 +74,8 @@ class QuizAdminView extends GetView<QuizAdminController> {
                         maxLines: 3,
                         decoration: InputDecoration(
                           labelText: 'Quiz Description',
-                          prefixIcon: Icon(Icons.description,
-                              color: AppColors.primaryColor),
+                          prefixIcon: const Icon(Icons.description,
+                              color: Utils.biruDua),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -108,8 +108,8 @@ class QuizAdminView extends GetView<QuizAdminController> {
                                       controller: controllerMap['question'],
                                       decoration: InputDecoration(
                                         labelText: 'Question',
-                                        prefixIcon: Icon(Icons.help,
-                                            color: AppColors.primaryColor),
+                                        prefixIcon: const Icon(Icons.help,
+                                            color: Utils.biruDua),
                                         border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(10)),
@@ -120,8 +120,8 @@ class QuizAdminView extends GetView<QuizAdminController> {
                                       controller: controllerMap['explanation'],
                                       decoration: InputDecoration(
                                         labelText: 'Explanation',
-                                        prefixIcon: Icon(Icons.info,
-                                            color: AppColors.primaryColor),
+                                        prefixIcon: const Icon(Icons.info,
+                                            color: Utils.biruDua),
                                         border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(10)),
@@ -137,11 +137,10 @@ class QuizAdminView extends GetView<QuizAdminController> {
                                                     'option$option'],
                                                 decoration: InputDecoration(
                                                   labelText: 'Option $option',
-                                                  prefixIcon: Icon(
+                                                  prefixIcon: const Icon(
                                                       Icons
                                                           .check_circle_outline,
-                                                      color: AppColors
-                                                          .primaryColor),
+                                                      color: Utils.biruDua),
                                                   border: OutlineInputBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -154,8 +153,8 @@ class QuizAdminView extends GetView<QuizAdminController> {
                                       controller: controllerMap['answer'],
                                       decoration: InputDecoration(
                                         labelText: 'Correct Answer',
-                                        prefixIcon: Icon(Icons.check,
-                                            color: AppColors.primaryColor),
+                                        prefixIcon: const Icon(Icons.check,
+                                            color: Utils.biruDua),
                                         border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(10)),
@@ -166,8 +165,8 @@ class QuizAdminView extends GetView<QuizAdminController> {
                                       controller: controllerMap['point'],
                                       decoration: InputDecoration(
                                         labelText: 'Point',
-                                        prefixIcon: Icon(Icons.stars,
-                                            color: AppColors.primaryColor),
+                                        prefixIcon: const Icon(Icons.stars,
+                                            color: Utils.biruDua),
                                         border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(10)),

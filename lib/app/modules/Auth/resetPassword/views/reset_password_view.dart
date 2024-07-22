@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
+import 'package:safeloan/app/widgets/button_back_leading.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
-import 'package:safeloan/app/widgets/input_widget.dart';
+import 'package:safeloan/app/widgets/input_akun_widget.dart';
 import '../controllers/reset_password_controller.dart';
 
 class ResetPasswordView extends GetView<ResetPasswordController> {
@@ -12,52 +13,72 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
   Widget build(BuildContext context) {
     var tinggi = MediaQuery.of(context).size.height;
     var lebar = MediaQuery.of(context).size.width;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.primaryColor,
-        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => Get.back(),),
-      ),
-      backgroundColor: AppColors.primaryColor,
-      body: Container(
-        margin: EdgeInsets.only(top: tinggi*0.05),
-        width: lebar,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Utils.backgroundCard,
+        body: Stack(
           children: [
-            Image.asset(''),
-            const Text("Masuk"),
-          ],
-        ),
-      ),
-      bottomSheet: SizedBox(
-        height: tinggi*0.6,
-        width: lebar,
-        child: SizedBox(
-          width: lebar,
-          height: tinggi / 2,
-          child: Column(
-            children: [
-              const SizedBox(height: 25,),
-              InputWidget(
-                  judul: "Email",
-                  hint: "Masukan email",
-                  controller: emailController),
-              const SizedBox(height: 15,),
-              ButtonWidget(onPressed: () => (), nama: "Kirim OTP"),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+            Container(
+              margin: EdgeInsets.only(top: 30),
+              width: lebar,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text("Belum punya akun?", style: TextStyle(fontWeight: FontWeight.w400, color: AppColors.primaryColor),),
-                  TextButton(
-                    onPressed: () => Get.back(),
-                    child: const Text("Masuk", style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.textHijauTua)),
-                  ),
+                  Image.asset('assets/images/logo.png'),
                 ],
               ),
-            ],
+            ),
+            const Positioned(top: 20, left: 20, child: ButtonBackLeading()),
+
+          ],
+        ),
+        bottomSheet: Container(
+          decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15)
+          ),
+          height: tinggi*0.7,
+          width: lebar,
+          child: SizedBox(
+            width: lebar,
+            height: tinggi / 2,
+            child: Column(
+              children: [
+                 Container(
+                  width: lebar,
+                  margin: EdgeInsets.only(left:lebar *0.1, top: 20, bottom: 20, right:lebar *0.1),
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Lupa Kata Sandi? 🔒",
+                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "Masukkan email Anda untuk menerima tautan reset.",
+                        style: Utils.subtitle,
+                      ),
+                    ],
+                  ),
+                ),
+                InputAkunWidget(controller: emailController, nama: "Alamat email", hintText: "Masukan alamat email", leadingIcon: Icons.email),
+                const SizedBox(height: 20,),
+                ButtonWidget(onPressed: () => (), nama: "Kirim Email"),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Belum punya akun?", style: TextStyle(fontWeight: FontWeight.w400, color: Utils.biruDua),),
+                    TextButton(
+                      onPressed: () => Get.back(),
+                      child: const Text("Masuk", style: TextStyle(fontWeight: FontWeight.bold, color: Utils.biruSatu)),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

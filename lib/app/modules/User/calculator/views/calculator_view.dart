@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 import '../controllers/calculator_controller.dart';
 
@@ -14,19 +14,19 @@ class CalculatorView extends GetView<CalculatorController> {
         title: const Text(
           'Kalkulator Simulasi',
           style: TextStyle(
-              fontWeight: FontWeight.bold, color: AppColors.textPutih),
+              fontWeight: FontWeight.bold, color: Colors.white),
         ),
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
-            color: AppColors.textPutih,
+            color: Colors.white,
           ),
           onPressed: () {
             Get.back();
           },
         ),
         centerTitle: true,
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: Utils.biruDua,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -148,8 +148,8 @@ class CalculatorView extends GetView<CalculatorController> {
           if (onSliderChanged != null) ...[
             const SizedBox(height: 8),
             Obx(() => Slider(
-                  inactiveColor: AppColors.primaryColor,
-                  activeColor: AppColors.textHijauTua,
+                  inactiveColor: Utils.biruDua,
+                  activeColor: Utils.biruSatu,
                   value: sliderValue.value,
                   min: min,
                   max: max,
@@ -218,8 +218,8 @@ class CalculatorView extends GetView<CalculatorController> {
           if (onSliderChanged != null) ...[
             const SizedBox(height: 8),
             Obx(() => Slider(
-                  inactiveColor: AppColors.primaryColor,
-                  activeColor: AppColors.textHijauTua,
+                  inactiveColor: Utils.biruDua,
+                  activeColor: Utils.biruSatu,
                   value: sliderValue.value,
                   min: min,
                   max: max,
@@ -288,8 +288,8 @@ class CalculatorView extends GetView<CalculatorController> {
           ),
           const SizedBox(height: 8),
           Obx(() => Slider(
-                inactiveColor: AppColors.primaryColor,
-                activeColor: AppColors.textHijauTua,
+                inactiveColor: Utils.biruDua,
+                activeColor: Utils.biruSatu,
                 value: sliderValue.value.toDouble(),
                 min: 1,
                 max: 360,

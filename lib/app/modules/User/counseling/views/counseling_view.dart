@@ -1,8 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 import '../controllers/counseling_controller.dart';
 import '../models/counseling.dart';
@@ -48,7 +47,7 @@ class CounselingView extends GetView<CounselingController> {
                     Text(
                       "Tanggal: ",
                       style: TextStyle(
-                          fontSize: 16, color: AppColors.textHijauTua),
+                          fontSize: 16, color: Utils.biruSatu),
                     ),
                     Text(tanggal),
                   ],
@@ -63,7 +62,7 @@ class CounselingView extends GetView<CounselingController> {
                     Text(
                       " Durasi: ",
                       style: TextStyle(
-                          fontSize: 16, color: AppColors.textHijauTua),
+                          fontSize: 16, color: Utils.biruSatu),
                     ),
                     Text(waktu),
                   ],

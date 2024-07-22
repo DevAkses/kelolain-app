@@ -2,7 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/detailProfile/controllers/detail_profile_controller.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import '../controllers/homepage_controller.dart';
 import 'package:badges/badges.dart' as badges;
 
@@ -41,27 +41,24 @@ class HomepageView extends GetView<HomepageController> {
   @override
   Widget build(BuildContext context) {
     final HomepageController controller = Get.put(HomepageController());
-    final DetailProfileController detailController = Get.put(DetailProfileController());
+    final DetailProfileController detailController =
+        Get.put(DetailProfileController());
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: Utils.biruDua,
         title: ListTile(
-            leading: Obx(() => CircleAvatar(
-                  backgroundImage: NetworkImage(detailController.profileImageUrl.value),
-                )),
-            title: Obx(() => Column(crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                      "Selamat Datang",
-                      style: TextStyle(color: AppColors.textPutih),
-                    ),
-                    Text(
-                      "${detailController.userData['fullName'] ?? 'Anonim'}",
-                      style: const TextStyle(color: AppColors.textPutih),
-                    ),
-              ],
-            )),
+            leading: Obx(() {
+              return CircleAvatar(
+                child: Image.network('https://via.placeholder.com/60'),
+              );
+            }),
+            title: const Text(
+              "Selamat Datang",
+              style: TextStyle(color: Colors.white),
+            ),
+            subtitle: Text(detailController.userData['fullName'] ?? "Anonim",
+                style: const TextStyle(color: Colors.white)),
             trailing: _notifBadge()),
       ),
       body: Obx(() {
@@ -74,7 +71,7 @@ class HomepageView extends GetView<HomepageController> {
                   Container(
                     height: 180,
                     width: double.infinity,
-                    color: AppColors.primaryColor,
+                    color: Utils.biruDua,
                   ),
                   const SizedBox(height: 80),
                   // Gambar Geser
@@ -112,7 +109,7 @@ class HomepageView extends GetView<HomepageController> {
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: AppColors.textHijauTua)),
+                                color: Utils.biruDua)),
                         const SizedBox(height: 10),
                         // Dropdown Filter
                         Obx(() => DropdownButton<String>(
@@ -122,13 +119,13 @@ class HomepageView extends GetView<HomepageController> {
                               iconSize: 24,
                               elevation: 16,
                               style: TextStyle(
-                                  color: AppColors.textHijauTua,
+                                  color: Utils.biruDua,
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold),
                               dropdownColor: Colors.white,
                               underline: Container(
                                 height: 2,
-                                color: AppColors.textHijauTua,
+                                color: Utils.biruDua,
                               ),
                               items: <String>['Weekly', 'Monthly', 'Yearly']
                                   .map((String value) {
@@ -169,7 +166,7 @@ class HomepageView extends GetView<HomepageController> {
                   margin: const EdgeInsets.symmetric(horizontal: 20),
                   padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
-                      color: AppColors.textPutih,
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
@@ -190,7 +187,7 @@ class HomepageView extends GetView<HomepageController> {
                           style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.textHijauTua),
+                              color: Utils.biruDua),
                         ),
                       ),
                       Obx(() => Padding(
@@ -200,7 +197,7 @@ class HomepageView extends GetView<HomepageController> {
                               style: const TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
-                                  color: AppColors.textHijauTua),
+                                  color: Utils.biruDua),
                             ),
                           )),
                       const Padding(
@@ -247,11 +244,11 @@ class HomepageView extends GetView<HomepageController> {
       onTap: onTap,
       child: Column(
         children: [
-          Icon(icon, color: AppColors.primaryColor),
+          Icon(icon, color: Utils.biruDua),
           const SizedBox(height: 8),
           Text(
             label,
-            style: const TextStyle(fontSize: 12, color: AppColors.textHijauTua),
+            style: const TextStyle(fontSize: 12, color: Utils.biruDua),
           ),
         ],
       ),
@@ -259,61 +256,130 @@ class HomepageView extends GetView<HomepageController> {
   }
 
   Widget _buildIncomeExpenseChart(HomepageController controller) {
-    return Container(
-      height: 250,
-      padding: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 1,
-            blurRadius: 4,
-            offset: const Offset(0, 2),
+  return Container(
+    height: 250,
+    padding: const EdgeInsets.all(8.0),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.2),
+          spreadRadius: 1,
+          blurRadius: 4,
+          offset: const Offset(0, 2),
+        ),
+      ],
+    ),
+    child: Obx(() {
+      return LineChart(
+        LineChartData(
+          gridData: FlGridData(
+            show: true,
+            drawVerticalLine: true,
+            horizontalInterval: 1,
+            verticalInterval: 1,
+            getDrawingHorizontalLine: (value) {
+              return FlLine(
+                color: const Color(0xffe7e8ec),
+                strokeWidth: 1,
+              );
+            },
+            getDrawingVerticalLine: (value) {
+              return FlLine(
+                color: const Color(0xffe7e8ec),
+                strokeWidth: 1,
+              );
+            },
           ),
-        ],
-      ),
-      child: Obx(() {
-        return LineChart(
-          LineChartData(
-            gridData: const FlGridData(show: false),
-            borderData: FlBorderData(
-              show: true,
-              border: Border.all(
-                color: const Color(0xff37434d),
-                width: 1,
+          titlesData: FlTitlesData(
+            show: true,
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                reservedSize: 22,
+                getTitlesWidget: (value, meta) {
+                  return Text(
+                    (value.toInt() % 2 == 0) ? '${value.toInt()}' : '',
+                    style: const TextStyle(
+                      color: Color(0xff68737d),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  );
+                },
+                interval: 1,
               ),
             ),
-            lineBarsData: [
-              LineChartBarData(
-                spots: controller.income
-                    .asMap()
-                    .entries
-                    .map((e) => FlSpot(e.key.toDouble(), e.value.toDouble()))
-                    .toList(),
-                isCurved: true,
-                color: Colors.green,
-                belowBarData: BarAreaData(show: false),
-                dotData: const FlDotData(show: true),
-                aboveBarData: BarAreaData(show: false),
+            leftTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                reservedSize: 28,
+                getTitlesWidget: (value, meta) {
+                  return Text(
+                    (value % 500 == 0) ? '${value.toInt()}' : '',
+                    style: const TextStyle(
+                      color: Color(0xff67727d),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  );
+                },
+                interval: 500,
               ),
-              LineChartBarData(
-                spots: controller.expenses
-                    .asMap()
-                    .entries
-                    .map((e) => FlSpot(e.key.toDouble(), e.value.toDouble()))
-                    .toList(),
-                isCurved: true,
-                color: Colors.red,
-                belowBarData: BarAreaData(show: false),
-                dotData: const FlDotData(show: true),
-                aboveBarData: BarAreaData(show: false),
-              ),
-            ],
+            ),
+            topTitles: AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
+            rightTitles: AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
           ),
-        );
-      }),
-    );
-  }
+          borderData: FlBorderData(
+            show: true,
+            border: Border.all(
+              color: const Color(0xffe7e8ec),
+              width: 1,
+            ),
+          ),
+          minX: 0,
+          maxX: controller.income.length.toDouble() - 1,
+          minY: 0,
+          maxY: (controller.income + controller.expenses).reduce((a, b) => a > b ? a : b).toDouble(),
+          lineBarsData: [
+            LineChartBarData(
+              spots: controller.income
+                  .asMap()
+                  .entries
+                  .map((e) => FlSpot(e.key.toDouble(), e.value.toDouble()))
+                  .toList(),
+              isCurved: true,
+              color: Colors.green,
+              belowBarData: BarAreaData(
+                show: true,
+                color: Colors.green.withOpacity(0.2),
+              ),
+              dotData: FlDotData(show: false),
+            ),
+            LineChartBarData(
+              spots: controller.expenses
+                  .asMap()
+                  .entries
+                  .map((e) => FlSpot(e.key.toDouble(), e.value.toDouble()))
+                  .toList(),
+              isCurved: true,
+              color: Colors.red,
+              belowBarData: BarAreaData(
+                show: true,
+                color: Colors.red.withOpacity(0.2),
+              ),
+              dotData: FlDotData(show: false),
+            ),
+          ],
+        ),
+      );
+    }),
+  );
+}
+
 }

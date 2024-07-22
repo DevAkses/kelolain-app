@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
-
+import 'package:safeloan/app/utils/warna.dart';
 import '../controllers/edit_video_admin_controller.dart';
 
 class EditVideoAdminView extends GetView<EditVideoAdminController> {
-  const EditVideoAdminView({Key? key}) : super(key: key);
+  const EditVideoAdminView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +16,7 @@ class EditVideoAdminView extends GetView<EditVideoAdminController> {
         title: const Text('Edit Videos', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         centerTitle: true,
         leading: IconButton(icon: const Icon(Icons.arrow_back, color: Colors.white,), onPressed: ()=> Get.back(),),
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: Utils.biruDua,
       ),
       body: StreamBuilder(
         stream: controller.getVideosStream(),
@@ -43,7 +42,7 @@ class EditVideoAdminView extends GetView<EditVideoAdminController> {
                   child: ListTile(
                     title: Text(
                       video['title'],
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),

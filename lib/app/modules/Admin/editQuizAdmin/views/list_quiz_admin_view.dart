@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/Admin/editQuizAdmin/views/detail_quiz.dart';
 import 'package:safeloan/app/modules/Admin/editQuizAdmin/views/edit_quiz_detail.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import '../controllers/edit_quiz_admin_controller.dart';
 
 class ListQuizAdminView extends GetView<EditQuizAdminController> {
-  const ListQuizAdminView({Key? key}) : super(key: key);
+  const ListQuizAdminView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class ListQuizAdminView extends GetView<EditQuizAdminController> {
           ),
           onPressed: () => Get.back(),
         ),
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: Utils.biruDua,
       ),
       body: Obx(() {
         if (controller.quizzes.isEmpty) {
@@ -46,7 +46,7 @@ class ListQuizAdminView extends GetView<EditQuizAdminController> {
                 child: ListTile(
                   title: Text(
                     quiz.title,
-                     style: TextStyle(
+                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),

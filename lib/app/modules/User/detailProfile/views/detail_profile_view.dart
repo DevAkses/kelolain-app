@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import '../controllers/detail_profile_controller.dart';
 
 class DetailProfileView extends GetView<DetailProfileController> {
@@ -24,7 +24,7 @@ class DetailProfileView extends GetView<DetailProfileController> {
       ),
       child: Row(
         children: [
-          Icon(icon, color: AppColors.primaryColor, size: 28),
+          Icon(icon, color: Utils.biruDua, size: 28),
           const SizedBox(width: 15),
           Expanded(
             child: Column(
@@ -60,7 +60,7 @@ class DetailProfileView extends GetView<DetailProfileController> {
       appBar: AppBar(
         title: const Text('Detail Profile'),
         centerTitle: true,
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: Utils.biruDua,
         elevation: 0,
       ),
       body: Obx(() {
@@ -73,7 +73,7 @@ class DetailProfileView extends GetView<DetailProfileController> {
                 Container(
                   height: 200,
                   decoration: const BoxDecoration(
-                    color: AppColors.primaryColor,
+                    color: Utils.biruDua,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(30),
                       bottomRight: Radius.circular(30),
@@ -88,9 +88,9 @@ class DetailProfileView extends GetView<DetailProfileController> {
                           backgroundImage: NetworkImage(
                             controller.userData['profileImageUrl'] ?? 'https://via.placeholder.com/150',
                           ),
-                          backgroundColor: AppColors.abuAbu,
-                          child: controller.userData['profileImageUrl'] == null
-                              ? const Icon(Icons.person, size: 50, color: AppColors.textPutih)
+                          backgroundColor: Utils.backgroundCard,
+                          child: controller.userData['profilePicture'] == null
+                              ? const Icon(Icons.person, size: 50, color: Colors.white)
                               : null,
                         ),
                         const SizedBox(height: 10),
@@ -136,7 +136,7 @@ class DetailProfileView extends GetView<DetailProfileController> {
                         child: ElevatedButton(
                           onPressed: () => Get.toNamed('/edit-profile'),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primaryColor,
+                            backgroundColor: Utils.biruDua,
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -144,7 +144,7 @@ class DetailProfileView extends GetView<DetailProfileController> {
                           ),
                           child: const Text(
                             'Edit Profile',
-                            style: TextStyle(fontSize: 18, color: AppColors.textPutih),
+                            style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ),
                       ),

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/quiz/models/quiz_model.dart';
 import 'package:safeloan/app/modules/User/quiz/views/widgets/question_list.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
+import 'package:safeloan/app/widgets/button_back_leading.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 
 class DescriptionQuizPage extends StatelessWidget {
@@ -14,15 +15,16 @@ class DescriptionQuizPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Get.back(),
+        leading: const ButtonBackLeading(),
+        title: const Text(
+          'Kuis Keuangan',
+          style: Utils.header,
         ),
-        title: const Text('Kuis Manajemen Keuangan'),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.1, vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -63,6 +65,7 @@ class DescriptionQuizPage extends StatelessWidget {
               const SizedBox(height: 8),
               const Text(
                 "Selamat datang di Kuis Manajemen Keuangan Pribadi! Kuis ini dirancang untuk membantu Anda memahami dan mengasah keterampilan manajemen keuangan Anda. Melalui serangkaian pertanyaan interaktif, Anda akan belajar tentang konsep dasar keuangan, seperti anggaran, tabungan, investasi, dan pengelolaan utang.",
+                style: TextStyle(color: Color.fromARGB(255, 151, 151, 151)), textAlign: TextAlign.justify,
               ),
               const SizedBox(height: 25),
               Center(
@@ -78,8 +81,8 @@ class DescriptionQuizPage extends StatelessWidget {
                 child: ButtonWidget(
                   onPressed: () {},
                   nama: "Kerjakan Kuis Lain",
-                  colorBackground: AppColors.primaryColor,
-                  colorText: Colors.white,
+                  colorBackground: Utils.biruLima,
+                  colorText: Utils.biruSatu,
                 ),
               ),
             ],
@@ -90,14 +93,32 @@ class DescriptionQuizPage extends StatelessWidget {
   }
 
   Widget _buildInfoColumn(String value, String label) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        Text(label),
-      ],
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      width: 100,
+      height: 60,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.05),
+            spreadRadius: 0,
+            blurRadius: 30,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            value,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          Text(label),
+        ],
+      ),
     );
   }
 }

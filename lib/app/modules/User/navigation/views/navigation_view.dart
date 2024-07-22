@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/modules/User/analysis/views/analysis_view.dart';
 import 'package:safeloan/app/modules/User/tab_quiz/views/tab_quiz_view.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import '../../finance/views/finance_view.dart';
 import '../../homepage/views/homepage_view.dart';
 import '../../profile/views/profile_view.dart';
@@ -14,63 +14,82 @@ class NavigationView extends GetView<NavigationController> {
   @override
   Widget build(BuildContext context) {
     final NavigationController controller = Get.put(NavigationController());
-
     final List<Widget> pages = [
       HomepageView(),
       const FinanceView(),
+      const AnalysisView(),
       const TabQuizView(),
       const ProfileView(),
     ];
 
     return Obx(() => Scaffold(
           body: pages[controller.selectedIndex.value],
-          bottomNavigationBar: Container(
-            decoration: BoxDecoration(
-              color: AppColors.primaryColor,
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 20,
-                  color: Colors.black.withOpacity(.1),
-                )
-              ],
-            ),
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
-                child: GNav(
-                  rippleColor: Colors.grey[300]!,
-                  hoverColor: Colors.grey[100]!,
-                  gap: 8,
-                  activeColor: AppColors.textHijauTua,
-                  iconSize: 24,
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                  duration: const Duration(milliseconds: 400),
-                  tabBackgroundColor: Colors.grey[300]!,
-                  color: AppColors.textPutih,
-                  tabs: const [
-                    GButton(
-                      icon: Icons.home,
-                      text: 'Home',
+          bottomNavigationBar: SizedBox(
+            height: 91,
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
+                  currentIndex: controller.selectedIndex.value,
+                  onTap: (index) {
+                    if (index != 2) {
+                      controller.changePage(index);
+                    }
+                  },
+                  selectedItemColor: Utils.biruTiga,
+                  unselectedItemColor: Colors.grey,
+                  items: const [
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.home_outlined),
+                      label: 'Beranda',
                     ),
-                    GButton(
-                      icon: Icons.attach_money,
-                      text: 'Finance',
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.attach_money),
+                      label: 'Keuangan',
                     ),
-                    GButton(
-                      icon: Icons.quiz,
-                      text: 'Quiz',
+                    BottomNavigationBarItem(
+                      icon: SizedBox(height: 56),
+                      label: '',
                     ),
-                    GButton(
-                      icon: Icons.person,
-                      text: 'Profile',
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.quiz),
+                      label: 'Gamifikasi',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.person_outline),
+                      label: 'Profil',
                     ),
                   ],
-                  selectedIndex: controller.selectedIndex.value,
-                  onTabChange: (index) {
-                    controller.changePage(index);
-                  },
                 ),
-              ),
+                Positioned(
+                  top: -10,
+                  left: MediaQuery.of(context).size.width / 2 - 30,
+                  child: GestureDetector(
+                    onTap: () {
+                      controller.changePage(2);
+                    },
+                    child: Container(
+                      width: 70,
+                      height: 70,
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Utils.biruTiga,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color.fromRGBO(135, 209, 229, 1).withOpacity(0.7),
+                            spreadRadius: 0,
+                            blurRadius: 30,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: const Image(image: AssetImage('assets/images/maskot.png')),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ));

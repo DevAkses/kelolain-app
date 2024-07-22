@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:safeloan/app/modules/Admin/editQuizAdmin/controllers/edit_quiz_admin_controller.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 
 class EditQuestionView extends StatefulWidget {
   final String quizId;
   final Question question;
 
-  const EditQuestionView({required this.quizId, required this.question, Key? key}) : super(key: key);
+  const EditQuestionView({required this.quizId, required this.question, super.key});
 
   @override
   _EditQuestionViewState createState() => _EditQuestionViewState();
@@ -46,7 +45,7 @@ class _EditQuestionViewState extends State<EditQuestionView> {
         title: const Text('Edit Question', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
         centerTitle: true,
         leading: IconButton(icon: const Icon(Icons.arrow_back, color: Colors.white,), onPressed: ()=> Get.back(),),
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: Utils.biruDua,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

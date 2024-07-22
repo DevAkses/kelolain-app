@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/education/controllers/education_controller.dart';
 import 'package:safeloan/app/modules/User/education/models/article_model.dart';
 import 'package:safeloan/app/modules/User/education/views/detail_article_page.dart';
+import 'package:safeloan/app/utils/warna.dart';
 
 class ArticleWidget extends GetView<EducationController> {
   const ArticleWidget({super.key});
@@ -49,15 +50,14 @@ class ArticleWidget extends GetView<EducationController> {
                   children: [
                     Text(
                       article.title,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 16),
+                      style: Utils.titleStyle,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: 4),
                     Text(
                       previewContent,
-                      style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                      style: Utils.subtitle,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),

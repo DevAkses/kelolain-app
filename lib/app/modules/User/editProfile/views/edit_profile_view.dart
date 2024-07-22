@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/utils/warna.dart';
+import 'package:safeloan/app/widgets/button_widget.dart';
 import '../controllers/edit_profile_controller.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
 
 class EditProfileView extends GetView<EditProfileController> {
   const EditProfileView({Key? key}) : super(key: key);
@@ -10,59 +11,54 @@ class EditProfileView extends GetView<EditProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Profile'),
+        title: const Text('Profile', style: Utils.header),
         centerTitle: true,
-        backgroundColor: AppColors.primaryColor,
         elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: ListView(
           children: [
-            _buildTextField(
+            _buildListTileTextField(
+              icon: Icons.person,
+              label: 'Nama Lengkap',
               controller: controller.fullNameController,
-              label: 'Full Name',
               keyboardType: TextInputType.text,
             ),
             const SizedBox(height: 20),
-            _buildTextField(
+            _buildListTileTextField(
+              icon: Icons.calendar_today,
+              label: 'Umur',
               controller: controller.ageController,
-              label: 'Age',
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 20),
-            _buildTextField(
+            _buildListTileTextField(
+              icon: Icons.work,
+              label: 'Pekerjaan',
               controller: controller.professionController,
-              label: 'Profession',
               keyboardType: TextInputType.text,
             ),
             const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () => controller.saveProfile(),
-              child: const Text('Save'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
+            ButtonWidget(onPressed: () => controller.saveProfile(), nama: "Simpan")
           ],
         ),
       ),
     );
   }
 
-  Widget _buildTextField({
-    required TextEditingController controller,
+  Widget _buildListTileTextField({
+    required IconData icon,
     required String label,
+    required TextEditingController controller,
     required TextInputType keyboardType,
   }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: TextField(
+    return ListTile(
+      leading: CircleAvatar(
+        backgroundColor: Colors.blue.withOpacity(0.1),
+        child: Icon(icon, color: Colors.blue),
+      ),
+      title: TextField(
         controller: controller,
         decoration: InputDecoration(
           labelText: label,

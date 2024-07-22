@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/addFinance/controllers/add_finance_controller.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
-import 'package:safeloan/app/widgets/input_widget.dart';
+import 'package:safeloan/app/widgets/input_akun_widget.dart';
 
 class ExpenseView extends GetView<AddFinanceController> {
   const ExpenseView({super.key});
@@ -19,9 +19,10 @@ class ExpenseView extends GetView<AddFinanceController> {
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
             child: Column(
               children: [
-                InputWidget(
-                  judul: 'Nominal',
-                  hint: '0',
+                InputAkunWidget(
+                  nama: 'Nominal',
+                  hintText: '0',
+                  leadingIcon: Icons.attach_money,
                   controller: controller.nominalC,
                 ),
                 const SizedBox(height: 10),
@@ -30,7 +31,7 @@ class ExpenseView extends GetView<AddFinanceController> {
                   child: Text(
                     'Kategori',
                     style: TextStyle(
-                      color: AppColors.textHijauTua,
+                      color: Utils.biruSatu,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -64,15 +65,17 @@ class ExpenseView extends GetView<AddFinanceController> {
                     ],
                   ),
                 ),
-                InputWidget(
-                  judul: 'Tanggal',
-                  hint: '15/07/2024',
+                InputAkunWidget(
+                  nama: 'Tanggal',
+                  hintText: '15/07/2024',
+                  leadingIcon: Icons.date_range,
                   controller: controller.nominalC,
                 ),
                 const SizedBox(height: 10),
-                InputWidget(
-                  judul: 'Catatan',
-                  hint: 'Masukkan Catatan',
+                InputAkunWidget(
+                  nama: 'Catatan',
+                  hintText: 'Masukkan Catatan',
+                  leadingIcon: Icons.assignment,
                   controller: controller.nominalC,
                 ),
                 const SizedBox(height: 30),
