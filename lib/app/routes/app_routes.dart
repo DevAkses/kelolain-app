@@ -41,6 +41,7 @@ abstract class Routes {
   static const ANALYSIS = _Paths.ANALYSIS;
   static const ANALYSIS_RESULT = _Paths.ANALYSIS_RESULT;
   static const DETAIL_LOAN = _Paths.DETAIL_LOAN;
+  static const SPLASH = _Paths.SPLASH;
 }
 
 abstract class _Paths {
@@ -83,4 +84,5 @@ abstract class _Paths {
   static const ANALYSIS = '/analysis';
   static const ANALYSIS_RESULT = '/analysis-result';
   static const DETAIL_LOAN = '/detail-loan';
+  static const SPLASH = '/splash';
 }

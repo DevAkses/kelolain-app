@@ -18,23 +18,25 @@ class LoginView extends GetView<LoginController> {
       child: Scaffold(
         backgroundColor: Utils.backgroundCard,
         body: Container(
-          margin: const EdgeInsets.only(top: 80),
+          margin: const EdgeInsets.only(top: 30),
           width: lebar,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset(''),
+              Image.asset('assets/images/logo.png'),
             ],
           ),
         ),
         bottomSheet: Container(
-          color: Colors.white,
           height: tinggi * 0.7,
           width: lebar,
+          decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15)
+          ),
           child: Column(
             children: [
               Container(
-                height: 60,
                 width: lebar,
                 margin: EdgeInsets.only(left:lebar *0.1, top: 25, bottom: 20, right: lebar *0.1),
                 child: const Column(

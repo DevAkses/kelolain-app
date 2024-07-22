@@ -38,6 +38,8 @@ import '../modules/User/addLoan/bindings/add_loan_binding.dart';
 import '../modules/User/addLoan/views/add_loan_view.dart';
 import '../modules/User/analysis/bindings/analysis_binding.dart';
 import '../modules/User/analysis/views/analysis_view.dart';
+import '../modules/User/analysis_result/bindings/analysis_result_binding.dart';
+import '../modules/User/analysis_result/views/analysis_result_view.dart';
 import '../modules/User/calculator/bindings/calculator_binding.dart';
 import '../modules/User/calculator/views/calculator_view.dart';
 import '../modules/User/challange_page/bindings/challange_page_binding.dart';
@@ -46,6 +48,8 @@ import '../modules/User/counseling/bindings/counseling_binding.dart';
 import '../modules/User/counseling/views/counseling_view.dart';
 import '../modules/User/daftar_konseling/bindings/daftar_konseling_binding.dart';
 import '../modules/User/daftar_konseling/views/daftar_konseling_view.dart';
+import '../modules/User/detailLoan/bindings/detail_loan_binding.dart';
+import '../modules/User/detailLoan/views/detail_loan_view.dart';
 import '../modules/User/detailProfile/bindings/detail_profile_binding.dart';
 import '../modules/User/detailProfile/views/detail_profile_view.dart';
 import '../modules/User/editLoan/bindings/edit_loan_binding.dart';
@@ -72,10 +76,6 @@ import '../modules/User/tab_counseling/bindings/tab_counseling_binding.dart';
 import '../modules/User/tab_counseling/views/tab_counseling_view.dart';
 import '../modules/User/tab_quiz/bindings/tab_quiz_binding.dart';
 import '../modules/User/tab_quiz/views/tab_quiz_view.dart';
-import '../modules/User/analysis_result/bindings/analysis_result_binding.dart';
-import '../modules/User/analysis_result/views/analysis_result_view.dart';
-import '../modules/User/detailLoan/bindings/detail_loan_binding.dart';
-import '../modules/User/detailLoan/views/detail_loan_view.dart';
 
 part 'app_routes.dart';
 
