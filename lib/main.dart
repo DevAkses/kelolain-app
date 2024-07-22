@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:safeloan/app/widgets/loading.dart';
 import 'package:safeloan/firebase_options.dart';
 import 'package:flutter/foundation.dart';
@@ -44,6 +45,9 @@ class MyApp extends StatelessWidget {
                       return GetMaterialApp(
                         debugShowCheckedModeBanner: false,
                         title: "Application",
+                        theme: ThemeData(
+                            textTheme: GoogleFonts.montserratTextTheme(
+                                Theme.of(context).textTheme)),
                         initialRoute: Routes.NAVIGATION,
                         getPages: AppPages.routes,
                       );
@@ -51,6 +55,9 @@ class MyApp extends StatelessWidget {
                       return GetMaterialApp(
                         debugShowCheckedModeBanner: false,
                         title: "Application",
+                        theme: ThemeData(
+                            textTheme: GoogleFonts.montserratTextTheme(
+                                Theme.of(context).textTheme)),
                         initialRoute: Routes.NAVIGATION_KONSELOR,
                         getPages: AppPages.routes,
                       );
@@ -58,6 +65,9 @@ class MyApp extends StatelessWidget {
                       return GetMaterialApp(
                         debugShowCheckedModeBanner: false,
                         title: "Application",
+                        theme: ThemeData(
+                            textTheme: GoogleFonts.montserratTextTheme(
+                                Theme.of(context).textTheme)),
                         initialRoute: Routes.NAVIGATION_ADMIN,
                         getPages: AppPages.routes,
                       );
@@ -71,6 +81,9 @@ class MyApp extends StatelessWidget {
             return GetMaterialApp(
               debugShowCheckedModeBanner: false,
               title: "Application",
+              theme: ThemeData(
+                  textTheme: GoogleFonts.montserratTextTheme(
+                      Theme.of(context).textTheme)),
               initialRoute: Routes.LOGIN,
               getPages: AppPages.routes,
             );

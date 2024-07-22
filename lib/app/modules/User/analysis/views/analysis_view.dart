@@ -27,21 +27,23 @@ class AnalysisView extends GetView<AnalysisController> {
                 width: Get.width * 0.75,
                 height: 120,
                 decoration: BoxDecoration(
-                  color: const Color.fromRGBO(180, 224, 179, 1),
+                  color: Utils.biruLima,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Text(
-                  'Hi, aku robo. aku adalah asisten virtual AI yang akan mendampingimu di dalam aplikasi ini!',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 15),
+                child: const Center(
+                  child: Text(
+                    'Hi, aku robo-apa. aku adalah asisten virtual AI yang akan mendampingimu di dalam aplikasi Kelola.In!',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ),
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 30),
               const Align(
-                alignment: Alignment.centerRight,
+                alignment: Alignment.center,
                 child: Image(
                   fit: BoxFit.cover,
-                  width: 200,
+                  width: 250,
                   image: AssetImage('assets/images/maskot.png'),
                 ),
               ),

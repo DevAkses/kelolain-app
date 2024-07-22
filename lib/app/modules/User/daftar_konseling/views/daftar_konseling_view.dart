@@ -42,6 +42,7 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
       width: double.infinity,
       margin: const EdgeInsets.all(10),
       child: Card.outlined(
+        color: Utils.backgroundCard,
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
