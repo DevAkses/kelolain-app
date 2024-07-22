@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/quiz/controllers/quiz_controller.dart';
 import 'package:safeloan/app/modules/User/quiz/views/widgets/result_page.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 
 class QuestionList extends GetView<QuizController> {
   final String quizId;
 
-  const QuestionList({Key? key, required this.quizId}) : super(key: key);
+  const QuestionList({super.key, required this.quizId});
 
-  Widget Button(Icon icon, VoidCallback onPressed) {
+  Widget button(Icon icon, VoidCallback onPressed) {
     return Container(
-      margin: EdgeInsets.all(25),
+      margin: const EdgeInsets.all(25),
       width: 80,
       height: 80,
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.textHijauTua,
+            backgroundColor: Utils.biruDua,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
@@ -65,7 +65,8 @@ class QuestionList extends GetView<QuizController> {
                         children: [
                           ListTile(
                             title: Container(
-                              margin: EdgeInsets.only(top: 25, bottom: 25, left: 10),
+                              margin: const EdgeInsets.only(top: 25, bottom: 25, left: 10),
+                              color: Utils.backgroundCard,
                               child: Text(
                                 question.pertanyaan,
                                 style: const TextStyle(
@@ -83,7 +84,7 @@ class QuestionList extends GetView<QuizController> {
                                         tileColor: quizController
                                                     .selectedAnswers[index] ==
                                                 entry.key
-                                            ? AppColors.primaryColor
+                                            ? Utils.biruTiga
                                             : null,
                                         onTap: () {
                                           quizController.selectAnswer(
@@ -96,14 +97,14 @@ class QuestionList extends GetView<QuizController> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 50,),
+                          const SizedBox(height: 50,),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               if (index > 0)
-                                Button(
-                                  Icon(Icons.keyboard_arrow_left,
-                                      color: AppColors.textPutih),
+                                button(
+                                  const Icon(Icons.keyboard_arrow_left,
+                                      color: Colors.white),
                                   () {
                                     pageController.previousPage(
                                       duration:
@@ -113,15 +114,15 @@ class QuestionList extends GetView<QuizController> {
                                   },
                                 )
                               else
-                                SizedBox(
+                                const SizedBox(
                                     width:
                                         80), // Placeholder untuk menjaga layout
 
                               if (index <
                                   quizController.questionList.length - 1)
-                                Button(
-                                  Icon(Icons.keyboard_arrow_right,
-                                      color: AppColors.textPutih),
+                                button(
+                                  const Icon(Icons.keyboard_arrow_right,
+                                      color: Colors.white),
                                   () {
                                     pageController.nextPage(
                                       duration:
@@ -132,15 +133,15 @@ class QuestionList extends GetView<QuizController> {
                                 )
                               else if (index ==
                                   quizController.questionList.length - 1)
-                                Button(
-                                  Icon(Icons.save, color: AppColors.textPutih),
+                                button(
+                                  const Icon(Icons.save, color: Colors.white),
                                   () async {
                                     await quizController.checkAnswer(quizId);
                                     Get.off(ResultPage(quizId: quizId));
                                   },
                                 )
                               else
-                                SizedBox(
+                                const SizedBox(
                                     width:
                                         80), // Placeholder untuk menjaga layout
                             ],

@@ -1,9 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
   const ProfileView({super.key});
+
+  Widget buildListTile({
+    required IconData leadingIcon,
+    required String titleText,
+    required IconData trailingIcon,
+    required VoidCallback onTap,
+    Color leadingIconColor = Colors.black,
+    Color trailingIconColor = Colors.black,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Utils.biruLima,
+          child: Icon(leadingIcon, color: leadingIconColor)),
+        title: Text(
+          titleText,
+          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+        ),
+        trailing: Icon(trailingIcon, color: trailingIconColor),
+        onTap: onTap,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,35 +50,25 @@ class ProfileView extends GetView<ProfileController> {
                 ),
               ),
               const SizedBox(height: 180),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: ListTile(
-                  leading: const Icon(Icons.person_rounded, color: Colors.blueGrey),
-                  title: const Text(
-                    "Profil Lengkap",
-                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
-                  ),
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    Get.toNamed('/detail-profile');
-                  },
-                ),
+              buildListTile(
+                leadingIcon: Icons.person_rounded,
+                leadingIconColor: Colors.blueGrey,
+                titleText: "Profil Lengkap",
+                trailingIcon: Icons.arrow_forward_ios,
+                onTap: () {
+                  Get.toNamed('/detail-profile');
+                },
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 25),
                 child: Divider(),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: ListTile(
-                  leading: const Icon(Icons.delete, color: Colors.red),
-                  title: const Text(
-                    "Hapus akun",
-                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
-                  ),
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                  onTap: () => profileController.deleteAccount(),
-                ),
+              buildListTile(
+                leadingIcon: Icons.delete,
+                leadingIconColor: Colors.red,
+                titleText: "Hapus akun",
+                trailingIcon: Icons.arrow_forward_ios,
+                onTap: () => profileController.deleteAccount(),
               ),
               const Spacer(),
               Padding(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
+import 'package:safeloan/app/widgets/input_akun_widget.dart';
 import '../controllers/edit_loan_controller.dart';
 
 class EditLoanView extends GetView<EditLoanController> {

@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import '../../editArticleAdmin/views/edit_article_admin_view.dart';
 import '../../editChallengeAdmin/views/edit_challenge_admin_view.dart';
 import '../../editQuizAdmin/views/list_quiz_admin_view.dart';
 import '../../editVideoAdmin/views/edit_video_admin_view.dart';
 import '../controllers/homepage_admin_controller.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
 
 class HomepageAdminView extends GetView<HomepageAdminController> {
-  const HomepageAdminView({Key? key}) : super(key: key);
+  const HomepageAdminView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Admin Homepage', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: Utils.biruDua,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -60,7 +60,7 @@ class HomepageAdminView extends GetView<HomepageAdminController> {
       child: Container(
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
-          color: AppColors.textPutih,
+          color: Colors.white,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
@@ -76,13 +76,13 @@ class HomepageAdminView extends GetView<HomepageAdminController> {
             Icon(
               icon,
               size: 40,
-              color: AppColors.primaryColor,
+              color: Utils.biruDua,
             ),
             const SizedBox(width: 16),
             Text(
               label,
               style: const TextStyle(
-                color: AppColors.textHijauTua,
+                color: Utils.biruSatu,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),

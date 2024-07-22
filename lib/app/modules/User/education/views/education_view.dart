@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/education/controllers/education_controller.dart';
 import 'package:safeloan/app/modules/User/education/views/article_view.dart';
 import 'package:safeloan/app/modules/User/education/views/video_view.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
+import 'package:safeloan/app/widgets/button_back_leading.dart';
 
 class EducationView extends GetView<EducationController> {
   const EducationView({super.key});
@@ -16,18 +17,10 @@ class EducationView extends GetView<EducationController> {
         appBar: AppBar(
           title: const Text(
             'Edukasi',
-            style: TextStyle(
-                color: AppColors.textPutih, fontWeight: FontWeight.bold),
+            style: Utils.header,
           ),
           centerTitle: true,
-          backgroundColor: AppColors.primaryColor,
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: AppColors.textPutih,
-            ),
-            onPressed: () => Get.back(),
-          ),
+          leading: const ButtonBackLeading()
         ),
         body: Column(
           children: [
@@ -47,10 +40,10 @@ class EducationView extends GetView<EducationController> {
                 ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(15),
                 child: const TabBar(
                   indicator: BoxDecoration(
-                    color: Colors.green,
+                    color: Utils.biruTiga,
                   ),
                   labelColor: Colors.white,
                   unselectedLabelColor: Colors.black,

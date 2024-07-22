@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/Admin/editQuizAdmin/controllers/edit_quiz_admin_controller.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 
 class EditQuizView extends StatefulWidget {
@@ -32,7 +32,7 @@ class _EditQuizViewState extends State<EditQuizView> {
         title: const Text('Edit Quiz', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
         centerTitle: true,
         leading: IconButton(icon: const Icon(Icons.arrow_back, color: Colors.white,), onPressed: ()=> Get.back(),),
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: Utils.biruDua,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

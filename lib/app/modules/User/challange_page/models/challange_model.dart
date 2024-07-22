@@ -8,6 +8,7 @@ class Challenge {
   final int requiredCount;
   final String category;
   final DateTime createdAt;
+  final String imageChallenge;
 
   Challenge({
     required this.id,
@@ -17,6 +18,7 @@ class Challenge {
     required this.requiredCount,
     required this.category,
     required this.createdAt,
+    required this.imageChallenge,
   });
 
   factory Challenge.fromDocument(DocumentSnapshot doc) {
@@ -29,6 +31,7 @@ class Challenge {
       requiredCount: data['requiredCount'],
       category: data['category'],
       createdAt: (data['createdAt'] as Timestamp).toDate(),
+      imageChallenge: data['imageChallenge'] ?? '',
     );
   }
 }

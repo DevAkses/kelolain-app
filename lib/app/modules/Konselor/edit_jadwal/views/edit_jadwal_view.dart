@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/counseling/models/counseling.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import '../controllers/edit_jadwal_controller.dart';
 
 class EditJadwalView extends GetView<EditJadwalController> {
@@ -137,7 +137,7 @@ class EditJadwalView extends GetView<EditJadwalController> {
               onPressed: () {
                 _showAddScheduleDialog(context);
               },
-              backgroundColor: AppColors.textHijauTua,
+              backgroundColor: Utils.biruSatu,
               child: const Icon(Icons.add, color: Colors.white),
             ),
           ),

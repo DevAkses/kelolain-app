@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 import '../controllers/education_admin_controller.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
 
 class EducationAdminView extends GetView<EducationAdminController> {
   const EducationAdminView({super.key});
@@ -15,8 +15,8 @@ class EducationAdminView extends GetView<EducationAdminController> {
       length: 2, // Number of tabs
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Edukasi", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-          backgroundColor: AppColors.primaryColor,
+          title: const Text("Edukasi", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+          backgroundColor: Utils.biruDua,
         ),
         body: Column(
           children: [
@@ -77,7 +77,7 @@ class EducationAdminView extends GetView<EducationAdminController> {
           SizedBox(
             child: ElevatedButton(
               onPressed: () => controller.pickImage(),
-              child: Text('Select Image'),
+              child: const Text('Select Image'),
             ),
           ),
           const SizedBox(height: 10),
@@ -121,14 +121,14 @@ class EducationAdminView extends GetView<EducationAdminController> {
         controller: controller,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: TextStyle(color: AppColors.abuAbu),
+          labelStyle: const TextStyle(color: Utils.backgroundCard),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: AppColors.abuAbu),
+            borderSide: const BorderSide(color: Utils.backgroundCard),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: AppColors.primaryColor),
+            borderSide: const BorderSide(color: Utils.biruDua),
           ),
         ),
       ),
@@ -166,12 +166,12 @@ class EducationAdminView extends GetView<EducationAdminController> {
                 height: 150,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: AppColors.abuAbu.withOpacity(0.2),
+                  color: Utils.backgroundCard.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.abuAbu),
+                  border: Border.all(color: Utils.backgroundCard),
                 ),
-                child: Center(
-                  child: const Text('No image selected', style: TextStyle(color: AppColors.abuAbu)),
+                child: const Center(
+                  child: Text('No image selected', style: TextStyle(color: Utils.backgroundCard)),
                 ),
               ),
         Positioned(
