@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/modules/User/analysis/views/analysis_view.dart';
 import 'package:safeloan/app/modules/User/tab_quiz/views/tab_quiz_view.dart';
 import '../../finance/views/finance_view.dart';
 import '../../homepage/views/homepage_view.dart';
@@ -16,7 +17,9 @@ class NavigationView extends GetView<NavigationController> {
     final List<Widget> pages = [
       HomepageView(),
       const FinanceView(),
+      const AnalysisView(),
       const TabQuizView(),
+
       const ProfileView(),
     ];
 
@@ -25,6 +28,7 @@ class NavigationView extends GetView<NavigationController> {
           bottomNavigationBar: NavigationBar(
             onDestinationSelected: controller.changePage,
             selectedIndex: controller.selectedIndex.value,
+            indicatorColor: Colors.white.withOpacity(0),
             destinations: [
               NavigationDestination(
                 icon: Icon(Icons.home_outlined),
