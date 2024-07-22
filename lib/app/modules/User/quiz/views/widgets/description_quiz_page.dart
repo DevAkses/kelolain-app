@@ -15,13 +15,16 @@ class DescriptionQuizPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: ButtonBackLeading(),
-        title: const Text('Kuis Keuangan', style: Utils.header,),
+        leading: const ButtonBackLeading(),
+        title: const Text(
+          'Kuis Keuangan',
+          style: Utils.header,
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.1, vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -62,6 +65,7 @@ class DescriptionQuizPage extends StatelessWidget {
               const SizedBox(height: 8),
               const Text(
                 "Selamat datang di Kuis Manajemen Keuangan Pribadi! Kuis ini dirancang untuk membantu Anda memahami dan mengasah keterampilan manajemen keuangan Anda. Melalui serangkaian pertanyaan interaktif, Anda akan belajar tentang konsep dasar keuangan, seperti anggaran, tabungan, investasi, dan pengelolaan utang.",
+                style: TextStyle(color: Color.fromARGB(255, 151, 151, 151)), textAlign: TextAlign.justify,
               ),
               const SizedBox(height: 25),
               Center(
@@ -89,14 +93,32 @@ class DescriptionQuizPage extends StatelessWidget {
   }
 
   Widget _buildInfoColumn(String value, String label) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        Text(label),
-      ],
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      width: 100,
+      height: 60,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.05),
+            spreadRadius: 0,
+            blurRadius: 30,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            value,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          Text(label),
+        ],
+      ),
     );
   }
 }

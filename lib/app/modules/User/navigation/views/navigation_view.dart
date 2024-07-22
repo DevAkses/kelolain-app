@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/modules/User/analysis/views/analysis_view.dart';
 import 'package:safeloan/app/modules/User/tab_quiz/views/tab_quiz_view.dart';
 import '../../finance/views/finance_view.dart';
 import '../../homepage/views/homepage_view.dart';
@@ -16,6 +17,7 @@ class NavigationView extends GetView<NavigationController> {
     final List<Widget> pages = [
       HomepageView(),
       const FinanceView(),
+      const AnalysisView(),
       const TabQuizView(),
       const ProfileView(),
     ];
