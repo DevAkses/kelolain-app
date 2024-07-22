@@ -24,14 +24,20 @@ import '../modules/Auth/register/bindings/register_binding.dart';
 import '../modules/Auth/register/views/register_view.dart';
 import '../modules/Auth/resetPassword/bindings/reset_password_binding.dart';
 import '../modules/Auth/resetPassword/views/reset_password_view.dart';
+import '../modules/Konselor/edit_jadwal/bindings/edit_jadwal_binding.dart';
+import '../modules/Konselor/edit_jadwal/views/edit_jadwal_view.dart';
 import '../modules/Konselor/homepageKonselor/bindings/homepage_konselor_binding.dart';
 import '../modules/Konselor/homepageKonselor/views/homepage_konselor_view.dart';
 import '../modules/Konselor/navigationKonselor/bindings/navigation_konselor_binding.dart';
 import '../modules/Konselor/navigationKonselor/views/navigation_konselor_view.dart';
 import '../modules/Konselor/profileKonselor/bindings/profile_konselor_binding.dart';
 import '../modules/Konselor/profileKonselor/views/profile_konselor_view.dart';
+import '../modules/User/addFinance/bindings/add_finance_binding.dart';
+import '../modules/User/addFinance/views/add_finance_view.dart';
 import '../modules/User/addLoan/bindings/add_loan_binding.dart';
 import '../modules/User/addLoan/views/add_loan_view.dart';
+import '../modules/User/analysis/bindings/analysis_binding.dart';
+import '../modules/User/analysis/views/analysis_view.dart';
 import '../modules/User/calculator/bindings/calculator_binding.dart';
 import '../modules/User/calculator/views/calculator_view.dart';
 import '../modules/User/challange_page/bindings/challange_page_binding.dart';
@@ -66,10 +72,10 @@ import '../modules/User/tab_counseling/bindings/tab_counseling_binding.dart';
 import '../modules/User/tab_counseling/views/tab_counseling_view.dart';
 import '../modules/User/tab_quiz/bindings/tab_quiz_binding.dart';
 import '../modules/User/tab_quiz/views/tab_quiz_view.dart';
-import '../modules/User/addFinance/bindings/add_finance_binding.dart';
-import '../modules/User/addFinance/views/add_finance_view.dart';
-import '../modules/Konselor/edit_jadwal/bindings/edit_jadwal_binding.dart';
-import '../modules/Konselor/edit_jadwal/views/edit_jadwal_view.dart';
+import '../modules/User/analysis_result/bindings/analysis_result_binding.dart';
+import '../modules/User/analysis_result/views/analysis_result_view.dart';
+import '../modules/User/detailLoan/bindings/detail_loan_binding.dart';
+import '../modules/User/detailLoan/views/detail_loan_view.dart';
 
 part 'app_routes.dart';
 
@@ -206,7 +212,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.QUIZ_ADMIN,
-      page: () => QuizAdminView(),
+      page: () => const QuizAdminView(),
       binding: QuizAdminBinding(),
     ),
     GetPage(
@@ -253,6 +259,21 @@ class AppPages {
       name: _Paths.EDIT_JADWAL,
       page: () => const EditJadwalView(),
       binding: EditJadwalBinding(),
+    ),
+    GetPage(
+      name: _Paths.ANALYSIS,
+      page: () => const AnalysisView(),
+      binding: AnalysisBinding(),
+    ),
+    GetPage(
+      name: _Paths.ANALYSIS_RESULT,
+      page: () => const AnalysisResultView(),
+      binding: AnalysisResultBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL_LOAN,
+      page: () => const DetailLoanView(),
+      binding: DetailLoanBinding(),
     ),
   ];
 }

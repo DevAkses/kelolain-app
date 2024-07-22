@@ -48,9 +48,11 @@ class HomepageView extends GetView<HomepageController> {
       appBar: AppBar(
         backgroundColor: Utils.biruDua,
         title: ListTile(
-            leading: CircleAvatar(
-              child: Image.network('https://via.placeholder.com/60'),
-            ),
+            leading: Obx(() {
+              return CircleAvatar(
+                child: Image.network('https://via.placeholder.com/60'),
+              );
+            }),
             title: const Text(
               "Selamat Datang",
               style: TextStyle(color: Colors.white),

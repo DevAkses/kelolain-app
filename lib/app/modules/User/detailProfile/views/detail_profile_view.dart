@@ -86,7 +86,7 @@ class DetailProfileView extends GetView<DetailProfileController> {
                         CircleAvatar(
                           radius: 50,
                           backgroundImage: NetworkImage(
-                            controller.userData['profilePicture'] ?? 'https://via.placeholder.com/150',
+                            controller.userData['profileImageUrl'] ?? 'https://via.placeholder.com/150',
                           ),
                           backgroundColor: Utils.backgroundCard,
                           child: controller.userData['profilePicture'] == null
@@ -144,7 +144,7 @@ class DetailProfileView extends GetView<DetailProfileController> {
                           ),
                           child: const Text(
                             'Edit Profile',
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ),
                       ),
