@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 import 'package:safeloan/app/widgets/input_akun_widget.dart';
 import '../controllers/reset_password_controller.dart';
@@ -14,10 +14,10 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
     var lebar = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: Utils.biruDua,
         leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => Get.back(),),
       ),
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: Utils.biruDua,
       body: Container(
         margin: EdgeInsets.only(top: tinggi*0.05),
         width: lebar,
@@ -30,7 +30,7 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
         ),
       ),
       bottomSheet: SizedBox(
-        height: tinggi*0.6,
+        height: tinggi*0.75,
         width: lebar,
         child: SizedBox(
           width: lebar,
@@ -50,10 +50,10 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Belum punya akun?", style: TextStyle(fontWeight: FontWeight.w400, color: AppColors.primaryColor),),
+                  const Text("Belum punya akun?", style: TextStyle(fontWeight: FontWeight.w400, color: Utils.biruDua),),
                   TextButton(
                     onPressed: () => Get.back(),
-                    child: const Text("Masuk", style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.textHijauTua)),
+                    child: const Text("Masuk", style: TextStyle(fontWeight: FontWeight.bold, color: Utils.biruSatu)),
                   ),
                 ],
               ),

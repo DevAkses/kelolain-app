@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 import 'package:safeloan/app/widgets/input_akun_widget.dart';
 import '../controllers/register_controller.dart';
@@ -23,13 +23,13 @@ class RegisterView extends GetView<RegisterController> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: Utils.biruDua,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Get.back(),
         ),
       ),
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: Utils.biruDua,
       body: Container(
         margin: EdgeInsets.only(top: tinggi * 0.05),
         width: lebar,
@@ -96,14 +96,14 @@ class RegisterView extends GetView<RegisterController> {
                   "Sudah punya akun?",
                   style: TextStyle(
                       fontWeight: FontWeight.w400,
-                      color: AppColors.primaryColor),
+                      color: Utils.biruDua),
                 ),
                 TextButton(
                   onPressed: () => Get.back(),
                   child: const Text("Daftar",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: AppColors.textHijauTua)),
+                          color: Utils.biruSatu)),
                 ),
               ],
             ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safeloan/app/utils/AppColors.dart';
+import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 import 'package:safeloan/app/widgets/input_akun_widget.dart';
 import '../../../../routes/app_pages.dart';
@@ -16,9 +16,9 @@ class LoginView extends GetView<LoginController> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: Utils.biruDua,
       ),
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: Utils.biruDua,
       body: Container(
         margin: EdgeInsets.only(top: tinggi*0.05),
         width: lebar,
@@ -31,7 +31,7 @@ class LoginView extends GetView<LoginController> {
         ),
       ),
       bottomSheet: SizedBox(
-        height: tinggi * 0.6,
+        height: tinggi * 0.75,
         width: lebar,
         child: Column(
           children: [
@@ -60,7 +60,7 @@ class LoginView extends GetView<LoginController> {
                     child: const Text("Lupa Password",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: AppColors.textHijauTua)),
+                            color: Utils.biruSatu)),
                   ),
                 ),
               ],
@@ -79,14 +79,14 @@ class LoginView extends GetView<LoginController> {
                   "Belum punya akun?",
                   style: TextStyle(
                       fontWeight: FontWeight.w400,
-                      color: AppColors.primaryColor),
+                      color: Utils.biruDua),
                 ),
                 TextButton(
                   onPressed: () => Get.toNamed(Routes.REGISTER),
                   child: const Text("Daftar",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: AppColors.textHijauTua)),
+                          color: Utils.biruSatu)),
                 ),
               ],
             ),
