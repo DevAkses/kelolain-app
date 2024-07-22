@@ -1,37 +1,78 @@
 import 'package:flutter/material.dart';
-import 'package:safeloan/app/utils/warna.dart';
 
-class InputWidget extends StatelessWidget {
-  final String judul;
-  final String hint;
+class InputAkunWidget extends StatefulWidget {
   final TextEditingController controller;
+  final String nama;
+  final String hintText;
+  final IconData leadingIcon;
+  final bool isPassword;
 
-  const InputWidget(
-      {super.key,
-      required this.judul,
-      required this.hint,
-      required this.controller});
+  const InputAkunWidget({
+    Key? key,
+    required this.controller,
+    required this.nama,
+    required this.hintText,
+    required this.leadingIcon,
+    this.isPassword = false,
+  }) : super(key: key);
+
+  @override
+  _InputAkunWidgetState createState() => _InputAkunWidgetState();
+}
+
+class _InputAkunWidgetState extends State<InputAkunWidget> {
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
-    var lebar = MediaQuery.of(context).size.width * 0.8;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(judul, style: const TextStyle(color: Utils.biruSatu, fontSize: 16, fontWeight: FontWeight.bold),),
-        const SizedBox(height: 5),
-        SizedBox(
-          height: 50,
-          width: lebar,
-          child: TextField(
-            controller: controller,
-            decoration: InputDecoration(
-              hintText: hint,
-              border: const OutlineInputBorder()
+    var lebar = MediaQuery.of(context).size.width *0.1;
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: lebar),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.nama,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
             ),
           ),
-        ),
-      ],
+          const SizedBox(height: 8),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: TextField(
+              controller: widget.controller,
+              obscureText: widget.isPassword ? _obscureText : false,
+              keyboardType: widget.isPassword ? TextInputType.visiblePassword : TextInputType.emailAddress,
+              decoration: InputDecoration(
+                hintText: widget.hintText,
+                hintStyle: TextStyle(color: Colors.grey[400]),
+                prefixIcon: Icon(widget.leadingIcon, color: Colors.grey[600]),
+                suffixIcon: widget.isPassword
+                    ? IconButton(
+                        icon: Icon(
+                          _obscureText ? Icons.visibility_off : Icons.visibility,
+                          color: Colors.grey[600],
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscureText = !_obscureText;
+                          });
+                        },
+                      )
+                    : null,
+                border: InputBorder.none,
+                contentPadding: const EdgeInsets.symmetric(vertical: 12),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

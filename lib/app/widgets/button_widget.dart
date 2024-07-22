@@ -13,7 +13,7 @@ class ButtonWidget extends StatelessWidget {
       required this.onPressed,
       required this.nama,
       this.colorText = Colors.white,
-      this.colorBackground = Utils.biruDua // Warna default adalah biru
+      this.colorBackground = Utils.biruSatu // Warna default adalah biru
       });
 
   @override

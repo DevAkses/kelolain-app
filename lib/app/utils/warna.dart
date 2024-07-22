@@ -7,7 +7,6 @@ class Utils {
   static const Color biruEmpat = Color.fromARGB(255, 136, 205, 246);
   static const Color biruLima = Color.fromARGB(255, 188, 230, 255);
   static const Color backgroundCard = Color.fromARGB(255, 246, 248, 251);
-  
   static const TextStyle titleStyle = TextStyle(
     color: Colors.black,
     fontWeight: FontWeight.bold,

@@ -17,9 +17,10 @@ class IncomeView extends GetView<AddFinanceController> {
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
             child: Column(
               children: [
-                InputWidget(
-                  judul: 'Nominal',
-                  hint: '0',
+                InputAkunWidget(
+                  nama: 'Nominal',
+                  hintText: '0',
+                  leadingIcon: Icons.attach_money,
                   controller: controller.nominalC,
                 ),
                 const SizedBox(height: 10),
@@ -62,15 +63,17 @@ class IncomeView extends GetView<AddFinanceController> {
                     ],
                   ),
                 ),
-                InputWidget(
-                  judul: 'Tanggal',
-                  hint: '15/07/2024',
+                InputAkunWidget(
+                  nama: 'Tanggal',
+                  hintText: '15/07/2024',
+                  leadingIcon: Icons.date_range,
                   controller: controller.nominalC,
                 ),
                 const SizedBox(height: 10),
-                InputWidget(
-                  judul: 'Catatan',
-                  hint: 'Masukkan Catatan',
+                InputAkunWidget(
+                  nama: 'Catatan',
+                  hintText: 'Masukkan Catatan',
+                  leadingIcon: Icons.assignment,
                   controller: controller.nominalC,
                 ),
                 const SizedBox(height: 30),

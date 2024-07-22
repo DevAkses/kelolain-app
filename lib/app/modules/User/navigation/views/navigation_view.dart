@@ -19,6 +19,7 @@ class NavigationView extends GetView<NavigationController> {
       const FinanceView(),
       const AnalysisView(),
       const TabQuizView(),
+
       const ProfileView(),
     ];
 
@@ -27,6 +28,7 @@ class NavigationView extends GetView<NavigationController> {
           bottomNavigationBar: NavigationBar(
             onDestinationSelected: controller.changePage,
             selectedIndex: controller.selectedIndex.value,
+            indicatorColor: Colors.white.withOpacity(0),
             destinations: [
               NavigationDestination(
                 icon: Icon(Icons.home_outlined),
