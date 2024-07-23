@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/modules/User/finance/views/widgets/expense_view.dart';
 import 'package:safeloan/app/utils/warna.dart';
 
 class PengeluaranListPage extends StatelessWidget {
@@ -10,15 +11,16 @@ class PengeluaranListPage extends StatelessWidget {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Utils.backgroundCard,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: const Offset(0, 2),
+            color: Colors.grey.withOpacity(0.05),
+            spreadRadius: 0,
+            blurRadius: 30,
+            offset: const Offset(0, 5),
           ),
         ],
       ),
@@ -108,7 +110,7 @@ class PengeluaranListPage extends StatelessWidget {
             right: 20,
             child: FloatingActionButton(
               onPressed: () {
-                Get.toNamed('/add-finance', arguments: 1);
+                Get.to(ExpenseView());
               },
               backgroundColor: Utils.biruDua,
               child: const Icon(Icons.add, color: Colors.white),

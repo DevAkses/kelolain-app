@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/Admin/editQuizAdmin/controllers/edit_quiz_admin_controller.dart';
 import 'package:safeloan/app/utils/warna.dart';
+import 'package:safeloan/app/widgets/button_back_leading.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 
 class EditQuizView extends StatefulWidget {
@@ -29,10 +30,9 @@ class _EditQuizViewState extends State<EditQuizView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Quiz', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+        leading: const ButtonBackLeading(),
+        title: const Text('Edit Quiz', style: Utils.header),
         centerTitle: true,
-        leading: IconButton(icon: const Icon(Icons.arrow_back, color: Colors.white,), onPressed: ()=> Get.back(),),
-        backgroundColor: Utils.biruDua,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

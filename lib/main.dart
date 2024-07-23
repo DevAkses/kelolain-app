@@ -53,7 +53,10 @@ class MyApp extends StatelessWidget {
                       debugShowCheckedModeBanner: false,
                       theme: ThemeData(
                           textTheme: GoogleFonts.montserratTextTheme(
-                              Theme.of(context).textTheme)),
+                              Theme.of(context).textTheme), appBarTheme: const AppBarTheme(
+                            backgroundColor: Colors.white,
+                          ),
+                          scaffoldBackgroundColor: Colors.white,),
                       title: "Application",
                       home: SplashView(nextRoute: nextRoute),
                       getPages: AppPages.routes,
@@ -68,7 +71,11 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
                   textTheme: GoogleFonts.montserratTextTheme(
-                      Theme.of(context).textTheme)),
+                      Theme.of(context).textTheme),
+                      appBarTheme: const AppBarTheme(
+                            backgroundColor: Colors.white,
+                          ),
+                          scaffoldBackgroundColor: Colors.white,),
               title: "Application",
               home: SplashView(nextRoute: Routes.LOGIN),
               getPages: AppPages.routes,

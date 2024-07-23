@@ -23,13 +23,16 @@ class NavigationView extends GetView<NavigationController> {
     ];
 
     return Obx(() => Scaffold(
+      
           body: pages[controller.selectedIndex.value],
           bottomNavigationBar: SizedBox(
+            
             height: 65,
             child: Stack(
               clipBehavior: Clip.none,
               children: [
                 BottomNavigationBar(
+                  backgroundColor: Utils.backgroundCard,
                   type: BottomNavigationBarType.fixed,
                   currentIndex: controller.selectedIndex.value,
                   onTap: (index) {
@@ -39,25 +42,61 @@ class NavigationView extends GetView<NavigationController> {
                   },
                   selectedItemColor: Utils.biruTiga,
                   unselectedItemColor: Colors.grey,
-                  items: const [
+                  items: [
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.home_outlined),
+                      icon: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        child: controller.selectedIndex.value == 0
+                            ? const Icon(
+                                Icons.home,
+                              )
+                            : const Icon(
+                                Icons.home_outlined,
+                              ),
+                      ),
                       label: 'Beranda',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.attach_money),
+                      icon: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        child: controller.selectedIndex.value == 1
+                            ? const Icon(
+                                Icons.account_balance_wallet,
+                              )
+                            : const Icon(
+                                Icons.account_balance_wallet_outlined,
+                              ),
+                      ),
                       label: 'Keuangan',
                     ),
-                    BottomNavigationBarItem(
+                    const BottomNavigationBarItem(
                       icon: SizedBox(height: 30),
                       label: '',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.quiz),
+                      icon: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        child: controller.selectedIndex.value == 3
+                            ? const Icon(
+                                Icons.quiz,
+                              )
+                            : const Icon(
+                                Icons.quiz_outlined,
+                              ),
+                      ),
                       label: 'Gamifikasi',
                     ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.person_outline),
+                     BottomNavigationBarItem(
+                      icon: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        child: controller.selectedIndex.value == 4
+                            ? const Icon(
+                                Icons.person,
+                              )
+                            : const Icon(
+                                Icons.person_outlined,
+                              ),
+                      ),
                       label: 'Profil',
                     ),
                   ],
@@ -78,14 +117,16 @@ class NavigationView extends GetView<NavigationController> {
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: const Color.fromRGBO(135, 209, 229, 1).withOpacity(0.7),
+                            color: const Color.fromRGBO(135, 209, 229, 1)
+                                .withOpacity(0.7),
                             spreadRadius: 0,
                             blurRadius: 30,
                             offset: const Offset(0, 5),
                           ),
                         ],
                       ),
-                      child: const Image(image: AssetImage('assets/images/maskot.png')),
+                      child: const Image(
+                          image: AssetImage('assets/images/maskot.png')),
                     ),
                   ),
                 ),

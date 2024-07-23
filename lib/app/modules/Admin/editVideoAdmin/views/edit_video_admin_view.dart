@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/utils/warna.dart';
+import 'package:safeloan/app/widgets/button_back_leading.dart';
 import '../controllers/edit_video_admin_controller.dart';
 
 class EditVideoAdminView extends GetView<EditVideoAdminController> {
@@ -9,14 +10,12 @@ class EditVideoAdminView extends GetView<EditVideoAdminController> {
 
   @override
   Widget build(BuildContext context) {
-    EditVideoAdminController controller =
-        Get.put(EditVideoAdminController());
+    EditVideoAdminController controller = Get.put(EditVideoAdminController());
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Videos', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        leading: const ButtonBackLeading(),
+        title: const Text('Daftar Video', style: Utils.header),
         centerTitle: true,
-        leading: IconButton(icon: const Icon(Icons.arrow_back, color: Colors.white,), onPressed: ()=> Get.back(),),
-        backgroundColor: Utils.biruDua,
       ),
       body: StreamBuilder(
         stream: controller.getVideosStream(),
@@ -32,13 +31,23 @@ class EditVideoAdminView extends GetView<EditVideoAdminController> {
             itemBuilder: (context, index) {
               var video = snapshot.data!.docs[index];
               return Container(
-                margin: const EdgeInsets.symmetric(vertical: 0.6, horizontal: 5),
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                child: Card.outlined(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
+                margin:
+                    const EdgeInsets.symmetric(vertical: 0.6, horizontal: 5),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Utils.backgroundCard,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.1),
+                        spreadRadius: 0,
+                        blurRadius: 20,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
                   ),
-                  elevation: 2,
                   child: ListTile(
                     title: Text(
                       video['title'],
@@ -47,7 +56,11 @@ class EditVideoAdminView extends GetView<EditVideoAdminController> {
                         fontSize: 18,
                       ),
                     ),
-                    subtitle: Text(video['description'], maxLines: 2, overflow: TextOverflow.ellipsis,),
+                    subtitle: Text(
+                      video['description'],
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [

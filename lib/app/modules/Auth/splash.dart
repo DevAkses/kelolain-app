@@ -30,7 +30,7 @@ class SplashView extends StatelessWidget {
             Image.asset(
               "assets/images/logo.png",
             ),
-            Text(
+            const Text(
               "Kelola.In",
               style: TextStyle(
                 color: Utils.biruSatu,

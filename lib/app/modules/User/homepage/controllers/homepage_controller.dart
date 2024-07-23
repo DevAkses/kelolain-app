@@ -15,21 +15,23 @@ class HomepageController extends GetxController {
   var articleImages = <Article>[].obs; // Daftar artikel
   
   void startImageSlider() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(Duration(seconds: 4)).then((_) {
-        if (articleImages.isNotEmpty) {
-          currentImageIndex.value =
-              (currentImageIndex.value + 1) % articleImages.length;
-          pageController.animateToPage(
-            currentImageIndex.value,
-            duration: Duration(milliseconds: 500),
-            curve: Curves.easeInOut,
-          );
-          startImageSlider(); // Restart the slider
-        }
-      });
-    });
-  }
+  Future.delayed(const Duration(seconds: 3), () {
+    if (pageController.hasClients) {
+      int nextPage = (pageController.page?.round() ?? 0) + 1;
+      if (nextPage >= articleImages.length) {
+        nextPage = 0;
+      }
+      if (pageController.hasClients) {
+        pageController.animateToPage(
+          nextPage,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeIn,
+        );
+      }
+    }
+    startImageSlider();
+  });
+}
 
   void changeFilter(String filter) {
     selectedFilter.value = filter;
@@ -45,6 +47,13 @@ class HomepageController extends GetxController {
     pageController = PageController(); // Initialize pageController
     loadArticles();
   }
+
+  @override
+void onClose() {
+  pageController.dispose();
+  // Hentikan timer jika Anda menggunakan timer untuk slider otomatis
+  super.onClose();
+}
 
   void loadArticles() async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;

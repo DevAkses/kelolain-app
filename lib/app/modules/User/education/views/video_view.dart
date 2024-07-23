@@ -10,43 +10,48 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 class VideoWidget extends GetView<EducationController> {
   const VideoWidget({super.key});
 
-Widget _buildVideoItem(Video video, VoidCallback onTap) {
-  return InkWell(
-    onTap: onTap,
-    child: Column(
-      children: [
-        Image.network(
-          video.link,
-          height: 220,
-          width: double.infinity,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) {
-            return Container(
-              height: 220,
-              width: double.infinity,
-              color: Colors.grey[300],
-              child: Icon(Icons.video_library, color: Colors.grey[500], size: 50),
-            );
-          },
-        ),
-        ListTile(
-          leading: CircleAvatar(
-            backgroundImage: NetworkImage(""), // Asumsikan sumber adalah URL avatar channel
-            child: Icon(Icons.person),
+  Widget _buildVideoItem(Video video, String videoId, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Image.network(
+            'https://img.youtube.com/vi/${videoId}/mqdefault.jpg',
+            height: 220,
+            width: double.infinity,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                height: 220,
+                width: double.infinity,
+                color: Colors.grey[300],
+                child: Icon(Icons.video_library,
+                    color: Colors.grey[500], size: 50),
+              );
+            },
           ),
-          title: Text(
-            video.title,
-            style: Utils.titleStyle,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+          ListTile(
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(
+                  ""), // Asumsikan sumber adalah URL avatar channel
+              child: Icon(Icons.person),
+            ),
+            title: Text(
+              video.title,
+              style: Utils.titleStyle,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            subtitle: Text(
+              'sumber • ${_getTimeAgo(video.postAt)}',
+              style: Utils.subtitle,
+            ),
+            trailing: Icon(Icons.more_vert),
           ),
-          subtitle: Text('sumber • ${_getTimeAgo(video.postAt)}', style: Utils.subtitle,),
-          trailing: Icon(Icons.more_vert),
-        ),
-      ],
-    ),
-  );
-}
+        ],
+      ),
+    );
+  }
 
   String _getTimeAgo(DateTime postTime) {
     Duration difference = DateTime.now().difference(postTime);
@@ -86,9 +91,10 @@ Widget _buildVideoItem(Video video, VoidCallback onTap) {
             itemCount: educationController.videoList.length,
             itemBuilder: (context, index) {
               Video video = educationController.videoList[index];
-              return 
-              _buildVideoItem(
+              String videoId = educationController.extractVideoId(video.link);
+              return _buildVideoItem(
                 video,
+                videoId,
                 () => _navigateToVideoPlayer(context, video),
               );
             },
@@ -97,6 +103,7 @@ Widget _buildVideoItem(Video video, VoidCallback onTap) {
       },
     );
   }
+
   void _navigateToVideoPlayer(BuildContext context, Video video) {
     String? videoId = YoutubePlayer.convertUrlToId(video.link);
     if (videoId != null) {
