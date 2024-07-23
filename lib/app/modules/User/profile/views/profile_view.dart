@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/utils/warna.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
@@ -51,7 +52,7 @@ class ProfileView extends GetView<ProfileController> {
           children: [
             Column(
               children: [
-                const SizedBox(height: 220),
+                const SizedBox(height: 150),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
@@ -68,46 +69,53 @@ class ProfileView extends GetView<ProfileController> {
                         ),
                       ],
                     ),
-                    child: Obx(
-                      () => Column(
-                        children: [
-                          buildListTile(
-                            leadingIcon: Icons.person,
-                            titleText: 'Nama Lengkap',
-                            subtitleText:
-                                profileController.userData['fullName'],
-                            leadingIconColor: Utils.biruTiga,
-                          ),
-                          buildListTile(
-                            leadingIcon: Icons.email,
-                            titleText: 'Email Address',
-                            subtitleText: profileController.userData['email'],
-                            leadingIconColor: Utils.biruTiga,
-                          ),
-                          buildListTile(
-                            leadingIcon: Icons.calendar_today,
-                            titleText: 'Age',
-                            subtitleText:
-                                profileController.userData['age'].toString(),
-                            leadingIconColor: Utils.biruTiga,
-                          ),
-                          buildListTile(
-                            leadingIcon: Icons.work,
-                            titleText: 'Profession',
-                            subtitleText:
-                                profileController.userData['profession'],
-                            leadingIconColor: Utils.biruTiga,
-                          ),
-                          buildListTile(
-                            leadingIcon: Icons.leaderboard,
-                            titleText: 'Poin',
-                            subtitleText: profileController.userData['poin']
-                                    ?.toString() ??
-                                '0',
-                            leadingIconColor: Utils.biruTiga,
-                          ),
-                        ],
-                      ),
+                    child: StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(profileController.auth.currentUser!.uid)
+                          .snapshots(),
+                      builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if (!snapshot.hasData) {
+                          return const Center(child: CircularProgressIndicator());
+                        }
+
+                        var userData = snapshot.data!.data() as Map<String, dynamic>;
+
+                        return Column(
+                          children: [
+                            buildListTile(
+                              leadingIcon: Icons.person,
+                              titleText: 'Nama Lengkap',
+                              subtitleText: userData['fullName'],
+                              leadingIconColor: Utils.biruTiga,
+                            ),
+                            buildListTile(
+                              leadingIcon: Icons.email,
+                              titleText: 'Email Address',
+                              subtitleText: userData['email'],
+                              leadingIconColor: Utils.biruTiga,
+                            ),
+                            buildListTile(
+                              leadingIcon: Icons.calendar_today,
+                              titleText: 'Age',
+                              subtitleText: userData['age'].toString(),
+                              leadingIconColor: Utils.biruTiga,
+                            ),
+                            buildListTile(
+                              leadingIcon: Icons.work,
+                              titleText: 'Profession',
+                              subtitleText: userData['profession'],
+                              leadingIconColor: Utils.biruTiga,
+                            ),
+                            buildListTile(
+                              leadingIcon: Icons.leaderboard,
+                              titleText: 'Poin',
+                              subtitleText: userData['poin']?.toString() ?? '0',
+                              leadingIconColor: Utils.biruTiga,
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -127,14 +135,28 @@ class ProfileView extends GetView<ProfileController> {
                       ),
                     ],
                   ),
-                  child: GestureDetector(
-                    onTap: () => profileController.logout(),
-                    child: buildListTile(
-                      leadingIcon: Icons.logout,
-                      titleText: 'Keluar',
-                      backgroundColor: Colors.red,
-                      leadingIconColor: Colors.white,
-                    ),
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () => profileController.deleteAccount(),
+                        child: buildListTile(
+                          leadingIcon: Icons.delete_forever,
+                          titleText: 'Hapus Akun',
+                          backgroundColor: Colors.red,
+                          leadingIconColor: Colors.white,
+                        ),
+                      ),
+                      const Divider(height: 1, color: Utils.biruLima,),
+                      GestureDetector(
+                        onTap: () => profileController.logout(),
+                        child: buildListTile(
+                          leadingIcon: Icons.logout,
+                          titleText: 'Keluar',
+                          backgroundColor: Colors.red,
+                          leadingIconColor: Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -156,16 +178,14 @@ class ProfileView extends GetView<ProfileController> {
                           radius: 55,
                           backgroundColor: Colors.white,
                           child: Obx(() {
-                            final imageUrl =
-                                profileController.profileImageUrl.value;
+                            final imageUrl = profileController.profileImageUrl.value;
                             return CircleAvatar(
                               radius: 50,
                               backgroundImage: imageUrl.isNotEmpty
                                   ? NetworkImage(imageUrl)
                                   : null,
                               child: imageUrl.isEmpty
-                                  ? Icon(Icons.person,
-                                      size: 50, color: Colors.grey[200])
+                                  ? Icon(Icons.person, size: 50, color: Colors.grey[200])
                                   : null,
                             );
                           }),
@@ -176,59 +196,61 @@ class ProfileView extends GetView<ProfileController> {
                         right: 0,
                         child: Container(
                           width: 40,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Utils.biruTiga,
-                                  width: 2,
-                                )),
-                            child: IconButton(
-                              onPressed: () => Get.toNamed('/edit-profile'),
-                              icon: const Icon(
-                                Icons.edit,
-                                color: Utils.biruLima,
-                              ),
-                              constraints: const BoxConstraints.tightFor(
-                                  width: 30, height: 30),
-                              padding: EdgeInsets.zero,
-                            )
-                            // IconButton(
-                            //   icon: const Icon(Icons.camera_alt,
-                            //       color: Colors.white, size: 20),
-                            //   onPressed: () =>
-                            //       profileController.updateProfileImage(),
-                            //   constraints: const BoxConstraints.tightFor(
-                            //       width: 40, height: 40),
-                            //   padding: EdgeInsets.zero,
-                            // ),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Utils.biruTiga,
+                                width: 2,
+                              )),
+                          child: IconButton(
+                            onPressed: () => Get.toNamed('/edit-profile'),
+                            icon: const Icon(
+                              Icons.edit,
+                              color: Utils.biruLima,
                             ),
+                            constraints: const BoxConstraints.tightFor(width: 30, height: 30),
+                            padding: EdgeInsets.zero,
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
-                  Obx(() {
-                    return Column(
-                      children: [
-                        Text(
-                          profileController.userData['fullName'],
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Text(
-                          profileController.userData['email'],
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.grey[800],
-                          ),
-                        ),
-                      ],
-                    );
-                  }),
+                  // const SizedBox(height: 10),
+                  // StreamBuilder(
+                  //   stream: FirebaseFirestore.instance
+                  //       .collection('users')
+                  //       .doc(profileController.auth.currentUser!.uid)
+                  //       .snapshots(),
+                  //   builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  //     if (!snapshot.hasData) {
+                  //       return Center(child: CircularProgressIndicator());
+                  //     }
+
+                  //     var userData = snapshot.data!.data() as Map<String, dynamic>;
+
+                  //     return Column(
+                  //       children: [
+                  //         Text(
+                  //           userData['fullName'],
+                  //           style: const TextStyle(
+                  //             fontSize: 20,
+                  //             fontWeight: FontWeight.bold,
+                  //             color: Colors.black,
+                  //           ),
+                  //         ),
+                  //         Text(
+                  //           userData['email'],
+                  //           style: TextStyle(
+                  //             fontSize: 14,
+                  //             fontWeight: FontWeight.normal,
+                  //             color: Colors.grey[800],
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     );
+                  //   },
+                  // ),
                 ],
               ),
             ),

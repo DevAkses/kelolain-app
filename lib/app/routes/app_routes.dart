@@ -42,6 +42,8 @@ abstract class Routes {
   static const ANALYSIS_RESULT = _Paths.ANALYSIS_RESULT;
   static const DETAIL_LOAN = _Paths.DETAIL_LOAN;
   static const SPLASH = _Paths.SPLASH;
+  static const PINJOL_LIST = _Paths.PINJOL_LIST;
+  static const CHALLENGE_ADMIN = _Paths.CHALLENGE_ADMIN;
 }
 
 abstract class _Paths {
@@ -85,4 +87,6 @@ abstract class _Paths {
   static const ANALYSIS_RESULT = '/analysis-result';
   static const DETAIL_LOAN = '/detail-loan';
   static const SPLASH = '/splash';
+  static const PINJOL_LIST = '/pinjol-list';
+  static const CHALLENGE_ADMIN = '/challenge-admin';
 }

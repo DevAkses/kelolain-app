@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:safeloan/app/modules/Admin/editQuizAdmin/views/detail_quiz.dart';
 import 'package:safeloan/app/modules/Admin/editQuizAdmin/views/edit_quiz_detail.dart';
 import 'package:safeloan/app/utils/warna.dart';
+import 'package:safeloan/app/widgets/button_back_leading.dart';
 import '../controllers/edit_quiz_admin_controller.dart';
 
 class ListQuizAdminView extends GetView<EditQuizAdminController> {
@@ -13,16 +14,9 @@ class ListQuizAdminView extends GetView<EditQuizAdminController> {
     EditQuizAdminController controller = Get.put(EditQuizAdminController());
     return Scaffold(
       appBar: AppBar(
-        title: const Text('List Quiz', style: TextStyle(color: Colors.white)),
+        leading: const ButtonBackLeading(),
+        title: const Text('Daftar Kuis', style: Utils.header),
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-          onPressed: () => Get.back(),
-        ),
-        backgroundColor: Utils.biruDua,
       ),
       body: Obx(() {
         if (controller.quizzes.isEmpty) {
@@ -38,18 +32,26 @@ class ListQuizAdminView extends GetView<EditQuizAdminController> {
               margin: const EdgeInsets.symmetric(vertical: 0.6, horizontal: 5),
               padding:
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              child: Card.outlined(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Utils.backgroundCard,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      spreadRadius: 0,
+                      blurRadius: 20,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
-                elevation: 5,
                 child: ListTile(
                   title: Text(
                     quiz.title,
-                     style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
                   subtitle: Text(
                     quiz.description,

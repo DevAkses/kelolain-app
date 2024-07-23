@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/utils/warna.dart';
-import '../../editArticleAdmin/views/edit_article_admin_view.dart';
-import '../../editChallengeAdmin/views/edit_challenge_admin_view.dart';
-import '../../editQuizAdmin/views/list_quiz_admin_view.dart';
-import '../../editVideoAdmin/views/edit_video_admin_view.dart';
 import '../controllers/homepage_admin_controller.dart';
 
 class HomepageAdminView extends GetView<HomepageAdminController> {
@@ -12,10 +8,24 @@ class HomepageAdminView extends GetView<HomepageAdminController> {
 
   @override
   Widget build(BuildContext context) {
+    final HomepageAdminController homepageAdminController = Get.put(HomepageAdminController());
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Admin Homepage', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+        title: const Text(
+          'Beranda Admin',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        centerTitle: true,
         backgroundColor: Utils.biruDua,
+        actions: [
+          IconButton(
+            onPressed: () => homepageAdminController.logout(),
+            icon: const Icon(
+              Icons.logout,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -23,26 +33,26 @@ class HomepageAdminView extends GetView<HomepageAdminController> {
           children: [
             _buildMenuItem(
               icon: Icons.article,
-              label: 'Articles',
-              onTap: () => Get.to(() => const EditArticleAdminView()),
+              label: 'Artikel',
+              onTap: () => Get.toNamed('/edit-article-admin'),
             ),
             const SizedBox(height: 16),
             _buildMenuItem(
               icon: Icons.video_library,
-              label: 'Videos',
-              onTap: () => Get.to(() => const EditVideoAdminView()),
+              label: 'Video',
+              onTap: () => Get.toNamed('/edit-video-admin'),
             ),
             const SizedBox(height: 16),
             _buildMenuItem(
               icon: Icons.quiz,
-              label: 'Quizzes',
-              onTap: () => Get.to(() => const ListQuizAdminView()),
+              label: 'Kuis',
+              onTap: () => Get.toNamed('edit-quiz-admin'),
             ),
             const SizedBox(height: 16),
             _buildMenuItem(
               icon: Icons.flag,
-              label: 'Challenges',
-              onTap: () => Get.to(() => const EditChallengeAdminView()),
+              label: 'Tantangan',
+              onTap: () => Get.toNamed('edit-challenge-admin'),
             ),
           ],
         ),
@@ -65,9 +75,9 @@ class HomepageAdminView extends GetView<HomepageAdminController> {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.3),
-              spreadRadius: 1,
-              blurRadius: 4,
-              offset: const Offset(0, 2),
+              spreadRadius: 0,
+              blurRadius: 30,
+              offset: const Offset(0, 4),
             ),
           ],
         ),

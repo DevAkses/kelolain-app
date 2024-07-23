@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:safeloan/app/modules/Admin/editQuizAdmin/controllers/edit_quiz_admin_controller.dart';
 import 'package:safeloan/app/modules/Admin/editQuizAdmin/views/edit_question_view.dart';
 import 'package:safeloan/app/utils/warna.dart';
+import 'package:safeloan/app/widgets/button_back_leading.dart';
 
 class QuizDetailView extends StatelessWidget {
   final Quiz quiz;
@@ -13,10 +14,9 @@ class QuizDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(quiz.title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+        leading: const ButtonBackLeading(),
+        title: Text(quiz.title, style: Utils.header),
         centerTitle: true,
-        leading: IconButton(icon: const Icon(Icons.arrow_back, color: Colors.white,), onPressed: ()=> Get.back(),),
-        backgroundColor: Utils.biruDua,
       ),
       body: ListView.builder(
         itemCount: quiz.questions.length,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
+import 'package:safeloan/app/widgets/tab_bar_widget.dart';
 import '../controllers/education_admin_controller.dart';
 
 class EducationAdminView extends GetView<EducationAdminController> {
@@ -10,54 +11,68 @@ class EducationAdminView extends GetView<EducationAdminController> {
 
   @override
   Widget build(BuildContext context) {
-
+    final EducationAdminController educationAdminController =
+        Get.put(EducationAdminController());
     return DefaultTabController(
-      length: 2, // Number of tabs
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Edukasi", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-          backgroundColor: Utils.biruDua,
+          title: const Text(
+            "Edukasi",
+            style: Utils.header,
+          ),
+          centerTitle: true,
         ),
-        body: Column(
+        body: TabBarWidget(
+          views: [
+            _buildArticlesTab(context),
+            _buildVideosTab(context),
+          ],
+          tabLabels: const ["Membuat Artikel", "Membuat Video"],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildArticlesTab(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
+            _buildTextField(controller.articleTitleC, 1, 'Judul'),
+            _buildTextField(controller.articleContentC, 5, 'Konten'),
+            _buildTextField(controller.articleSourceC, 1, 'Sumber'),
+            const SizedBox(height: 10),
             Container(
-              margin: const EdgeInsets.all(20),
-              height: 50,
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: const Offset(0, 3), // changes position of shadow
-                  ),
-                ],
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.grey[200],
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: const TabBar(
-                  indicator: BoxDecoration(
-                    color: Colors.green,
-                  ),
-                  labelColor: Colors.white,
-                  unselectedLabelColor: Colors.black,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  tabs: [
-                    Tab(text: "Membuat Artikel"),
-                    Tab(text: "Menambah Video"),
+              width: Get.width,
+              height: 150,
+              child: GestureDetector(
+                onTap: () => controller.pickImage(),
+                child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.cloud_upload,
+                      size: 30,
+                      color: Colors.grey,
+                    ),
+                    Text('Unggah Gambar')
                   ],
                 ),
               ),
             ),
-            Expanded(
-              child: TabBarView(
-                children: [
-                  _buildArticlesTab(context),
-                  _buildVideosTab(context),
-                ],
-              ),
+            const SizedBox(height: 20),
+            ButtonWidget(
+              onPressed: () {
+                controller.addArticle();
+              },
+              nama: "Tambah Artikel",
             ),
           ],
         ),
@@ -65,63 +80,43 @@ class EducationAdminView extends GetView<EducationAdminController> {
     );
   }
 
-  Widget _buildArticlesTab(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          _buildTextField(controller.articleTitleC, 'Title'),
-          _buildTextField(controller.articleContentC, 'Content'),
-          _buildTextField(controller.articleSourceC, 'Source'),
-          const SizedBox(height: 10),
-          SizedBox(
-            child: ElevatedButton(
-              onPressed: () => controller.pickImage(),
-              child: const Text('Select Image'),
-            ),
-          ),
-          const SizedBox(height: 10),
-
-          _buildImagePicker(),
-          const Spacer(),
-          ButtonWidget(
-              onPressed: () {
-                controller.addArticle();
-              },
-              nama: "Tambah Artikel")
-        ],
-      ),
-    );
-  }
-
   Widget _buildVideosTab(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          _buildTextField(controller.videoTitleC, 'Title'),
-          _buildTextField(controller.videoDescriptionC, 'Description'),
-          _buildTextField(controller.videoLinkC, 'Link'),
-          _buildTextField(controller.videoLinkC, 'Source'),
-          const Spacer(),
-          ButtonWidget(
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildTextField(controller.videoTitleC, 1, 'Judul'),
+            _buildTextField(controller.videoDescriptionC, 3, 'Deskripsi'),
+            _buildTextField(controller.videoLinkC, 1, 'Tautan'),
+            _buildTextField(controller.videoLinkC, 1, 'Sumber'),
+            const SizedBox(height: 20),
+            ButtonWidget(
               onPressed: () {
                 controller.addVideo();
               },
-              nama: "Tambah Video")
-        ],
+              nama: "Tambah Video",
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String label) {
+  Widget _buildTextField(
+      TextEditingController controller, int maxLines, String hintText) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
         controller: controller,
+        maxLines: maxLines,
         decoration: InputDecoration(
-          labelText: label,
-          labelStyle: const TextStyle(color: Utils.backgroundCard),
+          hintText: hintText,
+          labelStyle: const TextStyle(
+            fontSize: 14,
+            color: Colors.black,
+          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: const BorderSide(color: Utils.backgroundCard),
@@ -130,61 +125,62 @@ class EducationAdminView extends GetView<EducationAdminController> {
             borderRadius: BorderRadius.circular(12),
             borderSide: const BorderSide(color: Utils.biruDua),
           ),
+          contentPadding: const EdgeInsets.fromLTRB(12, 16, 12, 0),
         ),
       ),
     );
   }
 
   Widget _buildImagePicker() {
-  return Obx(() {
-    return Stack(
-      children: [
-        controller.articleImage.value != null
-            ? Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      spreadRadius: 1,
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
+    return Obx(() {
+      return Stack(
+        children: [
+          controller.articleImage.value != null
+              ? Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 1,
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.file(
+                      File(controller.articleImage.value!.path),
+                      height: 150,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
                     ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.file(
-                    File(controller.articleImage.value!.path),
-                    height: 150,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+                  ),
+                )
+              : Container(
+                  height: 150,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Utils.backgroundCard.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Utils.backgroundCard),
+                  ),
+                  child: const Center(
+                    child: Text('No image selected',
+                        style: TextStyle(color: Utils.backgroundCard)),
                   ),
                 ),
-              )
-            : Container(
-                height: 150,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Utils.backgroundCard.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Utils.backgroundCard),
-                ),
-                child: const Center(
-                  child: Text('No image selected', style: TextStyle(color: Utils.backgroundCard)),
-                ),
-              ),
-        Positioned(
-          bottom: 8,
-          right: 8,
-          child: ElevatedButton(
-            onPressed: () => controller.pickImage(),
-            child: const Text('Pick Image'),
+          Positioned(
+            bottom: 8,
+            right: 8,
+            child: ElevatedButton(
+              onPressed: () => controller.pickImage(),
+              child: const Text('Pick Image'),
+            ),
           ),
-        ),
-      ],
-    );
-  });
-}
-
+        ],
+      );
+    });
+  }
 }

@@ -2,6 +2,7 @@ import 'package:chat_bubbles/bubbles/bubble_special_one.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/utils/warna.dart';
+import 'package:safeloan/app/widgets/button_back_leading.dart';
 import '../controllers/analysis_result_controller.dart';
 
 class AnalysisResultView extends GetView<AnalysisResultController> {
@@ -10,6 +11,7 @@ class AnalysisResultView extends GetView<AnalysisResultController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const ButtonBackLeading(),
         title: const Text(
           'Hasil Analisis',
           style: Utils.header,
@@ -37,7 +39,7 @@ class AnalysisResultView extends GetView<AnalysisResultController> {
                 children: [
                   SizedBox(height: 10),
                   BubbleSpecialOne(
-                    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet aspernatur mollitia repudiandae officia magnam beatae molestiae libero culpa, accusamus dolorum maiores id quasi consectetur magni voluptatibus vitae, ipsa assumenda velit! Fugiat nemo quasi distinctio accusamus dignissimos corporis rerum magni obcaecati excepturi possimus, autem ut deserunt velit molestiae sequi repudiandae doloribus optio perspiciatis ipsa. Porro doloremque ut in facere aperiam possimus veniam, quaerat dolores ipsum alias quisquam ad, eius eligendi. Inventore aperiam magni modi accusamus, harum nisi enim quidem eveniet repudiandae, esse quaerat minima ipsum voluptas cupiditate odio sunt repellat ipsa assumenda! Quod quibusdam voluptate incidunt asperiores aliquam tempore voluptatibus explicabo. sfhbhdbhdsghvgdhvfgsdvgvdsgvfdsvhjsfbbbbbbbbbbhfrurugygydvuuvsdvsasavyysa',
+                    text: 'Setelah menganalisis keuangan Anda, pendapatan bulanan Anda stabil, namun pengeluaran menunjukkan variasi signifikan, terutama pada kategori seperti makanan dan minuman, tagihan utilitas, dan hiburan. Tabungan Anda tumbuh stabil, sementara investasi Anda, seperti saham dan reksa dana, menghadapi fluktuasi pasar. Kewajiban terbesar berasal dari kartu kredit dan pinjaman pribadi, yang memerlukan perhatian lebih. Anda telah berhasil meningkatkan tabungan darurat, tetapi perlu mengurangi pengeluaran di kategori hiburan dan makanan dan minuman, serta mengelola utang dengan bunga tinggi. Disarankan untuk memanfaatkan aplikasi pengelolaan keuangan, mengevaluasi portofolio investasi, dan terus meningkatkan tabungan darurat untuk mencapai tujuan finansial dengan lebih efektif.',
                     isSender: false,
                     color: Utils.biruLima,
                     textStyle: TextStyle(fontSize: 14),

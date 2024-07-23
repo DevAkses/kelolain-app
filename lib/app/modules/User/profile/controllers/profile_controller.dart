@@ -14,6 +14,8 @@ class ProfileController extends GetxController {
   var userData = <String, dynamic>{}.obs;
   var profileImageUrl = ''.obs;
 
+  FirebaseAuth get auth => _auth;
+
   @override
   void onInit() {
     super.onInit();
@@ -21,20 +23,16 @@ class ProfileController extends GetxController {
     loadProfileImage();
   }
 
-  void loadUserData() async {
-    try {
-      String uid = _auth.currentUser!.uid;
-      DocumentSnapshot userDoc = await _firestore.collection('users').doc(uid).get();
-
+  void loadUserData() {
+    String uid = _auth.currentUser!.uid;
+    _firestore.collection('users').doc(uid).snapshots().listen((userDoc) {
       if (userDoc.exists) {
         userData.value = userDoc.data() as Map<String, dynamic>;
         if (!userData.containsKey('poinLeadherboard')) {
           userData['poinLeadherboard'] = 0;
         }
       }
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to load user data');
-    }
+    });
   }
 
   void loadProfileImage() async {
@@ -61,7 +59,8 @@ class ProfileController extends GetxController {
 
         await FirebaseStorage.instance.ref(filePath).putFile(file);
 
-        String downloadUrl = await FirebaseStorage.instance.ref(filePath).getDownloadURL();
+        String downloadUrl =
+            await FirebaseStorage.instance.ref(filePath).getDownloadURL();
 
         await FirebaseFirestore.instance.collection('users').doc(uid).update({
           'profileImageUrl': downloadUrl,
@@ -78,7 +77,8 @@ class ProfileController extends GetxController {
   void deleteAccount() async {
     Get.defaultDialog(
       title: "Delete Account",
-      middleText: "Are you sure you want to delete your account? This action cannot be undone.",
+      middleText:
+          "Are you sure you want to delete your account? This action cannot be undone.",
       textCancel: "Cancel",
       textConfirm: "Delete",
       confirmTextColor: Colors.white,
@@ -86,7 +86,10 @@ class ProfileController extends GetxController {
         try {
           String uid = FirebaseAuth.instance.currentUser!.uid;
           await FirebaseAuth.instance.currentUser!.delete();
-          await FirebaseFirestore.instance.collection('users').doc(uid).delete();
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(uid)
+              .delete();
           Get.offAllNamed(Routes.LOGIN);
           Get.snackbar('Success', 'Account deleted successfully');
         } catch (e) {
@@ -97,11 +100,21 @@ class ProfileController extends GetxController {
   }
 
   void logout() async {
-    await FirebaseAuth.instance.signOut();
-    Get.offAllNamed(Routes.LOGIN);
     Get.defaultDialog(
       title: "Logout",
-      middleText: "Berhasil Logout",
+      middleText: "Apakah kamu ingin Logout?",
+      textCancel: "Tidak",
+      textConfirm: "Ya",
+      confirmTextColor: Colors.white,
+      onConfirm: () async {
+        try {
+          await FirebaseAuth.instance.signOut();
+          Get.offAllNamed(Routes.LOGIN);
+          Get.snackbar('Logout', 'Berhasil Logout');
+        } catch (e) {
+          Get.snackbar('Error', 'Gagal Logout');
+        }
+      },
     );
   }
 }
