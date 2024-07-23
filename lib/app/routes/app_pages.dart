@@ -76,6 +76,8 @@ import '../modules/User/tab_counseling/bindings/tab_counseling_binding.dart';
 import '../modules/User/tab_counseling/views/tab_counseling_view.dart';
 import '../modules/User/tab_quiz/bindings/tab_quiz_binding.dart';
 import '../modules/User/tab_quiz/views/tab_quiz_view.dart';
+import '../modules/User/pinjolList/bindings/pinjol_list_binding.dart';
+import '../modules/User/pinjolList/views/pinjol_list_view.dart';
 
 part 'app_routes.dart';
 
@@ -274,6 +276,11 @@ class AppPages {
       name: _Paths.DETAIL_LOAN,
       page: () => const DetailLoanView(),
       binding: DetailLoanBinding(),
+    ),
+    GetPage(
+      name: _Paths.PINJOL_LIST,
+      page: () => const PinjolListView(),
+      binding: PinjolListBinding(),
     ),
   ];
 }

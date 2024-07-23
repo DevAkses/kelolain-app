@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/utils/warna.dart';
+import 'package:safeloan/app/widgets/button_back_leading.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
+import '../../../../routes/app_pages.dart';
 import '../controllers/calculator_controller.dart';
 
 class CalculatorView extends GetView<CalculatorController> {
@@ -13,26 +15,46 @@ class CalculatorView extends GetView<CalculatorController> {
       appBar: AppBar(
         title: const Text(
           'Kalkulator Simulasi',
-          style: TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.white),
+          style: Utils.header
         ),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Get.back();
-          },
-        ),
+        leading: const ButtonBackLeading(),
         centerTitle: true,
-        backgroundColor: Utils.biruDua,
+        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
+              Container(
+                alignment: Alignment.topRight,
+                padding: const EdgeInsets.all(8.0),
+                child: TextButton(
+                  onPressed: () {
+                    Get.toNamed(
+                        Routes.PINJOL_LIST); // Navigate to PinjolListView
+                  },
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.list, 
+                        color: Utils.biruDua,
+                        size: 16,
+                      ),
+                      SizedBox(width: 4),
+                      Text(
+                        'Cek Data Pinjol',
+                        style: TextStyle(
+                          color: Utils.biruDua,
+                          decoration: TextDecoration.underline,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               _buildTextField(
                 'Jumlah Penghasilan Perbulan',
                 '0',
@@ -131,7 +153,8 @@ class CalculatorView extends GetView<CalculatorController> {
           const SizedBox(height: 8),
           Row(
             children: [
-              if (prefix != null) Text(prefix, style: const TextStyle(fontSize: 24)),
+              if (prefix != null)
+                Text(prefix, style: const TextStyle(fontSize: 24)),
               Expanded(
                 child: Obx(() => TextField(
                       style: const TextStyle(fontSize: 24),
@@ -142,7 +165,8 @@ class CalculatorView extends GetView<CalculatorController> {
                       onChanged: onTextFieldChanged,
                     )),
               ),
-              if (suffix != null) Text(suffix, style: const TextStyle(fontSize: 24)),
+              if (suffix != null)
+                Text(suffix, style: const TextStyle(fontSize: 24)),
             ],
           ),
           if (onSliderChanged != null) ...[
@@ -203,7 +227,8 @@ class CalculatorView extends GetView<CalculatorController> {
           const SizedBox(height: 8),
           Row(
             children: [
-              if (prefix != null) Text(prefix, style: const TextStyle(fontSize: 24)),
+              if (prefix != null)
+                Text(prefix, style: const TextStyle(fontSize: 24)),
               Expanded(
                   child: TextField(
                 style: const TextStyle(fontSize: 24),
@@ -212,7 +237,8 @@ class CalculatorView extends GetView<CalculatorController> {
                 keyboardType: TextInputType.number,
                 onChanged: onTextFieldChanged,
               )),
-              if (suffix != null) Text(suffix, style: const TextStyle(fontSize: 24)),
+              if (suffix != null)
+                Text(suffix, style: const TextStyle(fontSize: 24)),
             ],
           ),
           if (onSliderChanged != null) ...[
