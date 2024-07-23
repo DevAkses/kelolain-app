@@ -12,7 +12,8 @@ class EducationController extends GetxController {
   var articleList = <Article>[].obs;
   var videoList = <Video>[].obs;
   String educationDocumentId = 'q02NZjM7bwuOI9RDM226';
-  final Rx<YoutubePlayerController?> youtubeController = Rx<YoutubePlayerController?>(null);
+  final Rx<YoutubePlayerController?> youtubeController =
+      Rx<YoutubePlayerController?>(null);
   final RxBool isFullScreen = false.obs;
 
   Stream<QuerySnapshot> getArticleList() {
@@ -80,6 +81,14 @@ class EducationController extends GetxController {
 
     final challengeController = Get.put(ChallangePageController());
     await challengeController.checkAndCompleteChallenges();
+  }
+
+  String extractVideoId(String url) {
+    final Uri uri = Uri.parse(url);
+    if (uri.queryParameters.containsKey('v')) {
+      return uri.queryParameters['v']!;
+    }
+    return '';
   }
 
   @override

@@ -16,6 +16,7 @@ class TabBarWidget extends StatelessWidget {
     return DefaultTabController(
       length: tabLabels.length,
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: Column(
           children: [
             Container(
@@ -23,7 +24,7 @@ class TabBarWidget extends StatelessWidget {
               padding: const EdgeInsets.all(2),
               height: 50,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Utils.backgroundCard,
                 borderRadius: BorderRadius.circular(25),
                 boxShadow: [
                   BoxShadow(

@@ -1,10 +1,12 @@
 // import 'package:fl_chart/fl_chart.dart';
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safeloan/app/modules/User/detailProfile/controllers/detail_profile_controller.dart';
 import 'package:safeloan/app/modules/User/homepage/views/list_category_by_day.dart';
 import 'package:safeloan/app/modules/User/homepage/views/list_category_by_months.dart';
 import 'package:safeloan/app/modules/User/homepage/views/list_category_by_weeks.dart';
+import 'package:safeloan/app/modules/User/profile/controllers/profile_controller.dart';
 import 'package:safeloan/app/utils/warna.dart';
 import '../controllers/homepage_controller.dart';
 import 'package:badges/badges.dart' as badges;
@@ -27,15 +29,18 @@ class HomepageView extends GetView<HomepageController> {
         _notifBadgeAmount.value.toString(),
         style: const TextStyle(color: Colors.white, fontSize: 10),
       ),
-      child: IconButton(
-        icon: Icon(
-          Icons.notifications,
-          color: Colors.grey[400],
-          size: 25,
+      child: CircleAvatar(
+        backgroundColor: Colors.grey[200],
+        child: IconButton(
+          icon: Icon(
+            Icons.notifications,
+            color: Colors.grey[800],
+            size: 25,
+          ),
+          onPressed: () {
+            Get.toNamed('/notification');
+          },
         ),
-        onPressed: () {
-          Get.toNamed('/notification');
-        },
       ),
     );
   }
@@ -70,8 +75,8 @@ class HomepageView extends GetView<HomepageController> {
   @override
   Widget build(BuildContext context) {
     final HomepageController controller = Get.put(HomepageController());
-    final DetailProfileController detailController =
-        Get.put(DetailProfileController());
+    final ProfileController detailController =
+        Get.put(ProfileController());
     var lebar = MediaQuery.of(context).size.width;
     return DefaultTabController(
       length: 3,
@@ -105,18 +110,18 @@ class HomepageView extends GetView<HomepageController> {
                             () => poin("assets/images/poin.png",
                                 '${controller.points.value}'),
                           ),
-                          Obx(
-                            () => poin("assets/images/koin.png",
-                                '${controller.points.value}'),
-                          ),
+                          poin("assets/images/koin.png", 'belum ada'),
                         ],
                       ),
+                    ),
+                    const SizedBox(
+                      height: 20,
                     ),
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 20),
                       padding: const EdgeInsets.all(15),
                       decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Utils.backgroundCard,
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: [
                             BoxShadow(
@@ -131,19 +136,19 @@ class HomepageView extends GetView<HomepageController> {
                         children: [
                           _buildMenuItem(
                               icon: Icons.calculate,
-                              label: 'Calculator',
+                              label: 'Kalkulator',
                               onTap: () => Get.toNamed('/calculator')),
                           _buildMenuItem(
                               icon: Icons.attach_money,
-                              label: 'Loans',
+                              label: 'Pinjaman',
                               onTap: () => Get.toNamed('/loan')),
                           _buildMenuItem(
                               icon: Icons.school,
-                              label: 'Education',
+                              label: 'Edukasi',
                               onTap: () => Get.toNamed('/education')),
                           _buildMenuItem(
                               icon: Icons.chat,
-                              label: 'Counseling',
+                              label: 'Konseling',
                               onTap: () => Get.toNamed('/tab-counseling')),
                         ],
                       ),
@@ -152,66 +157,72 @@ class HomepageView extends GetView<HomepageController> {
                 ),
                 const SizedBox(height: 20),
                 Obx(
-                  () => SizedBox(
-                    height: 205,
-                    child: PageView.builder(
-                      controller: controller.pageController,
-                      itemCount: controller.articleImages.length,
-                      itemBuilder: (context, index) {
-                        var article = controller.articleImages[index];
-                        return Stack(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(16.0),
-                              margin: EdgeInsets.symmetric(
-                                horizontal: lebar * 0.05,
+                  () => CarouselSlider.builder(
+                    itemCount: controller.articleImages.length,
+                    itemBuilder: (context, index, realIndex) {
+                      var article = controller.articleImages[index];
+                      return Stack(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 5),
+                            height: 200,
+                            decoration: BoxDecoration(
+                              color: Utils.backgroundCard,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 1,
+                                  blurRadius: 3,
+                                  offset: const Offset(0, 1),
+                                ),
+                              ],
+                            ),
+                            child: GestureDetector(
+                              onTap: () =>
+                                  controller.navigateToDetailArticle(article),
+                              child: Center(
+                                child: Image.network(
+                                  article.image,
+                                  fit: BoxFit.fitHeight,
+                                ),
                               ),
-                              height: 200,
+                            ),
+                          ),
+                          Positioned(
+                            left: 10,
+                            bottom: 15,
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.black38,
+                              ),
+                              child: Text(
+                                article.title.length > 20
+                                    ? "Artikel : ${article.title.substring(0, 20)}..."
+                                    : "Artikel : ${article.title}",
+                                style: const TextStyle(
                                   color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.2),
-                                      spreadRadius: 1,
-                                      blurRadius: 3,
-                                      offset: const Offset(0, 1),
-                                    ),
-                                  ]),
-                              child: GestureDetector(
-                                onTap: () =>
-                                    controller.navigateToDetailArticle(article),
-                                child: Center(
-                                  child: Image.network(
-                                    article.image,
-                                    fit: BoxFit.fitHeight,
-                                  ),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ),
-                            Positioned(
-                              left: lebar * 0.09,
-                              bottom: 15,
-                              child: Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Colors.black38,
-                                ),
-                                child: Text(
-                                  article.title.length > 20
-                                      ? "Artikel : ${article.title.substring(0, 20)}..."
-                                      : "Artikel : ${article.title}",
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
+                          ),
+                        ],
+                      );
+                    },
+                    options: CarouselOptions(
+                      height: 205,
+                      viewportFraction: 0.9,
+                      enlargeCenterPage: true,
+                      enableInfiniteScroll: true,
+                      autoPlay: true,
+                      autoPlayInterval: const Duration(seconds: 3),
+                      autoPlayAnimationDuration:
+                          const Duration(milliseconds: 800),
+                      autoPlayCurve: Curves.fastOutSlowIn,
                     ),
                   ),
                 ),
@@ -223,7 +234,7 @@ class HomepageView extends GetView<HomepageController> {
                       padding: const EdgeInsets.all(2),
                       height: 50,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Utils.backgroundCard,
                         borderRadius: BorderRadius.circular(25),
                         boxShadow: [
                           BoxShadow(
@@ -244,6 +255,8 @@ class HomepageView extends GetView<HomepageController> {
                           labelColor: Colors.white,
                           unselectedLabelColor: Utils.biruTiga,
                           indicatorSize: TabBarIndicatorSize.tab,
+                          labelStyle: const TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.bold),
                           tabs: const [
                             Tab(text: 'Harian'),
                             Tab(text: 'Mingguan'),

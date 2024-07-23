@@ -19,7 +19,7 @@ class ProfileAdminView extends GetView<ProfileAdminController> {
                 height: 200,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/backgroundprofil.jpg'),
+                    image: AssetImage('assets/images/maskot.png'),
                     fit: BoxFit.cover,
                   ),
                 ),
