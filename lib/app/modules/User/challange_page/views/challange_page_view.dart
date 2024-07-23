@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:safeloan/app/modules/User/tab_quiz/views/leaderboard.dart';
 import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 
@@ -21,6 +20,7 @@ class ChallangePageView extends GetView<ChallangePageController> {
       ),
       builder: (context) {
         return Container(
+          color: Colors.white,
           width: Get.width,
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -39,24 +39,6 @@ class ChallangePageView extends GetView<ChallangePageController> {
                       fontWeight: FontWeight.bold, fontSize: 24),
                 ),
               ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.start,
-              //   children: [
-              //     IconButton(
-              //       onPressed: () {
-              //         Navigator.of(context).pop();
-              //       },
-              //       icon: const Icon(Icons.close),
-              //     ),
-              //     Center(
-              //       child: Text(
-              //         title,
-              //         style: const TextStyle(
-              //             fontWeight: FontWeight.bold, fontSize: 24),
-              //       ),
-              //     ),
-              //   ],
-              // ),
               const SizedBox(height: 10),
               const Text(
                   'Buka menu edukasi dan tonton video edukasi sekarang juga untuk mendapatkan poin'),
@@ -88,11 +70,10 @@ class ChallangePageView extends GetView<ChallangePageController> {
           showChallengeDetails(context, title, deskripsi, imageChallenge),
       child: Container(
         width: double.infinity,
-        height: 100,
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(15),
         margin: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Utils.backgroundCard,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
@@ -116,6 +97,8 @@ class ChallangePageView extends GetView<ChallangePageController> {
           ),
           subtitle: Text(
             deskripsi,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(color: Colors.grey),
           ),
           trailing: Icon(
@@ -133,7 +116,7 @@ class ChallangePageView extends GetView<ChallangePageController> {
       width: 100,
       height: 60,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Utils.backgroundCard,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
@@ -160,84 +143,70 @@ class ChallangePageView extends GetView<ChallangePageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: controller.listChallenge(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                return const Center(child: Text('No challenges found'));
-              }
-              controller.updateChallengeList(snapshot.data!);
+      body: Stack(children: [
+        StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+          stream: controller.listChallenge(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return const Center(child: Text('No challenges found'));
+            }
+            controller.updateChallengeList(snapshot.data!);
 
-              return Obx(() {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: ListView.builder(
-                    itemCount: controller.challengeList.length,
-                    itemBuilder: (context, index) {
-                      var challenge = controller.challengeList[index];
+            return Obx(() {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: ListView.builder(
+                  itemCount: controller.challengeList.length,
+                  itemBuilder: (context, index) {
+                    var challenge = controller.challengeList[index];
 
-                      return FutureBuilder<bool>(
-                        future:
-                            controller.isChallengeCompletedByUser(challenge.id),
-                        builder: (context, completedSnapshot) {
-                          if (completedSnapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return cardItem(
-                              challenge.title,
-                              challenge.description,
-                              Icons.hourglass_empty,
-                              Utils.backgroundCard,
-                              challenge.imageChallenge,
-                              context,
-                            );
-                          }
-
-                          if (completedSnapshot.hasData &&
-                              completedSnapshot.data == true) {
-                            return cardItem(
-                              challenge.title,
-                              challenge.description,
-                              Icons.check_circle,
-                              Utils.biruTiga,
-                              challenge.imageChallenge,
-                              context,
-                            );
-                          } else {
-                            return cardItem(
-                              challenge.title,
-                              challenge.description,
-                              Icons.history,
-                              Colors.white,
-                              challenge.imageChallenge,
-                              context,
-                            );
-                          }
-                        },
-                      );
-                    },
-                  ),
-                );
-              });
-            },
-          ),
-          Positioned(
-            bottom: 20, 
-            right: 18,  
-            child: FloatingActionButton(
-              onPressed: () {
-                Get.to(LeaderBoard());
-              },
-              child: Icon(Icons.leaderboard, color: Utils.biruDua,),
-              backgroundColor: Utils.biruLima,
-            ),
-          ),
-        ],
-      ),
+                    return FutureBuilder<bool>(
+                      future:
+                          controller.isChallengeCompletedByUser(challenge.id),
+                      builder: (context, completedSnapshot) {
+                        if (completedSnapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return cardItem(
+                            challenge.title,
+                            challenge.description,
+                            Icons.hourglass_empty,
+                            Utils.backgroundCard,
+                            challenge.imageChallenge,
+                            context,
+                          );
+                        }
+                        if (completedSnapshot.hasData &&
+                            completedSnapshot.data == true) {
+                          return cardItem(
+                            challenge.title,
+                            challenge.description,
+                            Icons.check_circle,
+                            Utils.biruTiga,
+                            challenge.imageChallenge,
+                            context,
+                          );
+                        } else {
+                          return cardItem(
+                            challenge.title,
+                            challenge.description,
+                            Icons.history,
+                            Colors.white,
+                            challenge.imageChallenge,
+                            context,
+                          );
+                        }
+                      },
+                    );
+                  },
+                ),
+              );
+            });
+          },
+        )
+      ]),
     );
   }
 }
