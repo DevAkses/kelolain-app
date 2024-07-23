@@ -3,15 +3,34 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/quiz/controllers/quiz_controller.dart';
 import 'package:safeloan/app/modules/User/quiz/views/widgets/quiz_list.dart';
+import 'package:safeloan/app/modules/User/tab_quiz/views/leaderboard.dart';
+import 'package:safeloan/app/utils/warna.dart';
 
 class QuizView extends GetView<QuizController> {
   const QuizView({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      body: QuizList(),
+      body: Stack(
+        children: [
+          QuizList(),
+          Positioned(
+            bottom: 20,
+            right: 18,
+            child: FloatingActionButton(
+              onPressed: () {
+                Get.to(LeaderBoard());
+              },
+              child: Icon(
+                Icons.leaderboard,
+                color: Utils.biruDua,
+              ),
+              backgroundColor: Utils.biruLima,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
