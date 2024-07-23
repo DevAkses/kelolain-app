@@ -13,7 +13,7 @@ class HomepageController extends GetxController {
   var expenses = [800, 1100, 900, 1400, 1000].obs;
   var selectedFilter = 'monthly'.obs;
   var articleImages = <Article>[].obs; // Daftar artikel
-
+  
   void startImageSlider() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(Duration(seconds: 4)).then((_) {
@@ -48,14 +48,16 @@ class HomepageController extends GetxController {
 
   void loadArticles() async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    var educationDocumentId = 'q02NZjM7bwuOI9RDM226'; // ID dokumen pendidikan Anda
+    var educationDocumentId =
+        'q02NZjM7bwuOI9RDM226'; // ID dokumen pendidikan Anda
     firestore
         .collection('educations')
         .doc(educationDocumentId)
         .collection('articles')
         .snapshots()
         .listen((snapshot) {
-      var articles = snapshot.docs.map((doc) => Article.fromDocument(doc)).toList();
+      var articles =
+          snapshot.docs.map((doc) => Article.fromDocument(doc)).toList();
       articleImages.assignAll(articles);
       startImageSlider(); // Start slider after articles are loaded
     });

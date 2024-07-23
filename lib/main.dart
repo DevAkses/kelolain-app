@@ -3,10 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:safeloan/app/widgets/loading.dart';
+import 'package:safeloan/app/modules/Auth/splash.dart';
 import 'package:safeloan/firebase_options.dart';
+import 'package:safeloan/app/widgets/loading.dart';
 import 'app/modules/Auth/login/controllers/login_controller.dart';
 import 'app/routes/app_pages.dart';
 
@@ -41,36 +41,23 @@ class MyApp extends StatelessWidget {
                     String role = userSnapshot.data!['role'];
                     String nextRoute;
                     if (role == 'Pengguna') {
-                      return GetMaterialApp(
-                        debugShowCheckedModeBanner: false,
-                        title: "Application",
-                        theme: ThemeData(
-                            textTheme: GoogleFonts.montserratTextTheme(
-                                Theme.of(context).textTheme)),
-                        initialRoute: Routes.NAVIGATION,
-                        getPages: AppPages.routes,
-                      );
+                      nextRoute = Routes.NAVIGATION;
                     } else if (role == 'Konselor') {
-                      return GetMaterialApp(
-                        debugShowCheckedModeBanner: false,
-                        title: "Application",
-                        theme: ThemeData(
-                            textTheme: GoogleFonts.montserratTextTheme(
-                                Theme.of(context).textTheme)),
-                        initialRoute: Routes.NAVIGATION_KONSELOR,
-                        getPages: AppPages.routes,
-                      );
+                      nextRoute = Routes.NAVIGATION_KONSELOR;
                     } else if (role == 'Admin') {
-                      return GetMaterialApp(
-                        debugShowCheckedModeBanner: false,
-                        title: "Application",
-                        theme: ThemeData(
-                            textTheme: GoogleFonts.montserratTextTheme(
-                                Theme.of(context).textTheme)),
-                        initialRoute: Routes.NAVIGATION_ADMIN,
-                        getPages: AppPages.routes,
-                      );
+                      nextRoute = Routes.NAVIGATION_ADMIN;
+                    } else {
+                      nextRoute = Routes.LOGIN;
                     }
+                    return GetMaterialApp(
+                      debugShowCheckedModeBanner: false,
+                      theme: ThemeData(
+                          textTheme: GoogleFonts.montserratTextTheme(
+                              Theme.of(context).textTheme)),
+                      title: "Application",
+                      home: SplashView(nextRoute: nextRoute),
+                      getPages: AppPages.routes,
+                    );
                   }
                 }
                 return LoadingView();
@@ -79,11 +66,11 @@ class MyApp extends StatelessWidget {
           } else {
             return GetMaterialApp(
               debugShowCheckedModeBanner: false,
-              title: "Application",
               theme: ThemeData(
                   textTheme: GoogleFonts.montserratTextTheme(
                       Theme.of(context).textTheme)),
-              initialRoute: Routes.LOGIN,
+              title: "Application",
+              home: SplashView(nextRoute: Routes.LOGIN),
               getPages: AppPages.routes,
             );
           }
