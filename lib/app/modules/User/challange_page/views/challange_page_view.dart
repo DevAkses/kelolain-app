@@ -20,6 +20,7 @@ class ChallangePageView extends GetView<ChallangePageController> {
       ),
       builder: (context) {
         return Container(
+          color: Colors.white,
           width: Get.width,
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -38,24 +39,6 @@ class ChallangePageView extends GetView<ChallangePageController> {
                       fontWeight: FontWeight.bold, fontSize: 24),
                 ),
               ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.start,
-              //   children: [
-              //     IconButton(
-              //       onPressed: () {
-              //         Navigator.of(context).pop();
-              //       },
-              //       icon: const Icon(Icons.close),
-              //     ),
-              //     Center(
-              //       child: Text(
-              //         title,
-              //         style: const TextStyle(
-              //             fontWeight: FontWeight.bold, fontSize: 24),
-              //       ),
-              //     ),
-              //   ],
-              // ),
               const SizedBox(height: 10),
               const Text(
                   'Buka menu edukasi dan tonton video edukasi sekarang juga untuk mendapatkan poin'),
@@ -86,12 +69,12 @@ class ChallangePageView extends GetView<ChallangePageController> {
       onTap: () =>
           showChallengeDetails(context, title, deskripsi, imageChallenge),
       child: Container(
+
         width: double.infinity,
-        height: 100,
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(15),
         margin: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Utils.backgroundCard,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
@@ -115,6 +98,8 @@ class ChallangePageView extends GetView<ChallangePageController> {
           ),
           subtitle: Text(
             deskripsi,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(color: Colors.grey),
           ),
           trailing: Icon(
@@ -132,7 +117,7 @@ class ChallangePageView extends GetView<ChallangePageController> {
       width: 100,
       height: 60,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Utils.backgroundCard,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
@@ -192,7 +177,6 @@ class ChallangePageView extends GetView<ChallangePageController> {
                           context,
                         );
                       }
-
                       if (completedSnapshot.hasData &&
                           completedSnapshot.data == true) {
                         return cardItem(

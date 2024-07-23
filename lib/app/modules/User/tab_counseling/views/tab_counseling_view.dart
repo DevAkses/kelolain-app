@@ -15,65 +15,84 @@ class TabCounselingView extends GetView<TabCounselingController> {
       length: 2, // Number of tabs
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
-            'Konseling Keuangan',
-            style: Utils.header
-          ),
-          centerTitle: true,
-          leading: const ButtonBackLeading()
-        ),
+            title: const Text('Konseling Keuangan', style: Utils.header),
+            centerTitle: true,
+            leading: const ButtonBackLeading()),
         body: Column(
           children: [
             Container(
+              width: double.infinity,
               margin: const EdgeInsets.only(top: 20, right: 20, left: 20),
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Utils.backgroundCard,
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 4,
+                    spreadRadius: 0,
                     blurRadius: 4,
-                    offset: const Offset(0, 3), // changes position of shadow
+                    offset: const Offset(0, 2), // changes position of shadow
                   ),
                 ],
               ),
               child: Row(
                 children: [
-                  const Text(
-                    "Ayo konsultasikan kondisi dan rencana finansial-mu dengan konselur keuangan yang tersedia. Jadikan finansialmu sehat sehingga terhindar dari lilitan pinjaman online beresiko!",
-                    textAlign: TextAlign.start,
+                  Expanded(
+                    flex: 3,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        constraints: BoxConstraints(
+                            maxWidth: MediaQuery.of(context).size.width * 0.7),
+                        child: const Text(
+                          "Ayo konsultasikan kondisi dan rencana finansial-mu dengan konselur keuangan yang tersedia. Jadikan finansialmu sehat sehingga terhindar dari lilitan pinjaman online beresiko!",
+                          style: TextStyle(fontSize: 10),
+                        ),
+                      ),
+                    ),
                   ),
-                  Image.asset('')
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: Image.asset(
+                      'assets/images/konseling.png',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
                 ],
               ),
             ),
             Container(
               margin: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(2),
               height: 50,
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
+                color: Utils.backgroundCard,
+                borderRadius: BorderRadius.circular(25),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: const Offset(0, 3), // changes position of shadow
+                    color: Colors.black.withOpacity(0.05),
+                    spreadRadius: 0,
+                    blurRadius: 30,
+                    offset: const Offset(0, 5),
                   ),
                 ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: const TabBar(
+                borderRadius: BorderRadius.circular(25),
+                child: TabBar(
                   indicator: BoxDecoration(
                     color: Utils.biruTiga,
+                    borderRadius: BorderRadius.circular(25),
                   ),
                   labelColor: Colors.white,
                   unselectedLabelColor: Colors.black,
                   indicatorSize: TabBarIndicatorSize.tab,
-                  tabs: [
+                  tabs: const [
                     Tab(text: "Jadwal Konselingku"),
                     Tab(text: "Daftar Konseling"),
                   ],

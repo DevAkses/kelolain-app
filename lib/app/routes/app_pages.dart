@@ -32,8 +32,6 @@ import '../modules/Konselor/navigationKonselor/bindings/navigation_konselor_bind
 import '../modules/Konselor/navigationKonselor/views/navigation_konselor_view.dart';
 import '../modules/Konselor/profileKonselor/bindings/profile_konselor_binding.dart';
 import '../modules/Konselor/profileKonselor/views/profile_konselor_view.dart';
-import '../modules/User/addFinance/bindings/add_finance_binding.dart';
-import '../modules/User/addFinance/views/add_finance_view.dart';
 import '../modules/User/addLoan/bindings/add_loan_binding.dart';
 import '../modules/User/addLoan/views/add_loan_view.dart';
 import '../modules/User/analysis/bindings/analysis_binding.dart';
@@ -50,8 +48,6 @@ import '../modules/User/daftar_konseling/bindings/daftar_konseling_binding.dart'
 import '../modules/User/daftar_konseling/views/daftar_konseling_view.dart';
 import '../modules/User/detailLoan/bindings/detail_loan_binding.dart';
 import '../modules/User/detailLoan/views/detail_loan_view.dart';
-import '../modules/User/detailProfile/bindings/detail_profile_binding.dart';
-import '../modules/User/detailProfile/views/detail_profile_view.dart';
 import '../modules/User/editLoan/bindings/edit_loan_binding.dart';
 import '../modules/User/editLoan/views/edit_loan_view.dart';
 import '../modules/User/editProfile/bindings/edit_profile_binding.dart';
@@ -151,11 +147,6 @@ class AppPages {
       binding: EditProfileBinding(),
     ),
     GetPage(
-      name: _Paths.DETAIL_PROFILE,
-      page: () => const DetailProfileView(),
-      binding: DetailProfileBinding(),
-    ),
-    GetPage(
       name: _Paths.NOTIFICATION,
       page: () => const NotificationView(),
       binding: NotificationBinding(),
@@ -249,11 +240,6 @@ class AppPages {
       name: _Paths.EDIT_CHALLENGE_ADMIN,
       page: () => const EditChallengeAdminView(),
       binding: EditChallengeAdminBinding(),
-    ),
-    GetPage(
-      name: _Paths.ADD_FINANCE,
-      page: () => const AddFinanceView(),
-      binding: AddFinanceBinding(),
     ),
     GetPage(
       name: _Paths.EDIT_JADWAL,

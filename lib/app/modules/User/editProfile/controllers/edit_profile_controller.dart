@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/modules/User/profile/controllers/profile_controller.dart';
 
-import '../../detailProfile/controllers/detail_profile_controller.dart';
 
 class EditProfileController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -46,7 +46,7 @@ class EditProfileController extends GetxController {
       Get.back();
       Get.snackbar('Success', 'Profile updated successfully');
 
-      final DetailProfileController detailProfileController = Get.find<DetailProfileController>();
+      final ProfileController detailProfileController = Get.put(ProfileController());
       detailProfileController.loadUserData();
       detailProfileController.loadProfileImage(); // Refresh profile image
     } catch (e) {

@@ -98,7 +98,7 @@ class DescriptionQuizPage extends StatelessWidget {
       width: 100,
       height: 60,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Utils.backgroundCard,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
