@@ -13,10 +13,10 @@ class QuizList extends GetView<QuizController> {
       String title, String deskripsi, String linkGambar, VoidCallback onTap) {
     return Container(
       width: double.infinity,
-      height: 150,
       margin: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Utils.backgroundCard,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(

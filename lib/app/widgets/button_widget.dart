@@ -33,8 +33,8 @@ class ButtonWidget extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           nama,
-          style: const TextStyle(
-              color: Colors.white,
+          style: TextStyle(
+              color: colorText,
               fontSize: 16,
               fontWeight: FontWeight.bold),
         ),

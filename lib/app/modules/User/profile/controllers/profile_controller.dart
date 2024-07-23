@@ -8,37 +8,42 @@ import 'dart:io';
 import '../../../../routes/app_pages.dart';
 
 class ProfileController extends GetxController {
-  var profileImageUrl = RxnString();
-  var userName = ''.obs;
-  var userEmail = ''.obs;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  var userData = <String, dynamic>{}.obs;
+  var profileImageUrl = ''.obs;
+
+  FirebaseAuth get auth => _auth;
 
   @override
   void onInit() {
     super.onInit();
-    loadProfileData();
+    loadUserData();
     loadProfileImage();
   }
 
-  void loadProfileData() async {
-    try {
-      String uid = FirebaseAuth.instance.currentUser!.uid;
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      userName.value = userDoc.get('fullName') ?? 'N/A';
-      userEmail.value = userDoc.get('email') ?? 'N/A';
-    } catch (e) {
-      userName.value = 'N/A';
-      userEmail.value = 'N/A';
-    }
+  void loadUserData() {
+    String uid = _auth.currentUser!.uid;
+    _firestore.collection('users').doc(uid).snapshots().listen((userDoc) {
+      if (userDoc.exists) {
+        userData.value = userDoc.data() as Map<String, dynamic>;
+        if (!userData.containsKey('poinLeadherboard')) {
+          userData['poinLeadherboard'] = 0;
+        }
+      }
+    });
   }
 
   void loadProfileImage() async {
     try {
-      String uid = FirebaseAuth.instance.currentUser!.uid;
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      String? downloadUrl = userDoc.get('profileImageUrl');
+      String uid = _auth.currentUser!.uid;
+      String downloadUrl = await FirebaseStorage.instance
+          .ref('profile_images/$uid')
+          .getDownloadURL();
       profileImageUrl.value = downloadUrl;
     } catch (e) {
-      profileImageUrl.value = null;
+      profileImageUrl.value = '';
     }
   }
 
@@ -54,7 +59,8 @@ class ProfileController extends GetxController {
 
         await FirebaseStorage.instance.ref(filePath).putFile(file);
 
-        String downloadUrl = await FirebaseStorage.instance.ref(filePath).getDownloadURL();
+        String downloadUrl =
+            await FirebaseStorage.instance.ref(filePath).getDownloadURL();
 
         await FirebaseFirestore.instance.collection('users').doc(uid).update({
           'profileImageUrl': downloadUrl,
@@ -71,7 +77,8 @@ class ProfileController extends GetxController {
   void deleteAccount() async {
     Get.defaultDialog(
       title: "Delete Account",
-      middleText: "Are you sure you want to delete your account? This action cannot be undone.",
+      middleText:
+          "Are you sure you want to delete your account? This action cannot be undone.",
       textCancel: "Cancel",
       textConfirm: "Delete",
       confirmTextColor: Colors.white,
@@ -79,7 +86,10 @@ class ProfileController extends GetxController {
         try {
           String uid = FirebaseAuth.instance.currentUser!.uid;
           await FirebaseAuth.instance.currentUser!.delete();
-          await FirebaseFirestore.instance.collection('users').doc(uid).delete();
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(uid)
+              .delete();
           Get.offAllNamed(Routes.LOGIN);
           Get.snackbar('Success', 'Account deleted successfully');
         } catch (e) {
@@ -90,11 +100,21 @@ class ProfileController extends GetxController {
   }
 
   void logout() async {
-    await FirebaseAuth.instance.signOut();
-    Get.offAllNamed(Routes.LOGIN);
     Get.defaultDialog(
       title: "Logout",
-      middleText: "Berhasil Logout",
+      middleText: "Apakah kamu ingin Logout?",
+      textCancel: "Tidak",
+      textConfirm: "Ya",
+      confirmTextColor: Colors.white,
+      onConfirm: () async {
+        try {
+          await FirebaseAuth.instance.signOut();
+          Get.offAllNamed(Routes.LOGIN);
+          Get.snackbar('Logout', 'Berhasil Logout');
+        } catch (e) {
+          Get.snackbar('Error', 'Gagal Logout');
+        }
+      },
     );
   }
 }

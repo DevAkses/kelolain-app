@@ -32,8 +32,6 @@ import '../modules/Konselor/navigationKonselor/bindings/navigation_konselor_bind
 import '../modules/Konselor/navigationKonselor/views/navigation_konselor_view.dart';
 import '../modules/Konselor/profileKonselor/bindings/profile_konselor_binding.dart';
 import '../modules/Konselor/profileKonselor/views/profile_konselor_view.dart';
-import '../modules/User/addFinance/bindings/add_finance_binding.dart';
-import '../modules/User/addFinance/views/add_finance_view.dart';
 import '../modules/User/addLoan/bindings/add_loan_binding.dart';
 import '../modules/User/addLoan/views/add_loan_view.dart';
 import '../modules/User/analysis/bindings/analysis_binding.dart';
@@ -50,8 +48,6 @@ import '../modules/User/daftar_konseling/bindings/daftar_konseling_binding.dart'
 import '../modules/User/daftar_konseling/views/daftar_konseling_view.dart';
 import '../modules/User/detailLoan/bindings/detail_loan_binding.dart';
 import '../modules/User/detailLoan/views/detail_loan_view.dart';
-import '../modules/User/detailProfile/bindings/detail_profile_binding.dart';
-import '../modules/User/detailProfile/views/detail_profile_view.dart';
 import '../modules/User/editLoan/bindings/edit_loan_binding.dart';
 import '../modules/User/editLoan/views/edit_loan_view.dart';
 import '../modules/User/editProfile/bindings/edit_profile_binding.dart';
@@ -76,6 +72,10 @@ import '../modules/User/tab_counseling/bindings/tab_counseling_binding.dart';
 import '../modules/User/tab_counseling/views/tab_counseling_view.dart';
 import '../modules/User/tab_quiz/bindings/tab_quiz_binding.dart';
 import '../modules/User/tab_quiz/views/tab_quiz_view.dart';
+import '../modules/Admin/challenge_admin/bindings/challenge_admin_binding.dart';
+import '../modules/Admin/challenge_admin/views/challenge_admin_view.dart';
+import '../modules/User/pinjolList/bindings/pinjol_list_binding.dart';
+import '../modules/User/pinjolList/views/pinjol_list_view.dart';
 
 part 'app_routes.dart';
 
@@ -149,11 +149,6 @@ class AppPages {
       name: _Paths.EDIT_PROFILE,
       page: () => const EditProfileView(),
       binding: EditProfileBinding(),
-    ),
-    GetPage(
-      name: _Paths.DETAIL_PROFILE,
-      page: () => const DetailProfileView(),
-      binding: DetailProfileBinding(),
     ),
     GetPage(
       name: _Paths.NOTIFICATION,
@@ -251,11 +246,6 @@ class AppPages {
       binding: EditChallengeAdminBinding(),
     ),
     GetPage(
-      name: _Paths.ADD_FINANCE,
-      page: () => const AddFinanceView(),
-      binding: AddFinanceBinding(),
-    ),
-    GetPage(
       name: _Paths.EDIT_JADWAL,
       page: () => const EditJadwalView(),
       binding: EditJadwalBinding(),
@@ -274,6 +264,16 @@ class AppPages {
       name: _Paths.DETAIL_LOAN,
       page: () => const DetailLoanView(),
       binding: DetailLoanBinding(),
+    ),
+     GetPage(
+      name: _Paths.CHALLENGE_ADMIN,
+      page: () => const ChallengeAdminView(),
+      binding: ChallengeAdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.PINJOL_LIST,
+      page: () => const PinjolListView(),
+      binding: PinjolListBinding(),
     ),
   ];
 }

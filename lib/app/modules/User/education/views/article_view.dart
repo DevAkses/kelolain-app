@@ -19,19 +19,19 @@ class ArticleWidget extends GetView<EducationController> {
     onTap: onTap,
     child: Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 1,
-            blurRadius: 3,
-            offset: const Offset(0, 1),
-          ),
-        ],
+        padding: const EdgeInsets.all(15),
+        margin: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Utils.backgroundCard,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.05),
+              spreadRadius: 0,
+              blurRadius: 30,
+              offset: const Offset(0, 5),
+            ),
+          ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,17 +130,20 @@ Widget build(BuildContext context) {
       educationController.updateArticleList(snapshot.data!);
 
       return Obx(() {
-        return ListView.builder(
-          itemCount: educationController.articleList.length,
-          itemBuilder: (context, index) {
-            Article article = educationController.articleList[index];
-            return cardItem(
-              article,
-              () {
-                Get.to(DetailArticlePage(article: article));
-              },
-            );
-          },
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+          child: ListView.builder(
+            itemCount: educationController.articleList.length,
+            itemBuilder: (context, index) {
+              Article article = educationController.articleList[index];
+              return cardItem(
+                article,
+                () {
+                  Get.to(DetailArticlePage(article: article));
+                },
+              );
+            },
+          ),
         );
       });
     },

@@ -7,9 +7,9 @@ import '../controllers/counseling_controller.dart';
 import '../models/counseling.dart';
 
 class CounselingView extends GetView<CounselingController> {
-  const CounselingView({Key? key}) : super(key: key);
+  const CounselingView({super.key});
 
-  Widget CardItem(
+  Widget cardItem(
     String linkGambar,
     String namaKonselor,
     String keahlian,
@@ -19,67 +19,75 @@ class CounselingView extends GetView<CounselingController> {
   ) {
     return Container(
       width: double.infinity,
-      height: 280,
+      padding: const EdgeInsets.all(15),
       margin: const EdgeInsets.all(10),
-      child: Card.outlined(
-        child: Padding(
-            padding: const EdgeInsets.all(14),
-            child: Column(
-              children: [
-                const Text(
-                  "Anda memiliki sebuah jadwal konseling, pastikan hadir tepat waktu sesuai sesi yang tersedia",
-                  style: TextStyle(fontSize: 14),
-                ),
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(linkGambar),
-                  ),
-                  title: Text(namaKonselor),
-                  subtitle: Text(keahlian),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.event,
-                      size: 16,
-                    ),
-                    Text(
-                      "Tanggal: ",
-                      style: TextStyle(
-                          fontSize: 16, color: Utils.biruSatu),
-                    ),
-                    Text(tanggal),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.access_time,
-                      size: 16,
-                    ),
-                    Text(
-                      " Durasi: ",
-                      style: TextStyle(
-                          fontSize: 16, color: Utils.biruSatu),
-                    ),
-                    Text(waktu),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                ButtonWidget(onPressed: onPressed, nama: "Tautan Meeting"),
-              ],
-            )),
+      decoration: BoxDecoration(
+        color: Utils.backgroundCard,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.05),
+            spreadRadius: 0,
+            blurRadius: 30,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          const Text(
+            "pastikan hadir tepat waktu sesuai sesi yang tersedia",
+            style: Utils.subtitle,
+          ),
+          ListTile(
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(linkGambar),
+            ),
+            title: Text(namaKonselor, style: TextStyle(fontWeight: FontWeight.bold),),
+            subtitle: Text(keahlian, style: Utils.subtitle,),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Icon(
+                Icons.event,
+                size: 16,
+              ),
+              SizedBox(width: 5,),
+              const Text(
+                "Tanggal: ",
+                style: TextStyle(fontSize: 12, color: Utils.biruSatu),
+              ),
+              Text(tanggal),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Icon(
+                Icons.access_time,
+                size: 16,
+              ),
+              const Text(
+                " Durasi: ",
+                style: TextStyle(fontSize: 12, color: Utils.biruSatu),
+              ),
+              Text(waktu),
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          ButtonWidget(onPressed: onPressed, nama: "Tautan Meeting"),
+        ],
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final CounselingController counselingController = Get.put(CounselingController());
+    final CounselingController counselingController =
+        Get.put(CounselingController());
 
     return Scaffold(
       body: StreamBuilder<CounselingSessionWithUserData?>(
@@ -92,22 +100,26 @@ class CounselingView extends GetView<CounselingController> {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
           if (!snapshot.hasData || snapshot.data == null) {
-            return const Center(child: Text('No counseling session found.'));
+            return const Center(child: Text('Tidak ada sesi konseling.'));
           }
 
           final session = snapshot.data!;
           final counseling = session.counseling;
           final userData = session.userData;
 
-          return CardItem(
-            userData['profileImageUrl'] ?? "", // Link gambar
-            userData['fullName'] ?? 'Nama Konselor',
-            userData['profession'] ?? 'Psikolog handal',
-            DateFormat.yMMMMd().add_jm().format(counseling.jadwal),
-            '${counseling.durasi} menit',
-            () {
-              // Logika untuk tautan meeting
-            },
+          return Column(
+            children: [
+              cardItem(
+                userData['profileImageUrl'] ?? "", // Link gambar
+                userData['fullName'] ?? 'Nama Konselor',
+                userData['profession'] ?? 'Psikolog handal',
+                DateFormat.yMMMMd().add_jm().format(counseling.jadwal),
+                '${counseling.durasi} menit',
+                () {
+                  // Logika untuk tautan meeting
+                },
+              ),
+            ],
           );
         },
       ),

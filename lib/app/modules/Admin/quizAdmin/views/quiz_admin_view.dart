@@ -26,17 +26,16 @@ class QuizAdminView extends GetView<QuizAdminController> {
       });
     }
 
-    // Add initial question
     addQuestion();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Quiz', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-        backgroundColor: Utils.biruDua,
+        title: const Text('Create Quiz', style: Utils.header,),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
           child: Column(
             children: [
               Card(
@@ -44,6 +43,7 @@ class QuizAdminView extends GetView<QuizAdminController> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
+                color: Colors.white,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -93,6 +93,7 @@ class QuizAdminView extends GetView<QuizAdminController> {
                         var controllerMap = entry.value;
                         return Card(
                           elevation: 3,
+                          color: Colors.white,
                           margin: const EdgeInsets.only(bottom: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
