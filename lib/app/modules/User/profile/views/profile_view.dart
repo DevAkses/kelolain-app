@@ -9,23 +9,27 @@ class ProfileView extends GetView<ProfileController> {
   Widget buildListTile({
     required IconData leadingIcon,
     required String titleText,
-    required IconData trailingIcon,
-    required VoidCallback onTap,
+    String? subtitleText,
     Color leadingIconColor = Colors.black,
-    Color trailingIconColor = Colors.black,
+    Color backgroundColor = Utils.biruLima,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
+      padding: const EdgeInsets.symmetric(horizontal: 1),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: Utils.biruLima,
-          child: Icon(leadingIcon, color: leadingIconColor)),
+          backgroundColor: backgroundColor,
+          child: Icon(leadingIcon, color: leadingIconColor),
+        ),
         title: Text(
           titleText,
-          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+          style: const TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w500,
+          ),
         ),
-        trailing: Icon(trailingIcon, color: trailingIconColor),
-        onTap: onTap,
+        subtitle: subtitleText != null
+            ? Text(subtitleText, style: Utils.subtitle)
+            : null,
       ),
     );
   }
@@ -35,147 +39,201 @@ class ProfileView extends GetView<ProfileController> {
     final ProfileController profileController = Get.put(ProfileController());
 
     return Scaffold(
-      body: Stack(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: 200,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/backgroundprofil.jpg'),
-                    fit: BoxFit.cover,
+      appBar: AppBar(
+        title: const Text(
+          'Profil',
+          style: Utils.header,
+        ),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                const SizedBox(height: 220),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Container(
+                    padding: const EdgeInsets.all(1),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.06),
+                          blurRadius: 30,
+                          spreadRadius: 0,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Obx(
+                      () => Column(
+                        children: [
+                          buildListTile(
+                            leadingIcon: Icons.person,
+                            titleText: 'Nama Lengkap',
+                            subtitleText:
+                                profileController.userData['fullName'],
+                            leadingIconColor: Utils.biruTiga,
+                          ),
+                          buildListTile(
+                            leadingIcon: Icons.email,
+                            titleText: 'Email Address',
+                            subtitleText: profileController.userData['email'],
+                            leadingIconColor: Utils.biruTiga,
+                          ),
+                          buildListTile(
+                            leadingIcon: Icons.calendar_today,
+                            titleText: 'Age',
+                            subtitleText:
+                                profileController.userData['age'].toString(),
+                            leadingIconColor: Utils.biruTiga,
+                          ),
+                          buildListTile(
+                            leadingIcon: Icons.work,
+                            titleText: 'Profession',
+                            subtitleText:
+                                profileController.userData['profession'],
+                            leadingIconColor: Utils.biruTiga,
+                          ),
+                          buildListTile(
+                            leadingIcon: Icons.leaderboard,
+                            titleText: 'Poin',
+                            subtitleText: profileController.userData['poin']
+                                    ?.toString() ??
+                                '0',
+                            leadingIconColor: Utils.biruTiga,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 180),
-              buildListTile(
-                leadingIcon: Icons.person_rounded,
-                leadingIconColor: Colors.blueGrey,
-                titleText: "Profil Lengkap",
-                trailingIcon: Icons.arrow_forward_ios,
-                onTap: () {
-                  Get.toNamed('/detail-profile');
-                },
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25),
-                child: Divider(),
-              ),
-              buildListTile(
-                leadingIcon: Icons.delete,
-                leadingIconColor: Colors.red,
-                titleText: "Hapus akun",
-                trailingIcon: Icons.arrow_forward_ios,
-                onTap: () => profileController.deleteAccount(),
-              ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, backgroundColor: Colors.red[900],
-                    minimumSize: const Size(double.infinity, 50),
+                const SizedBox(height: 20),
+                Container(
+                  padding: const EdgeInsets.all(1),
+                  margin: const EdgeInsets.symmetric(horizontal: 25),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.06),
+                        blurRadius: 30,
+                        spreadRadius: 0,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
-                  onPressed: () => profileController.logout(),
-                  icon: const Icon(Icons.logout),
-                  label: const Text("Logout"),
+                  child: GestureDetector(
+                    onTap: () => profileController.logout(),
+                    child: buildListTile(
+                      leadingIcon: Icons.logout,
+                      titleText: 'Keluar',
+                      backgroundColor: Colors.red,
+                      leadingIconColor: Colors.white,
+                    ),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Positioned(
-            top: 180,
-            left: 0,
-            right: 0,
-            child: Container(
-              width: double.infinity,
-              height: 190,
-              margin: const EdgeInsets.symmetric(horizontal: 25),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 10,
-                    spreadRadius: 5,
+                const SizedBox(height: 20),
+              ],
+            ),
+            Positioned(
+              top: 10,
+              left: 0,
+              right: 0,
+              child: Column(
+                children: [
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      CircleAvatar(
+                        radius: 60,
+                        backgroundColor: Colors.blueAccent.withOpacity(0.3),
+                        child: CircleAvatar(
+                          radius: 55,
+                          backgroundColor: Colors.white,
+                          child: Obx(() {
+                            final imageUrl =
+                                profileController.profileImageUrl.value;
+                            return CircleAvatar(
+                              radius: 50,
+                              backgroundImage: imageUrl.isNotEmpty
+                                  ? NetworkImage(imageUrl)
+                                  : null,
+                              child: imageUrl.isEmpty
+                                  ? Icon(Icons.person,
+                                      size: 50, color: Colors.grey[200])
+                                  : null,
+                            );
+                          }),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          width: 40,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Utils.biruTiga,
+                                  width: 2,
+                                )),
+                            child: IconButton(
+                              onPressed: () => Get.toNamed('/edit-profile'),
+                              icon: const Icon(
+                                Icons.edit,
+                                color: Utils.biruLima,
+                              ),
+                              constraints: const BoxConstraints.tightFor(
+                                  width: 30, height: 30),
+                              padding: EdgeInsets.zero,
+                            )
+                            // IconButton(
+                            //   icon: const Icon(Icons.camera_alt,
+                            //       color: Colors.white, size: 20),
+                            //   onPressed: () =>
+                            //       profileController.updateProfileImage(),
+                            //   constraints: const BoxConstraints.tightFor(
+                            //       width: 40, height: 40),
+                            //   padding: EdgeInsets.zero,
+                            // ),
+                            ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Obx(() {
-                      return Text(
-                        profileController.userName.value,
-                        style: const TextStyle(
-                            fontSize: 24,
+                  const SizedBox(height: 10),
+                  Obx(() {
+                    return Column(
+                      children: [
+                        Text(
+                          profileController.userData['fullName'],
+                          style: const TextStyle(
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      );
-                    }),
-                    Obx(() {
-                      return Text(
-                        profileController.userEmail.value,
-                        style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          profileController.userData['email'],
+                          style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.normal,
-                            color: Colors.grey[800]),
-                      );
-                    }),
-                  ],
-                ),
+                            color: Colors.grey[800],
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
+                ],
               ),
             ),
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            top: 100,
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.blueGrey,
-                  width: 2,
-                ),
-              ),
-              child: Obx(() {
-                final imageUrl = profileController.profileImageUrl.value;
-                return CircleAvatar(
-                  radius: 60,
-                  backgroundImage: imageUrl != null && imageUrl.isNotEmpty
-                      ? NetworkImage(imageUrl)
-                      : null,
-                  child: imageUrl == null || imageUrl.isEmpty
-                      ? Icon(Icons.person, size: 90, color: Colors.grey[200])
-                      : null,
-                );
-              }),
-            ),
-          ),
-          Positioned(
-            top: 185,
-            right: 135,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[900],
-                shape: BoxShape.circle,
-              ),
-              child: IconButton(
-                icon: const Icon(Icons.camera_alt, color: Colors.white, size: 20),
-                onPressed: () => profileController.updateProfileImage(),
-                constraints: const BoxConstraints.tightFor(width: 40, height: 40),
-                padding: EdgeInsets.zero,
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

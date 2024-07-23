@@ -25,7 +25,7 @@ class NavigationView extends GetView<NavigationController> {
     return Obx(() => Scaffold(
           body: pages[controller.selectedIndex.value],
           bottomNavigationBar: SizedBox(
-            height: 91,
+            height: 65,
             child: Stack(
               clipBehavior: Clip.none,
               children: [
@@ -49,7 +49,7 @@ class NavigationView extends GetView<NavigationController> {
                       label: 'Keuangan',
                     ),
                     BottomNavigationBarItem(
-                      icon: SizedBox(height: 56),
+                      icon: SizedBox(height: 30),
                       label: '',
                     ),
                     BottomNavigationBarItem(
@@ -63,8 +63,8 @@ class NavigationView extends GetView<NavigationController> {
                   ],
                 ),
                 Positioned(
-                  top: -10,
-                  left: MediaQuery.of(context).size.width / 2 - 30,
+                  top: -30,
+                  left: MediaQuery.of(context).size.width / 2 - 35,
                   child: GestureDetector(
                     onTap: () {
                       controller.changePage(2);

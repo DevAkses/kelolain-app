@@ -1,24 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/modules/User/profile/controllers/profile_controller.dart';
 import 'package:safeloan/app/utils/warna.dart';
+import 'package:safeloan/app/widgets/button_back_leading.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 import '../controllers/edit_profile_controller.dart';
 
 class EditProfileView extends GetView<EditProfileController> {
-  const EditProfileView({Key? key}) : super(key: key);
+  const EditProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final ProfileController profileController = Get.put(ProfileController());
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile', style: Utils.header),
+        leading: const ButtonBackLeading(),
+        title: const Text('Edit Profil', style: Utils.header),
         centerTitle: true,
-        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: ListView(
           children: [
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                CircleAvatar(
+                  radius: 60,
+                  backgroundColor: Colors.blueAccent.withOpacity(0.3),
+                  child: CircleAvatar(
+                    radius: 55,
+                    backgroundColor: Colors.white,
+                    child: Obx(() {
+                      final imageUrl = profileController.profileImageUrl.value;
+                      return CircleAvatar(
+                        radius: 50,
+                        backgroundImage:
+                            imageUrl.isNotEmpty ? NetworkImage(imageUrl) : null,
+                        child: imageUrl.isEmpty
+                            ? Icon(Icons.person,
+                                size: 50, color: Colors.grey[200])
+                            : null,
+                      );
+                    }),
+                  ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  right: Get.width * 0.27,
+                  child: Container(
+                    width: 40,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Utils.biruTiga,
+                          width: 2,
+                        )),
+                    child: IconButton(
+                      icon: const Icon(Icons.camera_alt, size: 20, color: Utils.biruLima,),
+                      onPressed: () => profileController.updateProfileImage(),
+                      constraints:
+                          const BoxConstraints.tightFor(width: 40, height: 40),
+                      padding: EdgeInsets.zero,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 30),
             _buildListTileTextField(
               icon: Icons.person,
               label: 'Nama Lengkap',
@@ -40,7 +91,13 @@ class EditProfileView extends GetView<EditProfileController> {
               keyboardType: TextInputType.text,
             ),
             const SizedBox(height: 30),
-            ButtonWidget(onPressed: () => controller.saveProfile(), nama: "Simpan")
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              child: ButtonWidget(
+                onPressed: () => controller.saveProfile(),
+                nama: "Simpan",
+              ),
+            )
           ],
         ),
       ),
@@ -65,7 +122,8 @@ class EditProfileView extends GetView<EditProfileController> {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         ),
         keyboardType: keyboardType,
       ),

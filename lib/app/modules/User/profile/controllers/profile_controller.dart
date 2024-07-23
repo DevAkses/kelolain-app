@@ -8,37 +8,44 @@ import 'dart:io';
 import '../../../../routes/app_pages.dart';
 
 class ProfileController extends GetxController {
-  var profileImageUrl = RxnString();
-  var userName = ''.obs;
-  var userEmail = ''.obs;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  var userData = <String, dynamic>{}.obs;
+  var profileImageUrl = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
-    loadProfileData();
+    loadUserData();
     loadProfileImage();
   }
 
-  void loadProfileData() async {
+  void loadUserData() async {
     try {
-      String uid = FirebaseAuth.instance.currentUser!.uid;
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      userName.value = userDoc.get('fullName') ?? 'N/A';
-      userEmail.value = userDoc.get('email') ?? 'N/A';
+      String uid = _auth.currentUser!.uid;
+      DocumentSnapshot userDoc = await _firestore.collection('users').doc(uid).get();
+
+      if (userDoc.exists) {
+        userData.value = userDoc.data() as Map<String, dynamic>;
+        if (!userData.containsKey('poinLeadherboard')) {
+          userData['poinLeadherboard'] = 0;
+        }
+      }
     } catch (e) {
-      userName.value = 'N/A';
-      userEmail.value = 'N/A';
+      Get.snackbar('Error', 'Failed to load user data');
     }
   }
 
   void loadProfileImage() async {
     try {
-      String uid = FirebaseAuth.instance.currentUser!.uid;
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      String? downloadUrl = userDoc.get('profileImageUrl');
+      String uid = _auth.currentUser!.uid;
+      String downloadUrl = await FirebaseStorage.instance
+          .ref('profile_images/$uid')
+          .getDownloadURL();
       profileImageUrl.value = downloadUrl;
     } catch (e) {
-      profileImageUrl.value = null;
+      profileImageUrl.value = '';
     }
   }
 
