@@ -11,7 +11,7 @@ class PinjolListView extends GetView<PinjolListController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Daftar Pinjaman Online Legal', style: 
+        title: const Text('Pinjol Legal', style: 
         Utils.header),
         centerTitle: true,
         leading: const ButtonBackLeading(),
@@ -76,6 +76,7 @@ class PinjolListView extends GetView<PinjolListController> {
 
                       final pinjol = controller.filteredPinjols[index];
                       return Card(
+                        color: Utils.backgroundCard,
                         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                         elevation: 4,
                         child: ListTile(
@@ -90,7 +91,6 @@ class PinjolListView extends GetView<PinjolListController> {
                             style: TextStyle(color: Colors.grey[600]),
                           ),
                           trailing: Icon(Icons.arrow_forward_ios, color: Colors.grey[700]),
-                          onTap: () {},
                         ),
                       );
                     },
