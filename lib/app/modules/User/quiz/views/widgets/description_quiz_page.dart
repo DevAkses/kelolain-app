@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/quiz/models/quiz_model.dart';
 import 'package:safeloan/app/modules/User/quiz/views/widgets/question_list.dart';
 import 'package:safeloan/app/utils/warna.dart';
-import 'package:safeloan/app/widgets/button_back_leading.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 
 class DescriptionQuizPage extends StatelessWidget {
@@ -15,7 +14,6 @@ class DescriptionQuizPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const ButtonBackLeading(),
         title: const Text(
           'Kuis Keuangan',
           style: Utils.header,
@@ -24,7 +22,9 @@ class DescriptionQuizPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.1, vertical: 16),
+          padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.1,
+              vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -65,13 +65,14 @@ class DescriptionQuizPage extends StatelessWidget {
               const SizedBox(height: 8),
               const Text(
                 "Selamat datang di Kuis Manajemen Keuangan Pribadi! Kuis ini dirancang untuk membantu Anda memahami dan mengasah keterampilan manajemen keuangan Anda. Melalui serangkaian pertanyaan interaktif, Anda akan belajar tentang konsep dasar keuangan, seperti anggaran, tabungan, investasi, dan pengelolaan utang.",
-                style: TextStyle(color: Color.fromARGB(255, 151, 151, 151)), textAlign: TextAlign.justify,
+                style: TextStyle(color: Color.fromARGB(255, 151, 151, 151)),
+                textAlign: TextAlign.justify,
               ),
               const SizedBox(height: 25),
               Center(
                 child: ButtonWidget(
                   onPressed: () {
-                    Get.off(() => QuestionList(quizId: quiz.id));
+                    Get.offAll(() => QuestionList(quizId: quiz.id));
                   },
                   nama: "Mulai Kuis",
                 ),
@@ -79,7 +80,9 @@ class DescriptionQuizPage extends StatelessWidget {
               const SizedBox(height: 15),
               Center(
                 child: ButtonWidget(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.back();
+                  },
                   nama: "Kerjakan Kuis Lain",
                   colorBackground: Utils.biruLima,
                   colorText: Utils.biruSatu,
@@ -94,9 +97,8 @@ class DescriptionQuizPage extends StatelessWidget {
 
   Widget _buildInfoColumn(String value, String label) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      width: 100,
-      height: 60,
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      width: 90,
       decoration: BoxDecoration(
         color: Utils.backgroundCard,
         borderRadius: BorderRadius.circular(10),
@@ -114,9 +116,9 @@ class DescriptionQuizPage extends StatelessWidget {
         children: [
           Text(
             value,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
           ),
-          Text(label),
+          Text(label, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),),
         ],
       ),
     );
