@@ -26,6 +26,11 @@ class LoginController extends GetxController {
 
   void login(String email, String password, BuildContext context) async {
     try {
+      if (email.isEmpty || password.isEmpty) {
+        showDialogInfoWidget("Email dan Password tidak boleh kosong.", 'fail', context);
+        return;
+      }
+
       UserCredential myUser = await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
@@ -62,16 +67,19 @@ class LoginController extends GetxController {
                 "Data user tidak ditemukan.", 'fail', context);
           }
         } else {
-          confirmShowDialog(judul: 
-              "Kamu perlu verifikasi email terlebih dahulu. Apakah kamu ingin dikirimkan verifikasi ulang?",
-             onPressed: () async {
-            await myUser.user!.sendEmailVerification();
-            Get.back();
-          }, context:  context, textBatal: "Kembali", textSetuju: "Kirim Ulang");
+          confirmShowDialog(
+            judul: "Kamu perlu verifikasi email terlebih dahulu. Apakah kamu ingin dikirimkan verifikasi ulang?",
+            onPressed: () async {
+              await myUser.user!.sendEmailVerification();
+              Get.back();
+            },
+            context: context,
+            textBatal: "Kembali",
+            textSetuju: "Kirim Ulang",
+          );
         }
       } else {
-        
-        showDialogInfoWidget("Data tidak boleh kosong.", 'fail', context);
+        showDialogInfoWidget("Gagal login! coba lagi.", 'fail', context);
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -84,6 +92,8 @@ class LoginController extends GetxController {
           print('Wrong password provided for that user.');
         }
         showDialogInfoWidget("Email dan Password salah, cek kembali data anda!.", 'fail', context);
+      } else {
+        showDialogInfoWidget("Email atau Kata Sandi Anda Salah", 'fail', context);
       }
     } catch (e) {
       showDialogInfoWidget("Gagal login! coba lagi.", 'fail', context);

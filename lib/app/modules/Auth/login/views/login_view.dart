@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 import 'package:safeloan/app/widgets/input_akun_widget.dart';
+import 'package:safeloan/app/widgets/show_dialog_info_widget.dart';
 import '../../../../routes/app_pages.dart';
 import '../controllers/login_controller.dart';
 
@@ -85,8 +86,7 @@ class LoginView extends GetView<LoginController> {
                 ],
               ),
               ButtonWidget(
-                  onPressed: () => controller.login(
-                      controller.emailC.text, controller.passwordC.text, context),
+                  onPressed: () => _validateAndSignup(context),
                   nama: "Masuk"),
               const SizedBox(
                 height: 10,
@@ -113,5 +113,18 @@ class LoginView extends GetView<LoginController> {
         ),
       ),
     );
+  }
+
+  void _validateAndSignup(BuildContext context) {
+    if (controller.emailC.text.isEmpty ||
+        controller.passwordC.text.isEmpty) {
+      showDialogInfoWidget('Data Tidak Boleh Kosong', 'fail', context);
+    } else {
+      controller.login(
+        controller.emailC.text,
+        controller.passwordC.text,
+        context,
+      );
+    }
   }
 }
