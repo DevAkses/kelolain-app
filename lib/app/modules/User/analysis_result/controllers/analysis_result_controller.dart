@@ -1,23 +1,21 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import '../../../../widgets/loading.dart';
+import '../views/analysis_result_view.dart';
 
 class AnalysisResultController extends GetxController {
-  //TODO: Implement AnalysisResultController
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+ void showLoadingAndNavigate() async {
+    try {
+      Get.to(() => const LoadingView());
+
+      await Future.delayed(const Duration(seconds: 3));
+
+      Get.off(() => const AnalysisResultView());
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error during navigation: $e');
+      }
+    }
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

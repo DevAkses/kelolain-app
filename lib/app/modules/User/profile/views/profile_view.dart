@@ -91,19 +91,19 @@ class ProfileView extends GetView<ProfileController> {
                             ),
                             buildListTile(
                               leadingIcon: Icons.email,
-                              titleText: 'Email Address',
+                              titleText: 'Email',
                               subtitleText: userData['email'],
                               leadingIconColor: Utils.biruTiga,
                             ),
                             buildListTile(
                               leadingIcon: Icons.calendar_today,
-                              titleText: 'Age',
+                              titleText: 'Umur',
                               subtitleText: userData['age'].toString(),
                               leadingIconColor: Utils.biruTiga,
                             ),
                             buildListTile(
                               leadingIcon: Icons.work,
-                              titleText: 'Profession',
+                              titleText: 'Profesi',
                               subtitleText: userData['profession'],
                               leadingIconColor: Utils.biruTiga,
                             ),
@@ -216,41 +216,6 @@ class ProfileView extends GetView<ProfileController> {
                       ),
                     ],
                   ),
-                  // const SizedBox(height: 10),
-                  // StreamBuilder(
-                  //   stream: FirebaseFirestore.instance
-                  //       .collection('users')
-                  //       .doc(profileController.auth.currentUser!.uid)
-                  //       .snapshots(),
-                  //   builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  //     if (!snapshot.hasData) {
-                  //       return Center(child: CircularProgressIndicator());
-                  //     }
-
-                  //     var userData = snapshot.data!.data() as Map<String, dynamic>;
-
-                  //     return Column(
-                  //       children: [
-                  //         Text(
-                  //           userData['fullName'],
-                  //           style: const TextStyle(
-                  //             fontSize: 20,
-                  //             fontWeight: FontWeight.bold,
-                  //             color: Colors.black,
-                  //           ),
-                  //         ),
-                  //         Text(
-                  //           userData['email'],
-                  //           style: TextStyle(
-                  //             fontSize: 14,
-                  //             fontWeight: FontWeight.normal,
-                  //             color: Colors.grey[800],
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     );
-                  //   },
-                  // ),
                 ],
               ),
             ),

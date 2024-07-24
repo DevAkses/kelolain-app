@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
                     );
                   }
                 }
-                return LoadingView();
+                return const LoadingView();
               },
             );
           } else {
@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
                           ),
                           scaffoldBackgroundColor: Colors.white,),
               title: "Application",
-              home: SplashView(nextRoute: Routes.LOGIN),
+              home: const SplashView(nextRoute: Routes.LOGIN),
               getPages: AppPages.routes,
             );
           }

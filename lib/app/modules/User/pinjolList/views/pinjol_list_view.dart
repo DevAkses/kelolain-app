@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../utils/warna.dart';
+import '../../../../widgets/button_back_leading.dart';
 import '../controllers/pinjol_list_controller.dart';
 
 class PinjolListView extends GetView<PinjolListController> {
@@ -9,7 +11,11 @@ class PinjolListView extends GetView<PinjolListController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Daftar Pinjaman Online Legal', style: TextStyle(fontSize: 16)),
+        leading: const ButtonBackLeading(),
+        title: const Text(
+          'Daftar Pinjaman Online Legal',
+          style: Utils.header,
+        ),
         centerTitle: true,
       ),
       body: Column(

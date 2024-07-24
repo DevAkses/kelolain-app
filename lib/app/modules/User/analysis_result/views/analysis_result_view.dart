@@ -1,4 +1,3 @@
-import 'package:chat_bubbles/bubbles/bubble_special_one.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/utils/warna.dart';
@@ -7,6 +6,7 @@ import '../controllers/analysis_result_controller.dart';
 
 class AnalysisResultView extends GetView<AnalysisResultController> {
   const AnalysisResultView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,31 +18,90 @@ class AnalysisResultView extends GetView<AnalysisResultController> {
         ),
         centerTitle: true,
       ),
-      body: const SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
-        child: Row(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              children: [
-                Image(
-                  image: AssetImage('assets/images/maskot.png'),
-                  width: 40,
-                  fit: BoxFit.cover,
-                ),
-              ],
+            Container(
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: const Color(0xFF509FD0),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.analytics,
+                    color: Colors.white,
+                  ),
+                  SizedBox(width: 8.0),
+                  Text(
+                    'Hasil Analisis',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            SizedBox(width: 3),
-            Expanded(
-              child: Column(
+            const SizedBox(height: 16.0),
+            Container(
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF6F8FB),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 10),
-                  BubbleSpecialOne(
-                    text: 'Setelah menganalisis keuangan Anda, pendapatan bulanan Anda stabil, namun pengeluaran menunjukkan variasi signifikan, terutama pada kategori seperti makanan dan minuman, tagihan utilitas, dan hiburan. Tabungan Anda tumbuh stabil, sementara investasi Anda, seperti saham dan reksa dana, menghadapi fluktuasi pasar. Kewajiban terbesar berasal dari kartu kredit dan pinjaman pribadi, yang memerlukan perhatian lebih. Anda telah berhasil meningkatkan tabungan darurat, tetapi perlu mengurangi pengeluaran di kategori hiburan dan makanan dan minuman, serta mengelola utang dengan bunga tinggi. Disarankan untuk memanfaatkan aplikasi pengelolaan keuangan, mengevaluasi portofolio investasi, dan terus meningkatkan tabungan darurat untuk mencapai tujuan finansial dengan lebih efektif.',
-                    isSender: false,
-                    color: Utils.biruLima,
-                    textStyle: TextStyle(fontSize: 14),
+                  Row(
+                    children: [
+                      Icon(Icons.insights, color: Colors.black54),
+                      SizedBox(width: 8.0),
+                      Text(
+                        'Analisis',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8.0),
+                  Text(
+                    'Bulan ini, Anda menghabiskan 30% dari total pengeluaran Anda pada kategori hiburan. Ini merupakan peningkatan 10% dibandingkan bulan lalu.',
+                    style: TextStyle(fontSize: 14.0),
+                    textAlign: TextAlign.justify,
+                  ),
+                  SizedBox(height: 16.0),
+                  Row(
+                    children: [
+                      Icon(Icons.recommend, color: Colors.black54),
+                      SizedBox(width: 8.0),
+                      Text(
+                        'Rekomendasi',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8.0),
+                  Text(
+                    'Pertimbangkan untuk mengurangi pengeluaran hiburan sebesar 20%. Anda dapat mengalihkan dana ini ke tabungan atau investasi untuk mencapai tujuan keuangan Anda lebih cepat.',
+                    style: TextStyle(fontSize: 14.0),
+                    textAlign: TextAlign.justify,
+                  ),
+                  SizedBox(height: 8.0),
+                  Text(
+                    'Cobalah mencari alternatif hiburan yang lebih ekonomis seperti kegiatan gratis atau diskon.',
+                    style: TextStyle(fontSize: 14.0),
+                    textAlign: TextAlign.justify,
                   ),
                 ],
               ),
