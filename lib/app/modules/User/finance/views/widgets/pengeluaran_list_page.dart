@@ -29,65 +29,56 @@ class PengeluaranListPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          child: Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Utils.biruSatu,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Rp $nominal',
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: colorCategory,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            kategori,
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 12),
-                          ),
-                        ),
-                        Text(
-                          tanggal,
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 12,
-                          ),
-                        ),
+                        Text(title, style: Utils.titleStyle),
+                        const SizedBox(height: 8),
+                        Text('Rp $nominal', style: Utils.subtitle),
                       ],
+                    ),
+                    const Icon(
+                      Icons.arrow_downward_outlined,
+                      color: Colors.red,
+                      size: 24,
                     ),
                   ],
                 ),
-              ),
-              const Icon(
-                Icons.arrow_downward_outlined,
-                color: Colors.red,
-                size: 24,
-              ),
-            ],
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: colorCategory,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        kategori,
+                        style: const TextStyle(
+                            color: Colors.white, fontSize: 12),
+                      ),
+                    ),
+                    Text(
+                      tanggal,
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -96,8 +87,8 @@ class PengeluaranListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children:[ Column(
+    return Stack(children: [
+      Column(
         children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -129,21 +120,23 @@ class PengeluaranListPage extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                            color: Colors.grey.withOpacity(0.15),
-                            spreadRadius: 0,
-                            blurRadius: 30,
-                            offset: const Offset(0, 5),
-                          ),
+                        color: Colors.grey.withOpacity(0.15),
+                        spreadRadius: 0,
+                        blurRadius: 30,
+                        offset: const Offset(0, 5),
+                      ),
                     ],
                   ),
                   child: DropdownButton<String>(
-                    items: <String>['Harian', 'Mingguan', 'Bulanan'].map((String value) {
+                    items: <String>['Harian', 'Mingguan', 'Bulanan']
+                        .map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
@@ -154,7 +147,8 @@ class PengeluaranListPage extends StatelessWidget {
                     },
                     elevation: 1,
                     hint: const Text('Filter'),
-                    underline: SizedBox(), // Hides the underline of the dropdown
+                    underline:
+                        SizedBox(), // Hides the underline of the dropdown
                     isExpanded: false, // Adjust as needed
                     icon: Icon(Icons.filter_list, color: Colors.black54),
                     style: TextStyle(color: Colors.black87),
@@ -169,11 +163,35 @@ class PengeluaranListPage extends StatelessWidget {
               child: ListView(
                 children: [
                   cardItem(
-                    "Course Javascript",
-                    "99.000",
-                    'Pengembangan diri',
+                    "Belanja bulanan",
+                    "500.000",
+                    'Belanja',
                     Utils.biruDua,
-                    "20 Juli 2024",
+                    "24 Juni 2024",
+                    () {},
+                  ),
+                  cardItem(
+                    "Makan hari ini",
+                    "100.000",
+                    'Makan',
+                    Utils.biruDua,
+                    "24 Juni 2024",
+                    () {},
+                  ),
+                  cardItem(
+                    "Kereta api",
+                    "300.000",
+                    'Transportasi',
+                    Utils.biruDua,
+                    "15 Juni 2024",
+                    () {},
+                  ),
+                  cardItem(
+                    "Bayar kos bulan Juni",
+                    "300.000",
+                    'Sewa',
+                    Utils.biruDua,
+                    "15 Juni 2024",
                     () {},
                   ),
                   // Add more cardItems here
@@ -184,17 +202,16 @@ class PengeluaranListPage extends StatelessWidget {
         ],
       ),
       Positioned(
-            bottom: 20,
-            right: 20,
-            child: FloatingActionButton(
-              onPressed: () {
-                Get.to(ExpenseView());
-              },
-              backgroundColor: Utils.biruDua,
-              child: const Icon(Icons.add, color: Colors.white),
-            ),
-          )
-      ]
-    );
+        bottom: 20,
+        right: 20,
+        child: FloatingActionButton(
+          onPressed: () {
+            Get.to(ExpenseView());
+          },
+          backgroundColor: Utils.biruDua,
+          child: const Icon(Icons.add, color: Colors.white),
+        ),
+      )
+    ]);
   }
 }

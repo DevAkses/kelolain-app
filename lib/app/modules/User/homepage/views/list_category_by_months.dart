@@ -24,44 +24,44 @@ class ListCategoryByMonths extends StatelessWidget {
               spacing: 16,
               runSpacing: 16,
               children: [
-                CategoryCard(
+                  CategoryCard(
                   icon: Icons.money,
-                  judul: "Gaji",
+                  judul: "Gaji Bulan Juni",
                   date: "24 Juni 2024",
                   nominal: "2.000.000",
                   colorNominal: Colors.green, // Income color
                 ),
                 CategoryCard(
                   icon: Icons.shopping_cart,
-                  judul: "Belanja",
+                  judul: "Belanja bulanan",
                   date: "24 Juni 2024",
                   nominal: "500.000",
                   colorNominal: Colors.red, // Expense color
                 ),
                 CategoryCard(
                   icon: Icons.fastfood,
-                  judul: "Makan",
+                  judul: "Makan hari ini",
                   date: "24 Juni 2024",
                   nominal: "100.000",
                   colorNominal: Colors.red, // Expense color
                 ),
                 CategoryCard(
                   icon: Icons.work,
-                  judul: "Bonus",
+                  judul: "Bonus lembur",
                   date: "23 Juni 2024",
                   nominal: "500.000",
                   colorNominal: Colors.green, // Income color
                 ),
                 CategoryCard(
                   icon: Icons.directions_car,
-                  judul: "Transportasi",
+                  judul: "Kereta api",
                   date: "15 Juni 2024",
                   nominal: "300.000",
                   colorNominal: Colors.red, // Expense color
                 ),
                 CategoryCard(
                   icon: Icons.home,
-                  judul: "Sewa",
+                  judul: "Bayar kos bulan Juni",
                   date: "14 Juni 2024",
                   nominal: "1.000.000",
                   colorNominal: Colors.red, // Expense color

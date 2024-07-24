@@ -26,21 +26,21 @@ class ListCategoryByDays extends StatelessWidget {
               children: [
                 CategoryCard(
                   icon: Icons.money,
-                  judul: "Gaji",
+                  judul: "Gaji Bulan Juni",
                   date: "24 Juni 2024",
                   nominal: "2.000.000",
                   colorNominal: Colors.green, // Income color
                 ),
                 CategoryCard(
                   icon: Icons.shopping_cart,
-                  judul: "Belanja",
+                  judul: "Belanja bulanan",
                   date: "24 Juni 2024",
                   nominal: "500.000",
                   colorNominal: Colors.red, // Expense color
                 ),
                 CategoryCard(
                   icon: Icons.fastfood,
-                  judul: "Makan",
+                  judul: "Makan hari ini",
                   date: "24 Juni 2024",
                   nominal: "100.000",
                   colorNominal: Colors.red, // Expense color

@@ -71,7 +71,7 @@ class ArticleWidget extends GetView<EducationController> {
                   article.image,
                   width: 80,
                   height: 60,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fitHeight,
                   errorBuilder: (context, error, stackTrace) {
                     return Container(
                       width: 80,

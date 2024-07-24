@@ -23,10 +23,8 @@ class NavigationView extends GetView<NavigationController> {
     ];
 
     return Obx(() => Scaffold(
-      
           body: pages[controller.selectedIndex.value],
           bottomNavigationBar: SizedBox(
-            
             height: 65,
             child: Stack(
               clipBehavior: Clip.none,
@@ -86,7 +84,7 @@ class NavigationView extends GetView<NavigationController> {
                       ),
                       label: 'Gamifikasi',
                     ),
-                     BottomNavigationBarItem(
+                    BottomNavigationBarItem(
                       icon: AnimatedSwitcher(
                         duration: const Duration(milliseconds: 300),
                         child: controller.selectedIndex.value == 4
