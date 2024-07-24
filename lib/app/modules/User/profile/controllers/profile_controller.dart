@@ -50,38 +50,36 @@ class ProfileController extends GetxController {
   }
 
   void updateProfileImage(BuildContext context) async {
-    confirmShowDialog("Apakah kamu yakin ingin mengubah profil?", () async {
-      Get.back();
-      try {
-        final picker = ImagePicker();
-        final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    try {
+      final picker = ImagePicker();
+      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
-        if (pickedFile != null) {
-          File file = File(pickedFile.path);
-          String uid = FirebaseAuth.instance.currentUser!.uid;
-          String filePath = 'profile_images/$uid';
+      if (pickedFile != null) {
+        File file = File(pickedFile.path);
+        String uid = FirebaseAuth.instance.currentUser!.uid;
+        String filePath = 'profile_images/$uid';
 
-          await FirebaseStorage.instance.ref(filePath).putFile(file);
+        await FirebaseStorage.instance.ref(filePath).putFile(file);
 
-          String downloadUrl =
-              await FirebaseStorage.instance.ref(filePath).getDownloadURL();
+        String downloadUrl =
+            await FirebaseStorage.instance.ref(filePath).getDownloadURL();
 
-          await FirebaseFirestore.instance.collection('users').doc(uid).update({
-            'profileImageUrl': downloadUrl,
-          });
+        await FirebaseFirestore.instance.collection('users').doc(uid).update({
+          'profileImageUrl': downloadUrl,
+        });
 
-          profileImageUrl.value = downloadUrl;
-          showDialogInfoWidget(
-              "Berhasil mengganti foto profil.", 'succes', context);
-        }
-      } catch (e) {
-        showDialogInfoWidget("Gagal mengganti foto profil.", 'fail', context);
+        profileImageUrl.value = downloadUrl;
+        Get.back();
+        showDialogInfoWidget(
+            "Berhasil mengganti foto profil.", 'succes', context);
       }
-    }, context);
+    } catch (e) {
+      showDialogInfoWidget("Gagal mengganti foto profil.", 'fail', context);
+    }
   }
 
   void deleteAccount(BuildContext context) async {
-    confirmShowDialog("Apakah kamu yakin ingin menghapus akun?", () async {
+    confirmShowDialog(judul: "Apakah kamu yakin ingin menghapus akun?",onPressed: () async {
       Get.back();
       try {
         String uid = FirebaseAuth.instance.currentUser!.uid;
@@ -92,21 +90,19 @@ class ProfileController extends GetxController {
       } catch (e) {
         showDialogInfoWidget("Gagal menghapus akun.", 'fail', context);
       }
-    }, context);
+    },context:  context);
   }
 
   void logout(BuildContext context) async {
-    confirmShowDialog("Apakah kamu ingin Logout?", () async {
+    confirmShowDialog(judul: "Apakah kamu ingin Logout?",onPressed: () async {
       Get.back();
       try {
         await FirebaseAuth.instance.signOut();
         Get.offAllNamed(Routes.LOGIN);
-        showDialogInfoWidget("Berhasil Logout!", 'succes',
-          context);
+        showDialogInfoWidget("Berhasil Logout!", 'succes', context);
       } catch (e) {
-        showDialogInfoWidget("Gagal Logout!", 'fail',
-          context);
+        showDialogInfoWidget("Gagal Logout!", 'fail', context);
       }
-    }, context);
+    },context:  context);
   }
 }

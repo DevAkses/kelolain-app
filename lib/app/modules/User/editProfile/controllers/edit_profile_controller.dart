@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/navigation/controllers/navigation_controller.dart';
 import 'package:safeloan/app/modules/User/navigation/views/navigation_view.dart';
 import 'package:safeloan/app/modules/User/profile/controllers/profile_controller.dart';
-import 'package:safeloan/app/routes/app_pages.dart';
 import 'package:safeloan/app/widgets/confirm_show_dialog_widget.dart';
 import 'package:safeloan/app/widgets/show_dialog_info_widget.dart';
 
@@ -40,24 +39,31 @@ class EditProfileController extends GetxController {
   }
 
   void saveProfile(BuildContext context) async {
-    confirmShowDialog("Apakah kamu yakin ingin mengupdate profil?", () async {
+    confirmShowDialog(judul: "Apakah kamu yakin ingin mengupdate profil?", onPressed: () async {
       try {
-        Get.back();
         String uid = _auth.currentUser!.uid;
         await _firestore.collection('users').doc(uid).update({
           'fullName': fullNameController.text,
           'age': int.parse(ageController.text),
           'profession': professionController.text,
         });
-        showDialogInfoWidget("Berhasil mengupdate profil.", 'succes', context);
         final ProfileController detailProfileController =
             Get.put(ProfileController());
         detailProfileController.loadUserData();
-        detailProfileController.loadProfileImage(); // Refresh profile image
+        detailProfileController.loadProfileImage();
+        Get.offAll(
+          () => NavigationView(),
+          binding: BindingsBuilder(
+            () {
+              Get.put(NavigationController()).changePage(4);
+            },
+          ),
+        );
+        showDialogInfoWidget("Berhasil mengupdate profil.", 'succes', context);
       } catch (e) {
         print('Ini Error: $e');
         showDialogInfoWidget("Gagal mengupdate profil.", 'fail', context);
       }
-    }, context);
+    }, context: context);
   }
 }

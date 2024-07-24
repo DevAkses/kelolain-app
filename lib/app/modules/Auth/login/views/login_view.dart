@@ -86,7 +86,7 @@ class LoginView extends GetView<LoginController> {
               ),
               ButtonWidget(
                   onPressed: () => controller.login(
-                      controller.emailC.text, controller.passwordC.text),
+                      controller.emailC.text, controller.passwordC.text, context),
                   nama: "Masuk"),
               const SizedBox(
                 height: 10,
