@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/utils/warna.dart';
+import 'package:safeloan/app/widgets/button_back_leading.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
-import 'package:safeloan/app/widgets/input_akun_widget.dart';
 import '../controllers/edit_loan_controller.dart';
 
 class EditLoanView extends GetView<EditLoanController> {
@@ -11,7 +12,8 @@ class EditLoanView extends GetView<EditLoanController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Data Pinjaman'),
+        leading: const ButtonBackLeading(),
+        title: const Text('Edit Data Pinjaman', style: Utils.header,),
         centerTitle: true,
       ),
       body: Padding(

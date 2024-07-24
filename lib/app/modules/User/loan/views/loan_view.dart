@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_back_leading.dart';
+import 'package:safeloan/app/widgets/confirm_show_dialog_widget.dart';
 import '../controllers/loan_controller.dart';
 
 class LoanView extends GetView<LoanController> {
@@ -13,12 +14,15 @@ class LoanView extends GetView<LoanController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Daftar Pinjaman', style: Utils.header,),
+        title: const Text(
+          'Daftar Pinjaman',
+          style: Utils.header,
+        ),
         centerTitle: true,
-        leading: ButtonBackLeading(),
+        leading: const ButtonBackLeading(),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(30),
+        padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Stack(
           children: [
             StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
@@ -29,7 +33,7 @@ class LoanView extends GetView<LoanController> {
                 }
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return const Center(child: Text('No loans available'));
+                  return const Center(child: Text('Tidak Ada Pinjaman'));
                 }
 
                 var loanDocs = snapshot.data!.docs;
@@ -41,12 +45,21 @@ class LoanView extends GetView<LoanController> {
                     var loanId = loanDocs[index].id;
 
                     return GestureDetector(
-                      onTap: () => Get.toNamed('/detail-loan', arguments: loanId),
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
+                      onTap: () =>
+                          Get.toNamed('/detail-loan', arguments: loanId),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Utils.backgroundCard,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.05),
+                              spreadRadius: 0,
+                              blurRadius: 30,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
                         ),
-                        elevation: 4,
                         margin: const EdgeInsets.symmetric(vertical: 10),
                         child: Padding(
                           padding: const EdgeInsets.all(15),
@@ -54,7 +67,8 @@ class LoanView extends GetView<LoanController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     loanData['namaPinjaman'] ?? 'Pinjaman',
@@ -66,12 +80,24 @@ class LoanView extends GetView<LoanController> {
                                   Row(
                                     children: [
                                       IconButton(
-                                        icon: const Icon(FontAwesomeIcons.penToSquare, color: Colors.blue),
-                                        onPressed: () => Get.toNamed('/edit-loan', arguments: loanId),
+                                        icon: const Icon(
+                                            FontAwesomeIcons.penToSquare,
+                                            color: Colors.blue),
+                                        onPressed: () => Get.toNamed(
+                                            '/edit-loan',
+                                            arguments: loanId),
                                       ),
                                       IconButton(
-                                        icon: const Icon(FontAwesomeIcons.trashCan, color: Colors.red),
-                                        onPressed: () => _showDeleteConfirmationDialog(context, loanId),
+                                        icon: const Icon(
+                                            FontAwesomeIcons.trashCan,
+                                            color: Colors.red),
+                                        onPressed: () => confirmShowDialog(
+                                          judul:
+                                              "Apakah anda yakin ingin menghapus pinjaman ini?",
+                                          onPressed: () =>
+                                              controller.deleteLoan(loanId),
+                                          context: context,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -80,15 +106,18 @@ class LoanView extends GetView<LoanController> {
                               const SizedBox(height: 10),
                               Row(
                                 children: [
-                                  const Icon(FontAwesomeIcons.moneyBillWave, color: Colors.green),
+                                  const Icon(FontAwesomeIcons.moneyBillWave,
+                                      color: Colors.green),
                                   const SizedBox(width: 10),
-                                  Text('Rp. ${loanData['jumlahPinjaman'] ?? 0}'),
+                                  Text(
+                                      'Rp. ${loanData['jumlahPinjaman'] ?? 0}'),
                                 ],
                               ),
                               const SizedBox(height: 10),
                               Row(
                                 children: [
-                                  const Icon(FontAwesomeIcons.percent, color: Colors.orange),
+                                  const Icon(FontAwesomeIcons.percent,
+                                      color: Colors.orange),
                                   const SizedBox(width: 10),
                                   Text('Bunga ${loanData['bunga'] ?? 0}%'),
                                 ],
@@ -96,9 +125,11 @@ class LoanView extends GetView<LoanController> {
                               const SizedBox(height: 10),
                               Row(
                                 children: [
-                                  const Icon(FontAwesomeIcons.calendarDays, color: Colors.purple),
+                                  const Icon(FontAwesomeIcons.calendarDays,
+                                      color: Colors.purple),
                                   const SizedBox(width: 10),
-                                  Text('Total Angsuran: ${loanData['angsuran'] ?? 0} bulan'),
+                                  Text(
+                                      'Total Angsuran: ${loanData['angsuran'] ?? 0} bulan'),
                                 ],
                               ),
                             ],
@@ -119,9 +150,7 @@ class LoanView extends GetView<LoanController> {
                   width: 60,
                   height: 60,
                   decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.green,
-                  ),
+                      shape: BoxShape.circle, color: Utils.biruSatu),
                   child: const Icon(
                     Icons.add,
                     color: Colors.white,
@@ -133,33 +162,6 @@ class LoanView extends GetView<LoanController> {
           ],
         ),
       ),
-    );
-  }
-
-  void _showDeleteConfirmationDialog(BuildContext context, String loanId) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Hapus Pinjaman'),
-          content: const Text('Apakah Anda yakin ingin menghapus pinjaman ini?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: const Text('Tidak'),
-            ),
-            TextButton(
-              onPressed: () {
-                controller.deleteLoan(loanId);
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: const Text('Ya'),
-            ),
-          ],
-        );
-      },
     );
   }
 }

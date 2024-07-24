@@ -19,5 +19,6 @@ class LoanController extends GetxController {
         .collection('loans')
         .doc(loanId)
         .delete();
+    Get.back();
   }
 }

@@ -30,7 +30,6 @@ class AnalysisView extends GetView<AnalysisController> {
               Container(
                 padding: const EdgeInsets.all(16),
                 width: Get.width * 0.75,
-                height: 120,
                 decoration: BoxDecoration(
                   color: Utils.biruLima,
                   borderRadius: BorderRadius.circular(10),

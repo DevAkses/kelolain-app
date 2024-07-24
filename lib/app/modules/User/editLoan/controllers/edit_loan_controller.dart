@@ -73,8 +73,6 @@ class EditLoanController extends GetxController {
           'bunga': bunga.value,
           'tanggalPinjaman': tanggalPinjaman.value,
         });
-
-        Get.snackbar('Success', 'Loan updated successfully');
         return true;
       } catch (e) {
         Get.snackbar('Error', 'Failed to update loan: $e');
