@@ -10,7 +10,7 @@ class Utils {
   static const TextStyle titleStyle = TextStyle(
     color: Colors.black,
     fontWeight: FontWeight.bold,
-    fontSize: 18,
+    fontSize: 16,
   );
   static const TextStyle subtitle =
       TextStyle(color: Color.fromARGB(255, 151, 151, 151));

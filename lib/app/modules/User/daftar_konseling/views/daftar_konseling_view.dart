@@ -152,15 +152,11 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
                             .bookSchedule(session.counseling.id);
                         if (success) {
                           showDialogInfoWidget('Daftar konseling sukses.',
-                              'assets/images/succes.png', () {
-                            Get.back();
-                          }, "Oke 👌", context);
+                              'succes', context);
                         } else {
                           showDialogInfoWidget(
                               "Kamu sudah memiliki jadwal konseling.",
-                              'assets/images/fail.png', () {
-                            Get.back();
-                          }, "Oke 👌", context);
+                              'assets/images/fail.png', context);
                         }
                       }, context);
                     });
