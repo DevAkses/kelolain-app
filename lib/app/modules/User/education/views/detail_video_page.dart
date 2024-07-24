@@ -10,7 +10,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 class YouTubePlayerScreen extends GetView<EducationController> {
   final Video video;
 
-  const YouTubePlayerScreen({Key? key, required this.video}) : super(key: key);
+  const YouTubePlayerScreen({super.key, required this.video});
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +65,7 @@ class YouTubePlayerScreen extends GetView<EducationController> {
         ),
         builder: (context, player) {
           return Scaffold(
-            appBar: AppBar(leading: const ButtonBackLeading(), title: const Text("Edukasi", style: Utils.header,), centerTitle: true,),
+            appBar: AppBar(leading: const ButtonBackLeading(), title: const Text("Video", style: Utils.header,), centerTitle: true,),
             body: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [

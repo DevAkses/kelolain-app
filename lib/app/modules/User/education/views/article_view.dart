@@ -40,7 +40,7 @@ class ArticleWidget extends GetView<EducationController> {
             "Penulis: ${article.source}",
             style: TextStyle(fontSize: 12, color: Colors.grey[600]),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -68,7 +68,7 @@ class ArticleWidget extends GetView<EducationController> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
-                  article.image, // Use the URL from the article object
+                  article.image,
                   width: 80,
                   height: 60,
                   fit: BoxFit.fitHeight,

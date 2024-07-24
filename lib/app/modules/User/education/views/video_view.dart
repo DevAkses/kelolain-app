@@ -31,9 +31,9 @@ class VideoWidget extends GetView<EducationController> {
             },
           ),
           ListTile(
-            leading: CircleAvatar(
+            leading: const CircleAvatar(
               backgroundImage: NetworkImage(
-                  ""), // Asumsikan sumber adalah URL avatar channel
+                  ""),
               child: Icon(Icons.person),
             ),
             title: Text(
@@ -46,7 +46,7 @@ class VideoWidget extends GetView<EducationController> {
               'sumber • ${_getTimeAgo(video.postAt)}',
               style: Utils.subtitle,
             ),
-            trailing: Icon(Icons.more_vert),
+            trailing: const Icon(Icons.more_vert),
           ),
         ],
       ),
