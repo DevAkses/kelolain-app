@@ -10,9 +10,9 @@ class Utils {
   static const TextStyle titleStyle = TextStyle(
     color: Colors.black,
     fontWeight: FontWeight.bold,
-    fontSize: 16,
+    fontSize: 12,
   );
   static const TextStyle subtitle =
-      TextStyle(color: Color.fromARGB(255, 151, 151, 151));
+      TextStyle(color: Color.fromARGB(255, 151, 151, 151), fontSize: 12);
   static const TextStyle header = TextStyle(color: Colors.black, fontWeight: FontWeight.bold);
 }

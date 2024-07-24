@@ -35,16 +35,13 @@ class LoginController extends GetxController {
         if (myUser.user!.emailVerified) {
           DocumentSnapshot userDoc =
               await firestore.collection('users').doc(myUser.user!.uid).get();
-
           if (userDoc.exists) {
             String? role = userDoc.get('role') as String?;
-
             if (role != null) {
               Get.defaultDialog(
                 title: "Berhasil",
                 middleText: "Anda berhasil login.",
               );
-
               if (role == 'Pengguna') {
                 Get.offAllNamed(Routes.NAVIGATION);
               } else if (role == 'Konselor') {
@@ -58,19 +55,21 @@ class LoginController extends GetxController {
               showDialogInfoWidget("Terjadi Kesalahan.", 'fail', context);
             }
           } else {
-            showDialogInfoWidget(
-                "Data user tidak ditemukan.", 'fail', context);
+            showDialogInfoWidget("Data user tidak ditemukan.", 'fail', context);
           }
         } else {
-          confirmShowDialog(judul: 
-              "Kamu perlu verifikasi email terlebih dahulu. Apakah kamu ingin dikirimkan verifikasi ulang?",
-             onPressed: () async {
-            await myUser.user!.sendEmailVerification();
-            Get.back();
-          }, context:  context, textBatal: "Kembali", textSetuju: "Kirim Ulang");
+          confirmShowDialog(
+              judul:
+                  "Kamu perlu verifikasi email terlebih dahulu. Apakah kamu ingin dikirimkan verifikasi ulang?",
+              onPressed: () async {
+                await myUser.user!.sendEmailVerification();
+                Get.back();
+              },
+              context: context,
+              textBatal: "Kembali",
+              textSetuju: "Kirim Ulang");
         }
       } else {
-        
         showDialogInfoWidget("Data tidak boleh kosong.", 'fail', context);
       }
     } on FirebaseAuthException catch (e) {
@@ -83,7 +82,10 @@ class LoginController extends GetxController {
         if (kDebugMode) {
           print('Wrong password provided for that user.');
         }
-        showDialogInfoWidget("Email dan Password salah, cek kembali data anda!.", 'fail', context);
+        showDialogInfoWidget(
+            "Email dan Password salah, cek kembali data anda!.",
+            'fail',
+            context);
       }
     } catch (e) {
       showDialogInfoWidget("Gagal login! coba lagi.", 'fail', context);

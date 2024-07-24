@@ -34,11 +34,11 @@ class CategoryCard extends StatelessWidget {
       ),
       title: Text(
         judul,
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        style: Utils.titleStyle,
       ),
       subtitle: Text(
         date,
-        style: TextStyle(fontSize: 12, color: Colors.grey),
+        style: TextStyle(fontSize: 10, color: Colors.grey),
       ),
       trailing: Text(
         'Rp $nominal',

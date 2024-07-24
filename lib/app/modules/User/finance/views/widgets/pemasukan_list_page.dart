@@ -6,7 +6,7 @@ import 'package:safeloan/app/utils/warna.dart';
 class PemasukanListPage extends StatelessWidget {
   const PemasukanListPage({super.key});
 
-  Widget cardItem(String title, String nominal, String kategori,
+   Widget cardItem(String title, String nominal, String kategori,
       Color colorCategory, String tanggal, VoidCallback onTap) {
     return Container(
       width: double.infinity,
@@ -29,65 +29,56 @@ class PemasukanListPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          child: Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Utils.biruSatu,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Rp $nominal',
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: colorCategory,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            kategori,
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 12),
-                          ),
-                        ),
-                        Text(
-                          tanggal,
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 12,
-                          ),
-                        ),
+                        Text(title, style: Utils.titleStyle),
+                        const SizedBox(height: 8),
+                        Text('Rp $nominal', style: Utils.subtitle),
                       ],
+                    ),
+                    const Icon(
+                      Icons.arrow_upward_outlined,
+                      color: Colors.green,
+                      size: 24,
                     ),
                   ],
                 ),
-              ),
-              const Icon(
-                Icons.arrow_upward_outlined,
-                color: Colors.green,
-                size: 24,
-              ),
-            ],
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: colorCategory,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        kategori,
+                        style: const TextStyle(
+                            color: Colors.white, fontSize: 12),
+                      ),
+                    ),
+                    Text(
+                      tanggal,
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -180,11 +171,19 @@ class PemasukanListPage extends StatelessWidget {
               child: ListView(
                 children: [
                   cardItem(
-                    "Course Javascript",
-                    "99.000",
-                    'Pengembangan diri',
+                    "Gaji Bulan Juni",
+                    "2.000.000",
+                    'Gaji',
                     Utils.biruDua,
-                    "20 Juli 2024",
+                    "24 Juni 2024",
+                    () {},
+                  ),
+                  cardItem(
+                    "Bonus lembur",
+                    "500.000",
+                    'Gaji',
+                    Utils.biruDua,
+                    "23 Juni 2024",
                     () {},
                   ),
                   // Add more cardItems here
