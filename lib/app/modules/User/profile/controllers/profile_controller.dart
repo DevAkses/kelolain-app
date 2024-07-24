@@ -4,6 +4,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:safeloan/app/widgets/confirm_show_dialog_widget.dart';
+import 'package:safeloan/app/widgets/show_dialog_info_widget.dart';
 import 'dart:io';
 import '../../../../routes/app_pages.dart';
 
@@ -47,74 +49,64 @@ class ProfileController extends GetxController {
     }
   }
 
-  void updateProfileImage() async {
-    try {
-      final picker = ImagePicker();
-      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  void updateProfileImage(BuildContext context) async {
+    confirmShowDialog("Apakah kamu yakin ingin mengubah profil?", () async {
+      Get.back();
+      try {
+        final picker = ImagePicker();
+        final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
-      if (pickedFile != null) {
-        File file = File(pickedFile.path);
-        String uid = FirebaseAuth.instance.currentUser!.uid;
-        String filePath = 'profile_images/$uid';
-
-        await FirebaseStorage.instance.ref(filePath).putFile(file);
-
-        String downloadUrl =
-            await FirebaseStorage.instance.ref(filePath).getDownloadURL();
-
-        await FirebaseFirestore.instance.collection('users').doc(uid).update({
-          'profileImageUrl': downloadUrl,
-        });
-
-        profileImageUrl.value = downloadUrl;
-        Get.snackbar('Success', 'Profile picture updated successfully');
-      }
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to update profile picture');
-    }
-  }
-
-  void deleteAccount() async {
-    Get.defaultDialog(
-      title: "Delete Account",
-      middleText:
-          "Are you sure you want to delete your account? This action cannot be undone.",
-      textCancel: "Cancel",
-      textConfirm: "Delete",
-      confirmTextColor: Colors.white,
-      onConfirm: () async {
-        try {
+        if (pickedFile != null) {
+          File file = File(pickedFile.path);
           String uid = FirebaseAuth.instance.currentUser!.uid;
-          await FirebaseAuth.instance.currentUser!.delete();
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(uid)
-              .delete();
-          Get.offAllNamed(Routes.LOGIN);
-          Get.snackbar('Success', 'Account deleted successfully');
-        } catch (e) {
-          Get.snackbar('Error', 'Failed to delete account');
+          String filePath = 'profile_images/$uid';
+
+          await FirebaseStorage.instance.ref(filePath).putFile(file);
+
+          String downloadUrl =
+              await FirebaseStorage.instance.ref(filePath).getDownloadURL();
+
+          await FirebaseFirestore.instance.collection('users').doc(uid).update({
+            'profileImageUrl': downloadUrl,
+          });
+
+          profileImageUrl.value = downloadUrl;
+          showDialogInfoWidget(
+              "Berhasil mengganti foto profil.", 'succes', context);
         }
-      },
-    );
+      } catch (e) {
+        showDialogInfoWidget("Gagal mengganti foto profil.", 'fail', context);
+      }
+    }, context);
   }
 
-  void logout() async {
-    Get.defaultDialog(
-      title: "Logout",
-      middleText: "Apakah kamu ingin Logout?",
-      textCancel: "Tidak",
-      textConfirm: "Ya",
-      confirmTextColor: Colors.white,
-      onConfirm: () async {
-        try {
-          await FirebaseAuth.instance.signOut();
-          Get.offAllNamed(Routes.LOGIN);
-          Get.snackbar('Logout', 'Berhasil Logout');
-        } catch (e) {
-          Get.snackbar('Error', 'Gagal Logout');
-        }
-      },
-    );
+  void deleteAccount(BuildContext context) async {
+    confirmShowDialog("Apakah kamu yakin ingin menghapus akun?", () async {
+      Get.back();
+      try {
+        String uid = FirebaseAuth.instance.currentUser!.uid;
+        await FirebaseAuth.instance.currentUser!.delete();
+        await FirebaseFirestore.instance.collection('users').doc(uid).delete();
+        Get.offAllNamed(Routes.LOGIN);
+        showDialogInfoWidget("Berhasil menghapus akun.", 'succes', context);
+      } catch (e) {
+        showDialogInfoWidget("Gagal menghapus akun.", 'fail', context);
+      }
+    }, context);
+  }
+
+  void logout(BuildContext context) async {
+    confirmShowDialog("Apakah kamu ingin Logout?", () async {
+      Get.back();
+      try {
+        await FirebaseAuth.instance.signOut();
+        Get.offAllNamed(Routes.LOGIN);
+        showDialogInfoWidget("Berhasil Logout!", 'succes',
+          context);
+      } catch (e) {
+        showDialogInfoWidget("Gagal Logout!", 'fail',
+          context);
+      }
+    }, context);
   }
 }
