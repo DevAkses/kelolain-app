@@ -96,16 +96,94 @@ class PengeluaranListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
+    return Stack(
+      children:[ Column(
         children: [
-          ListView(
-            children: [
-              cardItem("Course Javascript", "99.000", 'Pengembangan diri',
-                  Utils.biruDua, "20 Juli 2024", () {}),
-            ],
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Total Pengeluaran',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      Text(
+                        'Rp. 130.000',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                          color: Colors.grey[500],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                            color: Colors.grey.withOpacity(0.15),
+                            spreadRadius: 0,
+                            blurRadius: 30,
+                            offset: const Offset(0, 5),
+                          ),
+                    ],
+                  ),
+                  child: DropdownButton<String>(
+                    items: <String>['Harian', 'Mingguan', 'Bulanan'].map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      // Add filter logic here
+                    },
+                    elevation: 1,
+                    hint: const Text('Filter'),
+                    underline: SizedBox(), // Hides the underline of the dropdown
+                    isExpanded: false, // Adjust as needed
+                    icon: Icon(Icons.filter_list, color: Colors.black54),
+                    style: TextStyle(color: Colors.black87),
+                  ),
+                ),
+              ],
+            ),
           ),
-          Positioned(
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListView(
+                children: [
+                  cardItem(
+                    "Course Javascript",
+                    "99.000",
+                    'Pengembangan diri',
+                    Utils.biruDua,
+                    "20 Juli 2024",
+                    () {},
+                  ),
+                  // Add more cardItems here
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      Positioned(
             bottom: 20,
             right: 20,
             child: FloatingActionButton(
@@ -116,8 +194,7 @@ class PengeluaranListPage extends StatelessWidget {
               child: const Icon(Icons.add, color: Colors.white),
             ),
           )
-        ],
-      ),
+      ]
     );
   }
 }

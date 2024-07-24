@@ -132,14 +132,6 @@ class HomepageView extends GetView<HomepageController> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           _buildMenuItem(
-                              icon: Icons.calculate,
-                              label: 'Kalkulator',
-                              onTap: () => Get.toNamed('/calculator')),
-                          _buildMenuItem(
-                              icon: Icons.attach_money,
-                              label: 'Pinjaman',
-                              onTap: () => Get.toNamed('/loan')),
-                          _buildMenuItem(
                               icon: Icons.school,
                               label: 'Edukasi',
                               onTap: () => Get.toNamed('/education')),
@@ -147,6 +139,14 @@ class HomepageView extends GetView<HomepageController> {
                               icon: Icons.chat,
                               label: 'Konseling',
                               onTap: () => Get.toNamed('/tab-counseling')),
+                          _buildMenuItem(
+                              icon: Icons.calculate,
+                              label: 'Kalkulasi',
+                              onTap: () => Get.toNamed('/calculator')),
+                          _buildMenuItem(
+                              icon: Icons.attach_money,
+                              label: 'Pinjaman',
+                              onTap: () => Get.toNamed('/loan')),
                         ],
                       ),
                     ),

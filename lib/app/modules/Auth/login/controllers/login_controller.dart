@@ -4,9 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import 'package:safeloan/app/routes/app_pages.dart';
+import 'package:safeloan/app/widgets/confirm_show_dialog_widget.dart';
+import 'package:safeloan/app/widgets/show_dialog_info_widget.dart';
 
 class LoginController extends GetxController {
-  TextEditingController emailC = TextEditingController(text: "devaksesmikail08@gmail.com");
+  TextEditingController emailC =
+      TextEditingController(text: "devaksesmikail08@gmail.com");
   TextEditingController passwordC = TextEditingController(text: "dev123");
 
   @override
@@ -21,7 +24,7 @@ class LoginController extends GetxController {
 
   Stream<User?> get streamAuthStatus => auth.authStateChanges();
 
-  void login(String email, String password) async {
+  void login(String email, String password, BuildContext context) async {
     try {
       UserCredential myUser = await auth.signInWithEmailAndPassword(
         email: email,
@@ -30,7 +33,8 @@ class LoginController extends GetxController {
 
       if (myUser.user != null) {
         if (myUser.user!.emailVerified) {
-          DocumentSnapshot userDoc = await firestore.collection('users').doc(myUser.user!.uid).get();
+          DocumentSnapshot userDoc =
+              await firestore.collection('users').doc(myUser.user!.uid).get();
 
           if (userDoc.exists) {
             String? role = userDoc.get('role') as String?;
@@ -48,65 +52,41 @@ class LoginController extends GetxController {
               } else if (role == 'Admin') {
                 Get.offAllNamed(Routes.NAVIGATION_ADMIN);
               } else {
-                Get.defaultDialog(
-                  title: "Terjadi Kesalahan",
-                  middleText: "Unknown role.",
-                );
+                showDialogInfoWidget("Terjadi Kesalahan.", 'fail', context);
               }
             } else {
-              Get.defaultDialog(
-                title: "Terjadi Kesalahan",
-                middleText: "Role is null.",
-              );
+              showDialogInfoWidget("Terjadi Kesalahan.", 'fail', context);
             }
           } else {
-            Get.defaultDialog(
-              title: "Terjadi Kesalahan",
-              middleText: "User document does not exist.",
-            );
+            showDialogInfoWidget(
+                "Data user tidak ditemukan.", 'fail', context);
           }
         } else {
-          Get.defaultDialog(
-            title: "Verification Email",
-            middleText: "Kamu perlu verifikasi email terlebih dahulu. Apakah kamu ingin dikirimkan verifikasi ulang?",
-            onConfirm: () async {
-              await myUser.user!.sendEmailVerification();
-              Get.back();
-            },
-            textConfirm: "Kirim ulang",
-            textCancel: "Kembali",
-          );
+          confirmShowDialog(judul: 
+              "Kamu perlu verifikasi email terlebih dahulu. Apakah kamu ingin dikirimkan verifikasi ulang?",
+             onPressed: () async {
+            await myUser.user!.sendEmailVerification();
+            Get.back();
+          }, context:  context, textBatal: "Kembali", textSetuju: "Kirim Ulang");
         }
       } else {
-        Get.defaultDialog(
-          title: "Terjadi Kesalahan",
-          middleText: "User data is null.",
-        );
+        
+        showDialogInfoWidget("Data tidak boleh kosong.", 'fail', context);
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         if (kDebugMode) {
           print('No user found for that email.');
         }
-        Get.defaultDialog(
-          title: "Terjadi Kesalahan",
-          middleText: "No user found for that email.",
-        );
+        showDialogInfoWidget("User tidak ditemukan.", 'fail', context);
       } else if (e.code == 'wrong-password') {
         if (kDebugMode) {
           print('Wrong password provided for that user.');
         }
-        Get.defaultDialog(
-          title: "Terjadi Kesalahan",
-          middleText: "Email dan Password tidak sesuai. Silahkan cek kembali dengan benar.",
-        );
+        showDialogInfoWidget("Email dan Password salah, cek kembali data anda!.", 'fail', context);
       }
     } catch (e) {
-      Get.defaultDialog(
-        title: "Terjadi Kesalahan",
-        middleText: "Gagal login. Silakan coba lagi.",
-      );
+      showDialogInfoWidget("Gagal login! coba lagi.", 'fail', context);
     }
   }
 }
- 

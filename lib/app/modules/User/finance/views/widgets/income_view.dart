@@ -120,15 +120,15 @@ class IncomeView extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: isSelected ? Colors.green[100] : Colors.transparent,
+                  color: isSelected ? Utils.biruLima : Colors.transparent,
                   border: Border.all(
-                      color: isSelected ? Colors.green : Colors.transparent),
+                      color: isSelected ? Utils.biruEmpat : Colors.transparent),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
                   icon,
                   size: 35,
-                  color: isSelected ? Colors.green : Colors.black,
+                  color: isSelected ? Utils.biruDua : Colors.black,
                 ),
               ),
               const SizedBox(height: 7),
@@ -136,7 +136,7 @@ class IncomeView extends StatelessWidget {
                 category,
                 style: TextStyle(
                   fontSize: 12,
-                  color: isSelected ? Colors.green : Colors.black,
+                  color: isSelected ? Utils.biruDua : Colors.black,
                 ),
               ),
             ],

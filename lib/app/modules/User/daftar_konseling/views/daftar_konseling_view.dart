@@ -145,24 +145,20 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
                             .add_jm()
                             .format(session.counseling.jadwal),
                         '${session.counseling.durasi}', () {
-                      confirmShowDialog("Apakah kamu ingin ajukan sesi ini?",
-                          () async {
+                      confirmShowDialog(judul: "Apakah kamu ingin ajukan sesi ini?",
+                          onPressed: () async {
                         Get.back();
                         bool success = await registCounseling
                             .bookSchedule(session.counseling.id);
                         if (success) {
                           showDialogInfoWidget('Daftar konseling sukses.',
-                              'assets/images/succes.png', () {
-                            Get.back();
-                          }, "Oke 👌", context);
+                              'succes', context);
                         } else {
                           showDialogInfoWidget(
                               "Kamu sudah memiliki jadwal konseling.",
-                              'assets/images/fail.png', () {
-                            Get.back();
-                          }, "Oke 👌", context);
+                              'assets/images/fail.png', context);
                         }
-                      }, context);
+                      },context:  context);
                     });
                   },
                 ),

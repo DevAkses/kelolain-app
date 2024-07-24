@@ -60,7 +60,7 @@ class EditProfileView extends GetView<EditProfileController> {
                         )),
                     child: IconButton(
                       icon: const Icon(Icons.camera_alt, size: 20, color: Utils.biruLima,),
-                      onPressed: () => profileController.updateProfileImage(),
+                      onPressed: () => profileController.updateProfileImage(context),
                       constraints:
                           const BoxConstraints.tightFor(width: 40, height: 40),
                       padding: EdgeInsets.zero,
@@ -94,7 +94,7 @@ class EditProfileView extends GetView<EditProfileController> {
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               child: ButtonWidget(
-                onPressed: () => controller.saveProfile(),
+                onPressed: () => controller.saveProfile(context),
                 nama: "Simpan",
               ),
             )

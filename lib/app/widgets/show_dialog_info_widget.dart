@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 
-void showDialogInfoWidget(
-    judul, linkImage, onPressed, buttonName, BuildContext context) {
+void showDialogInfoWidget(judul, icon, BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -20,14 +20,21 @@ void showDialogInfoWidget(
               Text(
                 judul,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Image.asset(
-                linkImage,
+                'assets/images/${icon}.png',
                 scale: 3,
               ),
-              SizedBox(height: 15,),
-              ButtonWidget(onPressed: onPressed, nama: buttonName)
+              SizedBox(
+                height: 15,
+              ),
+              ButtonWidget(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  nama: 'Oke 👌')
             ],
           ),
         ),
