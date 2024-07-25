@@ -20,7 +20,7 @@ class CounselingView extends GetView<CounselingController> {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(15),
-      margin: const EdgeInsets.all(10),
+      margin: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Utils.backgroundCard,
         borderRadius: BorderRadius.circular(10),
@@ -43,7 +43,7 @@ class CounselingView extends GetView<CounselingController> {
             leading: CircleAvatar(
               backgroundImage: NetworkImage(linkGambar),
             ),
-            title: Text(namaKonselor, style: TextStyle(fontWeight: FontWeight.bold),),
+            title: Text(namaKonselor, style: Utils.titleStyle,),
             subtitle: Text(keahlian, style: Utils.subtitle,),
           ),
           Row(
@@ -53,12 +53,12 @@ class CounselingView extends GetView<CounselingController> {
                 Icons.event,
                 size: 16,
               ),
-              SizedBox(width: 5,),
+              const SizedBox(width: 5,),
               const Text(
                 "Tanggal: ",
                 style: TextStyle(fontSize: 12, color: Utils.biruSatu),
               ),
-              Text(tanggal),
+              Text(tanggal,  style: const TextStyle(fontSize: 12),),
             ],
           ),
           Row(
@@ -110,7 +110,7 @@ class CounselingView extends GetView<CounselingController> {
           return Column(
             children: [
               cardItem(
-                userData['profileImageUrl'] ?? "", // Link gambar
+                userData['profileImageUrl'] ?? '', // Link gambar
                 userData['fullName'] ?? 'Nama Konselor',
                 userData['profession'] ?? 'Psikolog handal',
                 DateFormat.yMMMMd().add_jm().format(counseling.jadwal),

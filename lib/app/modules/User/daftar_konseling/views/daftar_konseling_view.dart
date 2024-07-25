@@ -11,9 +11,9 @@ import 'package:safeloan/app/widgets/show_dialog_info_widget.dart';
 import '../controllers/daftar_konseling_controller.dart';
 
 class DaftarKonselingView extends GetView<DaftarKonselingController> {
-  const DaftarKonselingView({Key? key}) : super(key: key);
+  const DaftarKonselingView({super.key});
 
-  Widget ButtonAjukan(VoidCallback onPressed) {
+Widget buttonAjukan(VoidCallback onPressed) {
     return SizedBox(
       width: 150,
       child: ElevatedButton(
@@ -32,13 +32,12 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
       ),
     );
   }
-
-  Widget CardItem(String linkGambar, String namaKonselor, String keahlian,
-      String tanggal, String waktu, VoidCallback onPressed) {
+  Widget cardItem(String linkGambar, String namaKonselor, String keahlian,
+      String tanggal, String waktu, int koin, VoidCallback onPressed) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(15),
-      margin: const EdgeInsets.all(10),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
         color: Utils.backgroundCard,
         borderRadius: BorderRadius.circular(10),
@@ -52,60 +51,71 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
         ],
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(linkGambar),
-            ),
-            title: Text(namaKonselor,
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text(
-              keahlian,
-              style: Utils.subtitle,
-            ),
-          ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const Icon(
-                Icons.event,
-                size: 16,
+              CircleAvatar(
+                radius: 25,
+                backgroundImage: NetworkImage(linkGambar),
               ),
-              SizedBox(
-                width: 5,
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(namaKonselor,
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                    Text(keahlian, style: Utils.subtitle),
+                  ],
+                ),
               ),
-              const Text(
-                "Tanggal: ",
-                style: TextStyle(fontSize: 12, color: Utils.biruSatu),
-              ),
-              Text(tanggal)
+              _buildKoinWidget(koin),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const Icon(
-                Icons.access_time,
-                size: 16,
-              ),
-              const Text(
-                " Durasi: ",
-                style: TextStyle(fontSize: 12, color: Utils.biruSatu),
-              ),
-              Text(waktu)
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 15),
+          _buildInfoRow(Icons.event, "Tanggal: ", tanggal),
+          const SizedBox(height: 5),
+          _buildInfoRow(Icons.access_time, "Durasi: ", waktu),
+          const SizedBox(height: 15),
           Align(
             alignment: Alignment.centerRight,
-            child: ButtonAjukan(onPressed),
+            child: buttonAjukan(onPressed),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildKoinWidget(int koin) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.amber.shade100,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset('assets/images/koin.png', height: 16),
+          const SizedBox(width: 5),
+          Text(
+            '$koin',
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(IconData icon, String label, String value) {
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: Utils.biruSatu),
+        const SizedBox(width: 5),
+        Text(label, style: const TextStyle(fontSize: 12, color: Utils.biruSatu)),
+        Text(value, style: const TextStyle(fontSize: 12)),
+      ],
     );
   }
 
@@ -137,32 +147,30 @@ class DaftarKonselingView extends GetView<DaftarKonselingController> {
                   itemBuilder: (context, index) {
                     CounselingSessionWithUserData session =
                         counselingController.counselingList[index];
-                    return CardItem(
-                        "",
+                    return cardItem(
+                        session.userData['profilePicture'] ?? "",
                         session.userData['fullName'],
                         session.userData['profession'],
-                        DateFormat.yMMMMd()
-                            .add_jm()
-                            .format(session.counseling.jadwal),
-                        '${session.counseling.durasi}', () {
-                      confirmShowDialog("Apakah kamu ingin ajukan sesi ini?",
-                          () async {
-                        Get.back();
-                        bool success = await registCounseling
-                            .bookSchedule(session.counseling.id);
-                        if (success) {
-                          showDialogInfoWidget('Daftar konseling sukses.',
-                              'assets/images/succes.png', () {
+                        DateFormat.yMMMMd().format(session.counseling.jadwal),
+                        '${session.counseling.durasi} menit',
+                        50, () {
+                      confirmShowDialog(
+                          judul: "Apakah kamu ingin ajukan sesi ini seharga 50 coin?",
+                          onPressed: () async {
                             Get.back();
-                          }, "Oke 👌", context);
-                        } else {
-                          showDialogInfoWidget(
-                              "Kamu sudah memiliki jadwal konseling.",
-                              'assets/images/fail.png', () {
-                            Get.back();
-                          }, "Oke 👌", context);
-                        }
-                      }, context);
+                            bool success = await registCounseling
+                                .bookSchedule(session.counseling.id);
+                            if (success) {
+                              showDialogInfoWidget('Daftar konseling sukses.',
+                                  'succes', context);
+                            } else {
+                              showDialogInfoWidget(
+                                  "Kamu sudah memiliki jadwal konseling.",
+                                  'fail',
+                                  context);
+                            }
+                          },
+                          context: context);
                     });
                   },
                 ),

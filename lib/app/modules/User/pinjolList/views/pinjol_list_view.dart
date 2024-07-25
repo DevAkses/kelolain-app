@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/utils/warna.dart';
+import 'package:safeloan/app/widgets/button_back_leading.dart';
 import '../controllers/pinjol_list_controller.dart';
 
 class PinjolListView extends GetView<PinjolListController> {
-  const PinjolListView({Key? key}) : super(key: key);
+  const PinjolListView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Daftar Pinjaman Online Legal', style: TextStyle(fontSize: 16)),
+        title: const Text('Pinjol Legal', style: 
+        Utils.header),
         centerTitle: true,
+        leading: const ButtonBackLeading(),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,6 +76,7 @@ class PinjolListView extends GetView<PinjolListController> {
 
                       final pinjol = controller.filteredPinjols[index];
                       return Card(
+                        color: Utils.backgroundCard,
                         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                         elevation: 4,
                         child: ListTile(
@@ -86,7 +91,6 @@ class PinjolListView extends GetView<PinjolListController> {
                             style: TextStyle(color: Colors.grey[600]),
                           ),
                           trailing: Icon(Icons.arrow_forward_ios, color: Colors.grey[700]),
-                          onTap: () {},
                         ),
                       );
                     },

@@ -1,13 +1,18 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
+import '../../analysis_result/controllers/analysis_result_controller.dart';
 import '../controllers/analysis_controller.dart';
 
 class AnalysisView extends GetView<AnalysisController> {
   const AnalysisView({super.key});
   @override
   Widget build(BuildContext context) {
+    final AnalysisResultController analysisResultController =
+        Get.put(AnalysisResultController());
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -25,14 +30,13 @@ class AnalysisView extends GetView<AnalysisController> {
               Container(
                 padding: const EdgeInsets.all(16),
                 width: Get.width * 0.75,
-                height: 120,
                 decoration: BoxDecoration(
                   color: Utils.biruLima,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Center(
                   child: Text(
-                    'Hi, aku robo-apa. aku adalah asisten virtual AI yang akan mendampingimu di dalam aplikasi Kelola.In!',
+                    'Hi, aku Kelola-Bot. aku adalah AI yang akan mendampingimu di dalam aplikasi Kelola.In!',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 16),
                   ),
@@ -49,7 +53,15 @@ class AnalysisView extends GetView<AnalysisController> {
               ),
               const SizedBox(height: 20),
               ButtonWidget(
-                onPressed: () => Get.toNamed('analysis-result'),
+                onPressed: () {
+                  try {
+                    analysisResultController.showLoadingAndNavigate();
+                  } catch (e) {
+                    if (kDebugMode) {
+                      print('Error: $e');
+                    }
+                  }
+                },
                 nama: 'Analisis',
               ),
             ],

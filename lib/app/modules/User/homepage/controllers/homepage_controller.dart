@@ -5,7 +5,7 @@ import 'package:safeloan/app/modules/User/education/models/article_model.dart';
 import 'package:safeloan/app/modules/User/education/views/detail_article_page.dart';
 
 class HomepageController extends GetxController {
-  var points = 60.obs;
+  var points = 1000.obs;
   var currentImageIndex = 0.obs;
   late PageController pageController; // Changed to late
 

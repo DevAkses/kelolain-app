@@ -1,15 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/widgets/show_dialog_info_widget.dart';
 
 class RegisterController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  void signup(String email, String password, String fullName, String role) async {
+  void signup(String email, String password, String fullName, String role,
+      BuildContext context) async {
     try {
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -17,38 +20,21 @@ class RegisterController extends GetxController {
       await _firestore.collection('users').doc(userCredential.user!.uid).set({
         'fullName': fullName,
         'email': email,
-        'role': role, // Save the role
+        'role': role,
       });
 
       await userCredential.user!.sendEmailVerification();
 
-      Get.defaultDialog(
-        title: "Verification Email",
-        middleText: "We have sent a verification email to $email",
-        onConfirm: () {
-          Get.back(); // Tutup dialog
-          Get.back(); // Kembali ke halaman login
-        },
-        textConfirm: "OK",
-      );
+      showDialogInfoWidget('Verification Email', 'succes', context);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        Get.defaultDialog(
-          title: "Error",
-          middleText: "The password provided is too weak.",
-        );
+        showDialogInfoWidget('Password Terlalu Lemah', 'fail', context);
       } else if (e.code == 'email-already-in-use') {
-        Get.defaultDialog(
-          title: "Error",
-          middleText: "The account already exists for that email.",
-        );
+        showDialogInfoWidget('Alamat Email Sudah Digunakan', 'fail', context);
       }
     } catch (e) {
       debugPrint("Error: $e");
-      Get.defaultDialog(
-        title: "Error",
-        middleText: "Failed to register with this account.",
-      );
+      showDialogInfoWidget('Gagal mendaftar dengan akun ini', 'fail', context);
     }
   }
 }

@@ -25,81 +25,107 @@ class ExpenseView extends StatelessWidget {
         leading: const ButtonBackLeading(),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
-          child: Column(
-            children: [
-              InputAkunWidget(
-                nama: 'Nominal',
-                hintText: '0',
-                leadingIcon: Icons.attach_money,
-                controller: nominalC,
-              ),
-              const SizedBox(height: 10),
-              Container(
-                margin: EdgeInsets.only(left: lebar, right: lebar),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Kategori',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+        child: Column(
+          children: [
+            InputAkunWidget(
+              nama: 'Nominal',
+              hintText: '0',
+              leadingIcon: Icons.attach_money,
+              controller: nominalC,
+            ),
+            const SizedBox(height: 10),
+            Container(
+              margin: EdgeInsets.only(left: lebar, right: lebar),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Kategori',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 7, bottom: 3),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          _buildCategoryColumn(
-                            category: 'Gaji',
-                            icon: Icons.wallet,
-                            selectedCategory: selectedCategory,
-                          ),
-                          _buildCategoryColumn(
-                            category: 'Hadiah',
-                            icon: Icons.card_giftcard,
-                            selectedCategory: selectedCategory,
-                          ),
-                          _buildCategoryColumn(
-                            category: 'Investasi',
-                            icon: Icons.attach_money,
-                            selectedCategory: selectedCategory,
-                          ),
-                          _buildCategoryColumn(
-                            category: 'Freelance',
-                            icon: Icons.work_history_rounded,
-                            selectedCategory: selectedCategory,
-                          ),
-                        ],
-                      ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 7, bottom: 3),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildCategoryColumn(
+                              category: 'Darurat',
+                              icon: Icons.emergency,
+                              selectedCategory: selectedCategory,
+                            ),
+                            _buildCategoryColumn(
+                              category: 'Pangan',
+                              icon: Icons.restaurant,
+                              selectedCategory: selectedCategory,
+                            ),
+                            _buildCategoryColumn(
+                              category: 'Pakaian',
+                              icon: Icons.shopping_bag,
+                              selectedCategory: selectedCategory,
+                            ),
+                            _buildCategoryColumn(
+                              category: 'Hiburan',
+                              icon: Icons.movie,
+                              selectedCategory: selectedCategory,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildCategoryColumn(
+                              category: 'Pendidikan',
+                              icon: Icons.school,
+                              selectedCategory: selectedCategory,
+                            ),
+                            _buildCategoryColumn(
+                              category: 'Kesehatan',
+                              icon: Icons.local_hospital,
+                              selectedCategory: selectedCategory,
+                            ),
+                            _buildCategoryColumn(
+                              category: 'Cicilan',
+                              icon: Icons.payment,
+                              selectedCategory: selectedCategory,
+                            ),
+                            _buildCategoryColumn(
+                              category: 'Rumahan',
+                              icon: Icons.home,
+                              selectedCategory: selectedCategory,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              InputAkunWidget(
-                nama: 'Tanggal',
-                hintText: '15/07/2024',
-                leadingIcon: Icons.date_range,
-                controller: dateC,
-              ),
-              const SizedBox(height: 10),
-              InputAkunWidget(
-                nama: 'Catatan',
-                hintText: 'Masukkan Catatan',
-                leadingIcon: Icons.assignment,
-                controller: notesC,
-              ),
-              const SizedBox(height: 30),
-              ButtonWidget(
-                onPressed: () {},
-                nama: 'Tambah',
-              ),
-            ],
-          ),
+            ),
+            InputAkunWidget(
+              nama: 'Tanggal',
+              hintText: '15/07/2024',
+              leadingIcon: Icons.date_range,
+              controller: dateC,
+            ),
+            const SizedBox(height: 10),
+            InputAkunWidget(
+              nama: 'Catatan',
+              hintText: 'Masukkan Catatan',
+              leadingIcon: Icons.assignment,
+              controller: notesC,
+            ),
+            const SizedBox(height: 30),
+            ButtonWidget(
+              onPressed: () {},
+              nama: 'Tambah',
+            ),
+          ],
         ),
       ),
     );
@@ -123,15 +149,15 @@ class ExpenseView extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: isSelected ? Colors.green[100] : Colors.transparent,
+                  color: isSelected ? Utils.biruLima : Colors.transparent,
                   border: Border.all(
-                      color: isSelected ? Colors.green : Colors.transparent),
+                      color: isSelected ? Utils.biruEmpat : Colors.transparent),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
                   icon,
                   size: 35,
-                  color: isSelected ? Colors.green : Colors.black,
+                  color: isSelected ? Utils.biruDua : Colors.black,
                 ),
               ),
               const SizedBox(height: 7),
@@ -139,7 +165,7 @@ class ExpenseView extends StatelessWidget {
                 category,
                 style: TextStyle(
                   fontSize: 12,
-                  color: isSelected ? Colors.green : Colors.black,
+                  color: isSelected ? Utils.biruDua : Colors.black,
                 ),
               ),
             ],

@@ -1,5 +1,3 @@
-// import 'package:fl_chart/fl_chart.dart';
-import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,7 +11,7 @@ import 'package:badges/badges.dart' as badges;
 
 class HomepageView extends GetView<HomepageController> {
   HomepageView({super.key});
-  final RxInt _notifBadgeAmount = 3.obs;
+  final RxInt _notifBadgeAmount = 1.obs;
   final RxBool _showCartBadge = true.obs;
 
   Widget _notifBadge() {
@@ -75,8 +73,7 @@ class HomepageView extends GetView<HomepageController> {
   @override
   Widget build(BuildContext context) {
     final HomepageController controller = Get.put(HomepageController());
-    final ProfileController detailController =
-        Get.put(ProfileController());
+    final ProfileController detailController = Get.put(ProfileController());
     var lebar = MediaQuery.of(context).size.width;
     return DefaultTabController(
       length: 3,
@@ -110,7 +107,7 @@ class HomepageView extends GetView<HomepageController> {
                             () => poin("assets/images/poin.png",
                                 '${controller.points.value}'),
                           ),
-                          poin("assets/images/koin.png", 'belum ada'),
+                          poin("assets/images/koin.png", '100'),
                         ],
                       ),
                     ),
@@ -135,14 +132,6 @@ class HomepageView extends GetView<HomepageController> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           _buildMenuItem(
-                              icon: Icons.calculate,
-                              label: 'Kalkulator',
-                              onTap: () => Get.toNamed('/calculator')),
-                          _buildMenuItem(
-                              icon: Icons.attach_money,
-                              label: 'Pinjaman',
-                              onTap: () => Get.toNamed('/loan')),
-                          _buildMenuItem(
                               icon: Icons.school,
                               label: 'Edukasi',
                               onTap: () => Get.toNamed('/education')),
@@ -150,6 +139,14 @@ class HomepageView extends GetView<HomepageController> {
                               icon: Icons.chat,
                               label: 'Konseling',
                               onTap: () => Get.toNamed('/tab-counseling')),
+                          _buildMenuItem(
+                              icon: Icons.calculate,
+                              label: 'Kalkulasi',
+                              onTap: () => Get.toNamed('/calculator')),
+                          _buildMenuItem(
+                              icon: Icons.attach_money,
+                              label: 'Pinjaman',
+                              onTap: () => Get.toNamed('/loan')),
                         ],
                       ),
                     ),
@@ -157,74 +154,87 @@ class HomepageView extends GetView<HomepageController> {
                 ),
                 const SizedBox(height: 20),
                 Obx(
-                  () => CarouselSlider.builder(
-                    itemCount: controller.articleImages.length,
-                    itemBuilder: (context, index, realIndex) {
-                      var article = controller.articleImages[index];
-                      return Stack(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 5),
-                            height: 200,
-                            decoration: BoxDecoration(
-                              color: Utils.backgroundCard,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 1,
-                                  blurRadius: 3,
-                                  offset: const Offset(0, 1),
-                                ),
-                              ],
-                            ),
-                            child: GestureDetector(
-                              onTap: () =>
-                                  controller.navigateToDetailArticle(article),
-                              child: Center(
-                                child: Image.network(
-                                  article.image,
-                                  fit: BoxFit.fitHeight,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            left: 10,
-                            bottom: 15,
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
+                  () {
+                    if (controller.articleImages.isEmpty) {
+                      // Menampilkan widget kosong atau placeholder jika tidak ada artikel
+                      return const Center(
+                          child: Text('Tidak ada artikel untuk ditampilkan'));
+                    }
+
+                    return CarouselSlider.builder(
+                      itemCount: controller.articleImages.length,
+                      itemBuilder: (context, index, realIndex) {
+                        var article = controller.articleImages[index];
+                        return Stack(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 5),
+                              height: 200,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.black38,
+                                color: Utils.backgroundCard,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    spreadRadius: 1,
+                                    blurRadius: 3,
+                                    offset: const Offset(0, 1),
+                                  ),
+                                ],
                               ),
-                              child: Text(
-                                article.title.length > 20
-                                    ? "Artikel : ${article.title.substring(0, 20)}..."
-                                    : "Artikel : ${article.title}",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
+                              child: GestureDetector(
+                                onTap: () =>
+                                    controller.navigateToDetailArticle(article),
+                                child: Center(
+                                  child: Image.network(
+                                    article.image,
+                                    fit: BoxFit.fitHeight,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return const Center(
+                                          child: Icon(Icons
+                                              .error)); // Menampilkan ikon kesalahan jika gambar gagal dimuat
+                                    },
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      );
-                    },
-                    options: CarouselOptions(
-                      height: 205,
-                      viewportFraction: 0.9,
-                      enlargeCenterPage: true,
-                      enableInfiniteScroll: true,
-                      autoPlay: true,
-                      autoPlayInterval: const Duration(seconds: 3),
-                      autoPlayAnimationDuration:
-                          const Duration(milliseconds: 800),
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                    ),
-                  ),
+                            Positioned(
+                              left: 10,
+                              bottom: 15,
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.black38,
+                                ),
+                                child: Text(
+                                  article.title.length > 20
+                                      ? "Artikel : ${article.title.substring(0, 20)}..."
+                                      : "Artikel : ${article.title}",
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                      options: CarouselOptions(
+                        height: 205,
+                        viewportFraction: 0.9,
+                        enlargeCenterPage: true,
+                        enableInfiniteScroll: true,
+                        autoPlay: true,
+                        autoPlayInterval: const Duration(seconds: 3),
+                        autoPlayAnimationDuration:
+                            const Duration(milliseconds: 800),
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 20),
                 Column(
@@ -265,17 +275,17 @@ class HomepageView extends GetView<HomepageController> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 20),
                     const SizedBox(
-                      height: 400,
-                      child: Expanded(
-                          child: TabBarView(
+                      height: 400, // Adjust height as needed
+                      child: TabBarView(
                         children: [
                           ListCategoryByDays(),
                           ListCategoryByWeeks(),
                           ListCategoryByMonths(),
                         ],
-                      )),
-                    )
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -306,199 +316,3 @@ class HomepageView extends GetView<HomepageController> {
     );
   }
 }
-
-
-
-//                 // Grafik Penghasilan dan Pengeluaran
-//                 // Padding(
-//                 //   padding: const EdgeInsets.all(16.0),
-//                 //   child: Column(
-//                 //     crossAxisAlignment: CrossAxisAlignment.start,
-//                 //     children: [
-//                 //       const Text('Grafik Penghasilan dan Pengeluaran',
-//                 //           style: TextStyle(
-//                 //               fontSize: 16,
-//                 //               fontWeight: FontWeight.bold,
-//                 //               color: Utils.biruDua)),
-//                 //       const SizedBox(height: 10),
-//                 //       // Dropdown Filter
-//                 //       Obx(() => DropdownButton<String>(
-//                 //             value: _selectedPeriod.value,
-//                 //             icon: const Icon(Icons.arrow_drop_down,
-//                 //                 color: Colors.blue),
-//                 //             iconSize: 24,
-//                 //             elevation: 16,
-//                 //             style: const TextStyle(
-//                 //                 color: Utils.biruDua,
-//                 //                 fontSize: 16,
-//                 //                 fontWeight: FontWeight.bold),
-//                 //             dropdownColor: Colors.white,
-//                 //             underline: Container(
-//                 //               height: 2,
-//                 //               color: Utils.biruDua,
-//                 //             ),
-//                 //             items: <String>['Weekly', 'Monthly', 'Yearly']
-//                 //                 .map((String value) {
-//                 //               return DropdownMenuItem<String>(
-//                 //                 value: value,
-//                 //                 child: Padding(
-//                 //                   padding: const EdgeInsets.symmetric(
-//                 //                       horizontal: 8.0),
-//                 //                   child: Text(value),
-//                 //                 ),
-//                 //               );
-//                 //             }).toList(),
-//                 //             onChanged: (String? newValue) {
-//                 //               if (newValue != null) {
-//                 //                 _selectedPeriod.value = newValue;
-//                 //                 controller.changeFilter(newValue.toLowerCase());
-//                 //               }
-//                 //             },
-//                 //             hint: const Text(
-//                 //               "Select Period",
-//                 //               style:
-//                 //                   TextStyle(color: Colors.grey, fontSize: 16),
-//                 //             ),
-//                 //           )),
-//                 //       const SizedBox(height: 10),
-//                 //       _buildIncomeExpenseChart(controller),
-//                 //     ],
-//                 //   ),
-//                 // ),
-//               ],
-//             ),
-//           )),
-//     );
-//   }
-
-
-
-//   // Widget _buildIncomeExpenseChart(HomepageController controller) {
-//   //   return Container(
-//   //     height: 250,
-//   //     padding: const EdgeInsets.all(8.0),
-//   //     decoration: BoxDecoration(
-//   //       color: Utils.backgroundCard,
-//   //       borderRadius: BorderRadius.circular(12),
-//   //       boxShadow: [
-//   //         BoxShadow(
-//   //           color: Colors.grey.withOpacity(0.2),
-//   //           spreadRadius: 1,
-//   //           blurRadius: 4,
-//   //           offset: const Offset(0, 2),
-//   //         ),
-//   //       ],
-//   //     ),
-//   //     child: Obx(() {
-//   //       return LineChart(
-//   //         LineChartData(
-//   //           gridData: FlGridData(
-//   //             show: true,
-//   //             drawVerticalLine: true,
-//   //             horizontalInterval: 1,
-//   //             verticalInterval: 1,
-//   //             getDrawingHorizontalLine: (value) {
-//   //               return const FlLine(
-//   //                 color: Color(0xffe7e8ec),
-//   //                 strokeWidth: 1,
-//   //               );
-//   //             },
-//   //             getDrawingVerticalLine: (value) {
-//   //               return const FlLine(
-//   //                 color: Color(0xffe7e8ec),
-//   //                 strokeWidth: 1,
-//   //               );
-//   //             },
-//   //           ),
-//   //           titlesData: FlTitlesData(
-//   //             show: true,
-//   //             bottomTitles: AxisTitles(
-//   //               sideTitles: SideTitles(
-//   //                 showTitles: true,
-//   //                 reservedSize: 22,
-//   //                 getTitlesWidget: (value, meta) {
-//   //                   return Text(
-//   //                     (value.toInt() % 2 == 0) ? '${value.toInt()}' : '',
-//   //                     style: const TextStyle(
-//   //                       color: Color(0xff68737d),
-//   //                       fontWeight: FontWeight.bold,
-//   //                       fontSize: 12,
-//   //                     ),
-//   //                   );
-//   //                 },
-//   //                 interval: 1,
-//   //               ),
-//   //             ),
-//   //             leftTitles: AxisTitles(
-//   //               sideTitles: SideTitles(
-//   //                 showTitles: true,
-//   //                 reservedSize: 28,
-//   //                 getTitlesWidget: (value, meta) {
-//   //                   return Text(
-//   //                     (value % 500 == 0) ? '${value.toInt()}' : '',
-//   //                     style: const TextStyle(
-//   //                       color: Color(0xff67727d),
-//   //                       fontWeight: FontWeight.bold,
-//   //                       fontSize: 12,
-//   //                     ),
-//   //                   );
-//   //                 },
-//   //                 interval: 500,
-//   //               ),
-//   //             ),
-//   //             topTitles: const AxisTitles(
-//   //               sideTitles: SideTitles(showTitles: false),
-//   //             ),
-//   //             rightTitles: const AxisTitles(
-//   //               sideTitles: SideTitles(showTitles: false),
-//   //             ),
-//   //           ),
-//   //           borderData: FlBorderData(
-//   //             show: true,
-//   //             border: Border.all(
-//   //               color: const Color(0xffe7e8ec),
-//   //               width: 1,
-//   //             ),
-//   //           ),
-//   //           minX: 0,
-//   //           maxX: controller.income.length.toDouble() - 1,
-//   //           minY: 0,
-//   //           maxY: (controller.income + controller.expenses)
-//   //               .reduce((a, b) => a > b ? a : b)
-//   //               .toDouble(),
-//   //           lineBarsData: [
-//   //             LineChartBarData(
-//   //               spots: controller.income
-//   //                   .asMap()
-//   //                   .entries
-//   //                   .map((e) => FlSpot(e.key.toDouble(), e.value.toDouble()))
-//   //                   .toList(),
-//   //               isCurved: true,
-//   //               color: Colors.green,
-//   //               belowBarData: BarAreaData(
-//   //                 show: true,
-//   //                 color: Colors.green.withOpacity(0.2),
-//   //               ),
-//   //               dotData: const FlDotData(show: false),
-//   //             ),
-//   //             LineChartBarData(
-//   //               spots: controller.expenses
-//   //                   .asMap()
-//   //                   .entries
-//   //                   .map((e) => FlSpot(e.key.toDouble(), e.value.toDouble()))
-//   //                   .toList(),
-//   //               isCurved: true,
-//   //               color: Colors.red,
-//   //               belowBarData: BarAreaData(
-//   //                 show: true,
-//   //                 color: Colors.red.withOpacity(0.2),
-//   //               ),
-//   //               dotData: const FlDotData(show: false),
-//   //             ),
-//   //           ],
-//   //         ),
-//   //       );
-//   //     }),
-//   //   );
-//   // }
-// }

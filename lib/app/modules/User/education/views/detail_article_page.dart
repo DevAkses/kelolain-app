@@ -26,7 +26,7 @@ class _DetailArticlePageState extends State<DetailArticlePage> {
   }
 
   void _startTimer() {
-    _timer = Timer(Duration(seconds: 10), () async {
+    _timer = Timer(const Duration(seconds: 10), () async {
       if (!_hasMarkedAsRead) {
         final educationController = Get.find<EducationController>();
         final userId = FirebaseAuth.instance.currentUser!.uid;
@@ -48,12 +48,14 @@ class _DetailArticlePageState extends State<DetailArticlePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edukasi", style: Utils.header,),
-        leading: const ButtonBackLeading()
-      ),
+          title: const Text(
+            "Artikel",
+            style: Utils.header,
+          ),
+          centerTitle: true,
+          leading: const ButtonBackLeading()),
       body: ListView(
         children: [
-          // Gambar Artikel
           widget.article.image.isNotEmpty
               ? Image.network(
                   widget.article.image,
@@ -75,25 +77,20 @@ class _DetailArticlePageState extends State<DetailArticlePage> {
                   color: Colors.grey[300],
                   child: Icon(Icons.image, color: Colors.grey[500]),
                 ),
-          // Judul Artikel
           Padding(
             padding: const EdgeInsets.all(12.0),
-            child: Text(widget.article.title,
-                style: Utils.titleStyle
-            ),
+            child: Text(widget.article.title, style: Utils.titleStyle),
           ),
-          // Sumber Artikel
           Padding(
-            padding: const EdgeInsets.only(left: 12.0, bottom: 20.0),
-            child: Text("Sumber : ${widget.article.source}",
-                style: Utils.subtitle)
-          ),
-          const SizedBox(height: 16),
-          // Konten Artikel
+              padding: const EdgeInsets.only(left: 12.0,),
+              child: Text("Sumber : ${widget.article.source}",
+                  style: Utils.subtitle)),
+          const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
               widget.article.content,
+              textAlign: TextAlign.justify,
             ),
           ),
           const SizedBox(height: 20),

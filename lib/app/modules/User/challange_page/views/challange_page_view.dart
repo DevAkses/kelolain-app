@@ -93,13 +93,13 @@ class ChallangePageView extends GetView<ChallangePageController> {
           ),
           title: Text(
             title,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            style: Utils.titleStyle,
           ),
           subtitle: Text(
             deskripsi,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(color: Colors.grey),
+            style: Utils.subtitle,
           ),
           trailing: Icon(
             icon,
