@@ -12,8 +12,6 @@ class RegisterView extends GetView<RegisterController> {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
   final TextEditingController fullNameController = TextEditingController();
   final List<String> roles = ['Pengguna', 'Konselor'];
   String selectedRole = 'Pengguna';
@@ -143,11 +141,8 @@ class RegisterView extends GetView<RegisterController> {
   void _validateAndSignup(BuildContext context) {
     if (emailController.text.isEmpty ||
         passwordController.text.isEmpty ||
-        confirmPasswordController.text.isEmpty ||
         fullNameController.text.isEmpty) {
       showDialogInfoWidget('Data Tidak Boleh Kosong', 'fail', context);
-    } else if (passwordController.text != confirmPasswordController.text) {
-      showDialogInfoWidget('Kata Sandi Tidak Sesuai', 'fail', context);
     } else {
       controller.signup(
         emailController.text,

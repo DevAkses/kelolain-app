@@ -25,7 +25,7 @@ class LeaderBoard extends StatelessWidget {
         child: ListTile(
           subtitle: Text(
             deskripsi,
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
           ),
           trailing: SizedBox(
             width: 100,
@@ -76,7 +76,7 @@ class LeaderBoard extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.only(top: 25),
+              padding: const EdgeInsets.only(top: 25),
               margin: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 color: Utils.backgroundCard,
@@ -153,7 +153,7 @@ class LeaderBoard extends StatelessWidget {
               color: Colors.yellow[700],
               shape: BoxShape.circle,
             ),
-            child: Icon(Icons.star, color: Colors.white, size: 25),
+            child: const Icon(Icons.star, color: Colors.white, size: 25),
           ),
         ],
       ),
@@ -164,7 +164,7 @@ class LeaderBoard extends StatelessWidget {
   bool isCurrentUser = user['name'] == 'Anda';
   
   return Container(
-    margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+    margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(15),
       color: isCurrentUser ? Utils.biruLima : Colors.transparent,
@@ -174,7 +174,7 @@ class LeaderBoard extends StatelessWidget {
         backgroundColor: Utils.biruSatu,
         child: Text(
           '$index',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       title: Text(
@@ -202,7 +202,7 @@ class LeaderBoard extends StatelessWidget {
               color: Colors.yellow[700],
               shape: BoxShape.circle,
             ),
-            child: Icon(Icons.star, color: Colors.white, size: 15),
+            child: const Icon(Icons.star, color: Colors.white, size: 15),
           ),
         ],
       ),

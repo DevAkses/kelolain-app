@@ -109,7 +109,7 @@ class PengeluaranListPage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Rp. 130.000',
+                        'Rp. 1.200.000',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 12,

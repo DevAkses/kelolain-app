@@ -11,7 +11,7 @@ import 'package:badges/badges.dart' as badges;
 
 class HomepageView extends GetView<HomepageController> {
   HomepageView({super.key});
-  final RxInt _notifBadgeAmount = 3.obs;
+  final RxInt _notifBadgeAmount = 1.obs;
   final RxBool _showCartBadge = true.obs;
 
   Widget _notifBadge() {
@@ -107,7 +107,7 @@ class HomepageView extends GetView<HomepageController> {
                             () => poin("assets/images/poin.png",
                                 '${controller.points.value}'),
                           ),
-                          poin("assets/images/koin.png", 'belum ada'),
+                          poin("assets/images/koin.png", '100'),
                         ],
                       ),
                     ),

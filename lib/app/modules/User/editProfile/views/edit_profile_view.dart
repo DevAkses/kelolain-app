@@ -86,7 +86,7 @@ class EditProfileView extends GetView<EditProfileController> {
             const SizedBox(height: 20),
             _buildListTileTextField(
               icon: Icons.work,
-              label: 'Pekerjaan',
+              label: 'Profesi',
               controller: controller.professionController,
               keyboardType: TextInputType.text,
             ),

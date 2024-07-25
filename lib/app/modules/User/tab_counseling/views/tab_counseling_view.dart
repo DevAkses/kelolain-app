@@ -47,8 +47,8 @@ class TabCounselingView extends GetView<TabCounselingController> {
                         constraints: BoxConstraints(
                             maxWidth: MediaQuery.of(context).size.width * 0.7),
                         child: const Text(
-                          "Ayo konsultasikan kondisi dan rencana finansial-mu dengan konselur keuangan yang tersedia. Jadikan finansialmu sehat sehingga terhindar dari lilitan pinjaman online beresiko!",
-                          style: TextStyle(fontSize: 10),
+                          'Ayo konsultasikan kondisi finansial-mu dengan konselor keuangan yang tersedia agar terhindar dari lilitan pinjaman online!',
+                          style: TextStyle(fontSize: 11),
                         ),
                       ),
                     ),
@@ -93,7 +93,7 @@ class TabCounselingView extends GetView<TabCounselingController> {
                   unselectedLabelColor: Colors.black,
                   indicatorSize: TabBarIndicatorSize.tab,
                   tabs: const [
-                    Tab(text: "Jadwal Konselingku"),
+                    Tab(text: "Jadwalku"),
                     Tab(text: "Daftar Konseling"),
                   ],
                 ),

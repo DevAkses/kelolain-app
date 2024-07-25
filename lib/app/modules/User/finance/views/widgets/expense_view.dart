@@ -26,79 +26,108 @@ class ExpenseView extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-            children: [
-              InputAkunWidget(
-                nama: 'Nominal',
-                hintText: '0',
-                leadingIcon: Icons.attach_money,
-                controller: nominalC,
-              ),
-              const SizedBox(height: 10),
-              Container(
-                margin: EdgeInsets.only(left: lebar, right: lebar),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Kategori',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+          children: [
+            InputAkunWidget(
+              nama: 'Nominal',
+              hintText: '0',
+              leadingIcon: Icons.attach_money,
+              controller: nominalC,
+            ),
+            const SizedBox(height: 10),
+            Container(
+              margin: EdgeInsets.only(left: lebar, right: lebar),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Kategori',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 7, bottom: 3),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          _buildCategoryColumn(
-                            category: 'Gaji',
-                            icon: Icons.wallet,
-                            selectedCategory: selectedCategory,
-                          ),
-                          _buildCategoryColumn(
-                            category: 'Hadiah',
-                            icon: Icons.card_giftcard,
-                            selectedCategory: selectedCategory,
-                          ),
-                          _buildCategoryColumn(
-                            category: 'Investasi',
-                            icon: Icons.attach_money,
-                            selectedCategory: selectedCategory,
-                          ),
-                          _buildCategoryColumn(
-                            category: 'Freelance',
-                            icon: Icons.work_history_rounded,
-                            selectedCategory: selectedCategory,
-                          ),
-                        ],
-                      ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 7, bottom: 3),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildCategoryColumn(
+                              category: 'Darurat',
+                              icon: Icons.emergency,
+                              selectedCategory: selectedCategory,
+                            ),
+                            _buildCategoryColumn(
+                              category: 'Pangan',
+                              icon: Icons.restaurant,
+                              selectedCategory: selectedCategory,
+                            ),
+                            _buildCategoryColumn(
+                              category: 'Pakaian',
+                              icon: Icons.shopping_bag,
+                              selectedCategory: selectedCategory,
+                            ),
+                            _buildCategoryColumn(
+                              category: 'Hiburan',
+                              icon: Icons.movie,
+                              selectedCategory: selectedCategory,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildCategoryColumn(
+                              category: 'Pendidikan',
+                              icon: Icons.school,
+                              selectedCategory: selectedCategory,
+                            ),
+                            _buildCategoryColumn(
+                              category: 'Kesehatan',
+                              icon: Icons.local_hospital,
+                              selectedCategory: selectedCategory,
+                            ),
+                            _buildCategoryColumn(
+                              category: 'Cicilan',
+                              icon: Icons.payment,
+                              selectedCategory: selectedCategory,
+                            ),
+                            _buildCategoryColumn(
+                              category: 'Rumahan',
+                              icon: Icons.home,
+                              selectedCategory: selectedCategory,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              InputAkunWidget(
-                nama: 'Tanggal',
-                hintText: '15/07/2024',
-                leadingIcon: Icons.date_range,
-                controller: dateC,
-              ),
-              const SizedBox(height: 10),
-              InputAkunWidget(
-                nama: 'Catatan',
-                hintText: 'Masukkan Catatan',
-                leadingIcon: Icons.assignment,
-                controller: notesC,
-              ),
-              const SizedBox(height: 30),
-              ButtonWidget(
-                onPressed: () {},
-                nama: 'Tambah',
-              ),
-            ],
-          ),
+            ),
+            InputAkunWidget(
+              nama: 'Tanggal',
+              hintText: '15/07/2024',
+              leadingIcon: Icons.date_range,
+              controller: dateC,
+            ),
+            const SizedBox(height: 10),
+            InputAkunWidget(
+              nama: 'Catatan',
+              hintText: 'Masukkan Catatan',
+              leadingIcon: Icons.assignment,
+              controller: notesC,
+            ),
+            const SizedBox(height: 30),
+            ButtonWidget(
+              onPressed: () {},
+              nama: 'Tambah',
+            ),
+          ],
         ),
+      ),
     );
   }
 

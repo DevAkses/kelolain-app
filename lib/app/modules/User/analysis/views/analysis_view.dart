@@ -36,7 +36,7 @@ class AnalysisView extends GetView<AnalysisController> {
                 ),
                 child: const Center(
                   child: Text(
-                    'Hi, aku robo-apa. aku adalah asisten virtual AI yang akan mendampingimu di dalam aplikasi Kelola.In!',
+                    'Hi, aku Kelola-Bot. aku adalah AI yang akan mendampingimu di dalam aplikasi Kelola.In!',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 16),
                   ),

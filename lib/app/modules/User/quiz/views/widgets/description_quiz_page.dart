@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/quiz/models/quiz_model.dart';
 import 'package:safeloan/app/modules/User/quiz/views/widgets/question_list.dart';
 import 'package:safeloan/app/utils/warna.dart';
+import 'package:safeloan/app/widgets/button_back_leading.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 
 class DescriptionQuizPage extends StatelessWidget {
@@ -19,6 +20,7 @@ class DescriptionQuizPage extends StatelessWidget {
           style: Utils.header,
         ),
         centerTitle: true,
+        leading: const ButtonBackLeading(),
       ),
       body: SingleChildScrollView(
         child: Padding(

@@ -10,7 +10,7 @@
     </queries>
 
     <application
-        android:label="safeloan"
+        android:label="KelolaIn"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

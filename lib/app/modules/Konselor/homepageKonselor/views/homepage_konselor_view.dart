@@ -8,9 +8,9 @@ import '../controllers/homepage_konselor_controller.dart';
 class HomepageKonselorView extends GetView<HomepageKonselorController> {
   const HomepageKonselorView({super.key});
 
-  Widget ButtonKonselor(String title, VoidCallback onPressed) {
+  Widget buttonKonselor(String title, VoidCallback onPressed) {
     return SizedBox(
-      width: 120,
+      width: 130,
       height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -112,12 +112,12 @@ class HomepageKonselorView extends GetView<HomepageKonselorController> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ButtonKonselor('Meeting', () async {
+                    buttonKonselor('Meeting', () async {
                       String meetingUrl = tautanGmeet;
                       await controller.launchURL(meetingUrl);
                     }),
                     const SizedBox(width: 10),
-                    ButtonKonselor('Selesai', () {
+                    buttonKonselor('Selesai', () {
                       controller.deleteSchedule(counselingId);
                     }),
                   ],
