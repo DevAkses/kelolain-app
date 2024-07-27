@@ -7,7 +7,7 @@ class PengeluaranListPage extends StatelessWidget {
   const PengeluaranListPage({super.key});
 
   Widget cardItem(String title, String nominal, String kategori,
-      Color colorCategory, String tanggal, VoidCallback onTap) {
+      Color colorCategory, String tanggal) {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.all(10),
@@ -24,62 +24,56 @@ class PengeluaranListPage extends StatelessWidget {
           ),
         ],
       ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(10),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(title, style: Utils.titleStyle),
-                        const SizedBox(height: 8),
-                        Text('Rp $nominal', style: Utils.subtitle),
-                      ],
-                    ),
-                    const Icon(
-                      Icons.arrow_downward_outlined,
-                      color: Colors.red,
-                      size: 24,
-                    ),
+                    Text(title, style: Utils.titleStyle),
+                    const SizedBox(height: 8),
+                    Text('Rp $nominal', style: Utils.subtitle),
                   ],
                 ),
-                const SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: colorCategory,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(
-                        kategori,
-                        style: const TextStyle(
-                            color: Colors.white, fontSize: 12),
-                      ),
-                    ),
-                    Text(
-                      tanggal,
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 10,
-                      ),
-                    ),
-                  ],
+                const Icon(
+                  Icons.arrow_downward_outlined,
+                  color: Colors.red,
+                  size: 24,
                 ),
               ],
             ),
-          ),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: colorCategory,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    kategori,
+                    style: const TextStyle(
+                        color: Colors.white, fontSize: 12),
+                  ),
+                ),
+                Text(
+                  tanggal,
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 10,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -168,7 +162,7 @@ class PengeluaranListPage extends StatelessWidget {
                     'Belanja',
                     Utils.biruDua,
                     "24 Juni 2024",
-                    () {},
+                    
                   ),
                   cardItem(
                     "Makan hari ini",
@@ -176,7 +170,7 @@ class PengeluaranListPage extends StatelessWidget {
                     'Makan',
                     Utils.biruDua,
                     "24 Juni 2024",
-                    () {},
+                   
                   ),
                   cardItem(
                     "Kereta api",
@@ -184,7 +178,7 @@ class PengeluaranListPage extends StatelessWidget {
                     'Transportasi',
                     Utils.biruDua,
                     "15 Juni 2024",
-                    () {},
+                   
                   ),
                   cardItem(
                     "Bayar kos bulan Juni",
@@ -192,7 +186,7 @@ class PengeluaranListPage extends StatelessWidget {
                     'Sewa',
                     Utils.biruDua,
                     "15 Juni 2024",
-                    () {},
+                   
                   ),
                   // Add more cardItems here
                 ],

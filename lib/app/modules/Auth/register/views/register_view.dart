@@ -80,10 +80,12 @@ class RegisterView extends GetView<RegisterController> {
                 ),
                 const SizedBox(height: 10),
                 InputAkunWidget(
-                    controller: passwordController,
-                    nama: "Kata sandi",
-                    hintText: "Masukan kata sandi",
-                    leadingIcon: Icons.lock),
+                  controller: passwordController,
+                  nama: "Kata sandi",
+                  hintText: "Masukan kata sandi",
+                  leadingIcon: Icons.lock,
+                  isPassword: true,
+                ),
                 const SizedBox(height: 15),
                 Container(
                   margin: EdgeInsets.only(right: lebar * 0.1),
