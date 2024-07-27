@@ -8,91 +8,120 @@ import 'package:safeloan/app/widgets/confirm_show_dialog_widget.dart';
 import 'package:safeloan/app/widgets/show_dialog_info_widget.dart';
 
 class LoginController extends GetxController {
-  TextEditingController emailC =
-      TextEditingController();
-  TextEditingController passwordC = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Stream<User?> get streamAuthStatus => _auth.authStateChanges();
 
   @override
   void onClose() {
-    emailC.dispose();
-    passwordC.dispose();
+    emailController.dispose();
+    passwordController.dispose();
     super.onClose();
   }
 
-  FirebaseAuth auth = FirebaseAuth.instance;
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  Future<void> login(BuildContext context) async {
+    final email = emailController.text.trim();
+    final password = passwordController.text;
 
-  Stream<User?> get streamAuthStatus => auth.authStateChanges();
+    if (!_isValidCredentials(email, password)) {
+      showDialogInfoWidget("Email dan Password tidak boleh kosong.", 'fail', context);
+      return;
+    }
 
-  void login(String email, String password, BuildContext context) async {
     try {
-      if (email.isEmpty || password.isEmpty) {
-        showDialogInfoWidget("Email dan Password tidak boleh kosong.", 'fail', context);
-        return;
-      }
-
-      UserCredential myUser = await auth.signInWithEmailAndPassword(
+      final UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      if (myUser.user != null) {
-        if (myUser.user!.emailVerified) {
-          DocumentSnapshot userDoc =
-              await firestore.collection('users').doc(myUser.user!.uid).get();
-          if (userDoc.exists) {
-            String? role = userDoc.get('role') as String?;
-            if (role != null) {
-              Get.defaultDialog(
-                title: "Berhasil",
-                middleText: "Anda berhasil login.",
-              );
-              if (role == 'Pengguna') {
-                Get.offAllNamed(Routes.NAVIGATION);
-              } else if (role == 'Konselor') {
-                Get.offAllNamed(Routes.NAVIGATION_KONSELOR);
-              } else if (role == 'Admin') {
-                Get.offAllNamed(Routes.NAVIGATION_ADMIN);
-              } else {
-                showDialogInfoWidget("Terjadi Kesalahan.", 'fail', context);
-              }
-            } else {
-              showDialogInfoWidget("Terjadi Kesalahan.", 'fail', context);
-            }
-          } else {
-            showDialogInfoWidget("Data user tidak ditemukan.", 'fail', context);
-          }
-        } else {
-          confirmShowDialog(
-            judul: "Kamu perlu verifikasi email terlebih dahulu. Apakah kamu ingin dikirimkan verifikasi ulang?",
-            onPressed: () async {
-              await myUser.user!.sendEmailVerification();
-              Get.back();
-            },
-            context: context,
-            textBatal: "Kembali",
-            textSetuju: "Kirim Ulang",
-          );
-        }
-      } else {
-        showDialogInfoWidget("Gagal login! coba lagi.", 'fail', context);
+      final User? user = userCredential.user;
+      if (user == null) {
+        showDialogInfoWidget("Gagal login! Coba lagi.", 'fail', context);
+        return;
       }
+
+      if (!user.emailVerified) {
+        await _handleUnverifiedEmail(context, user);
+        return;
+      }
+
+      await _handleVerifiedUser(context, user);
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        if (kDebugMode) {
-          print('No user found for that email.');
-        }
-        showDialogInfoWidget("User tidak ditemukan.", 'fail', context);
-      } else if (e.code == 'wrong-password') {
-        if (kDebugMode) {
-          print('Wrong password provided for that user.');
-        }
-        showDialogInfoWidget("Email dan Password salah, cek kembali data anda!.", 'fail', context);
-      } else {
-        showDialogInfoWidget("Email atau Kata Sandi Anda Salah", 'fail', context);
-      }
+      _handleFirebaseAuthError(context, e);
     } catch (e) {
-      showDialogInfoWidget("Gagal login! coba lagi.", 'fail', context);
+      showDialogInfoWidget("Gagal login! Coba lagi.", 'fail', context);
+    }
+  }
+
+  bool _isValidCredentials(String email, String password) {
+    return email.isNotEmpty && password.isNotEmpty;
+  }
+
+  Future<void> _handleUnverifiedEmail(BuildContext context, User user) async {
+    confirmShowDialog(
+      judul: "Kamu perlu verifikasi email terlebih dahulu. Apakah kamu ingin dikirimkan verifikasi ulang?",
+      onPressed: () async {
+        await user.sendEmailVerification();
+        Get.back();
+      },
+      context: context,
+      textBatal: "Tidak",
+      textSetuju: "Kirim",
+    );
+  }
+
+  Future<void> _handleVerifiedUser(BuildContext context, User user) async {
+    final DocumentSnapshot userDoc = await _firestore.collection('users').doc(user.uid).get();
+    
+    if (!userDoc.exists) {
+      showDialogInfoWidget("Data user tidak ditemukan.", 'fail', context);
+      return;
+    }
+
+    final String? role = userDoc.get('role') as String?;
+    if (role == null) {
+      showDialogInfoWidget("Terjadi Kesalahan.", 'fail', context);
+      return;
+    }
+
+    showDialogInfoWidget("Anda berhasil login.", 'success', context);
+    _navigateBasedOnRole(role);
+  }
+
+  void _navigateBasedOnRole(String role) {
+    switch (role) {
+      case 'Pengguna':
+        Get.offAllNamed(Routes.NAVIGATION);
+        break;
+      case 'Konselor':
+        Get.offAllNamed(Routes.NAVIGATION_KONSELOR);
+        break;
+      case 'Admin':
+        Get.offAllNamed(Routes.NAVIGATION_ADMIN);
+        break;
+      default:
+        Get.snackbar('Error', 'Role tidak dikenali');
+    }
+  }
+
+  void _handleFirebaseAuthError(BuildContext context, FirebaseAuthException e) {
+    if (kDebugMode) {
+      print('Firebase Auth Error: ${e.code}');
+    }
+
+    switch (e.code) {
+      case 'user-not-found':
+        showDialogInfoWidget("User tidak ditemukan.", 'fail', context);
+        break;
+      case 'wrong-password':
+        showDialogInfoWidget("Email dan Password salah, cek kembali data anda!", 'fail', context);
+        break;
+      default:
+        showDialogInfoWidget("Email atau Kata Sandi Anda Salah", 'fail', context);
     }
   }
 }
