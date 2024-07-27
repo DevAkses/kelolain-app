@@ -8,7 +8,6 @@ import 'package:safeloan/app/utils/warna.dart';
 
 class QuizList extends GetView<QuizController> {
   const QuizList({super.key});
-
   Widget cardItem(
       String title, String deskripsi, String linkGambar, VoidCallback onTap) {
     return Container(

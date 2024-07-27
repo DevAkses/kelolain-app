@@ -9,8 +9,8 @@ import 'package:safeloan/app/widgets/show_dialog_info_widget.dart';
 
 class LoginController extends GetxController {
   TextEditingController emailC =
-      TextEditingController(text: "devaksesmikail08@gmail.com");
-  TextEditingController passwordC = TextEditingController(text: "dev123");
+      TextEditingController();
+  TextEditingController passwordC = TextEditingController();
 
   @override
   void onClose() {

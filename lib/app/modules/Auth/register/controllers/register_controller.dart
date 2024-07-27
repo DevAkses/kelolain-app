@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/modules/Auth/login/views/login_view.dart';
 import 'package:safeloan/app/widgets/show_dialog_info_widget.dart';
 
 class RegisterController extends GetxController {
@@ -24,8 +25,9 @@ class RegisterController extends GetxController {
       });
 
       await userCredential.user!.sendEmailVerification();
-
-      showDialogInfoWidget('Verification Email', 'succes', context);
+      Get.offAll(const LoginView());
+      showDialogInfoWidget(
+          'Berhasil daftar, cek email kamu!', 'succes', context);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         showDialogInfoWidget('Password Terlalu Lemah', 'fail', context);
