@@ -6,6 +6,9 @@ class InputAkunWidget extends StatefulWidget {
   final String hintText;
   final IconData leadingIcon;
   final bool isPassword;
+  final TextInputType keyboardType;
+  final bool readOnly;
+  final VoidCallback? onTap;
 
   const InputAkunWidget({
     Key? key,
@@ -14,6 +17,9 @@ class InputAkunWidget extends StatefulWidget {
     required this.hintText,
     required this.leadingIcon,
     this.isPassword = false,
+    this.keyboardType = TextInputType.text,
+    this.readOnly = false,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -25,7 +31,7 @@ class _InputAkunWidgetState extends State<InputAkunWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var lebar = MediaQuery.of(context).size.width *0.1;
+    var lebar = MediaQuery.of(context).size.width * 0.1;
     return Container(
       margin: EdgeInsets.symmetric(horizontal: lebar),
       child: Column(
@@ -48,7 +54,9 @@ class _InputAkunWidgetState extends State<InputAkunWidget> {
             child: TextField(
               controller: widget.controller,
               obscureText: widget.isPassword ? _obscureText : false,
-              keyboardType: widget.isPassword ? TextInputType.visiblePassword : TextInputType.emailAddress,
+              keyboardType: widget.keyboardType,
+              readOnly: widget.readOnly,
+              onTap: widget.onTap,
               decoration: InputDecoration(
                 hintText: widget.hintText,
                 hintStyle: TextStyle(color: Colors.grey[400]),

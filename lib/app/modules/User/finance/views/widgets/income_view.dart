@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart'; // Import this package for date formatting
 import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_back_leading.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 import 'package:safeloan/app/widgets/input_akun_widget.dart';
 
-class IncomeView extends StatelessWidget {
+import '../../controllers/finance_controller.dart';
+
+class IncomeView extends GetView<FinanceController> {
   final TextEditingController nominalC = TextEditingController();
   final TextEditingController dateC = TextEditingController();
+  final TextEditingController titleC = TextEditingController();
   final TextEditingController notesC = TextEditingController();
   final ValueNotifier<String> selectedCategory = ValueNotifier<String>('');
 
@@ -14,6 +19,7 @@ class IncomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FinanceController controller = Get.put(FinanceController());
     var lebar = MediaQuery.of(context).size.width * 0.1;
     return Scaffold(
       appBar: AppBar(
@@ -28,10 +34,17 @@ class IncomeView extends StatelessWidget {
         child: Column(
           children: [
             InputAkunWidget(
+              nama: 'Judul',
+              hintText: 'Masukkan Judul',
+              leadingIcon: Icons.assignment,
+              controller: titleC,
+            ),
+            InputAkunWidget(
               nama: 'Nominal',
               hintText: '0',
               leadingIcon: Icons.attach_money,
               controller: nominalC,
+              keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 10),
             Container(
@@ -83,6 +96,18 @@ class IncomeView extends StatelessWidget {
               hintText: '15/07/2024',
               leadingIcon: Icons.date_range,
               controller: dateC,
+              readOnly: true,
+              onTap: () async {
+                DateTime? pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime(2101),
+                );
+                if (pickedDate != null) {
+                  dateC.text = DateFormat('dd/MM/yyyy').format(pickedDate);
+                }
+              },
             ),
             const SizedBox(height: 10),
             InputAkunWidget(
@@ -93,7 +118,37 @@ class IncomeView extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             ButtonWidget(
-              onPressed: () {},
+              onPressed: () {
+                String title = titleC.text;
+                String nominalText = nominalC.text;
+                String dateText = dateC.text;
+                String notes = notesC.text;
+                String category = selectedCategory.value;
+
+                if (title.isEmpty ||
+                    nominalText.isEmpty ||
+                    dateText.isEmpty ||
+                    category.isEmpty ||
+                    notes.isEmpty) {
+                  Get.snackbar('Error', 'All fields are required');
+                } else {
+                  double? nominal = double.tryParse(nominalText);
+                  if (nominal == null) {
+                    Get.snackbar('Error', 'Invalid nominal amount');
+                    return;
+                  }
+                  DateTime? date;
+                  try {
+                    date = DateFormat('dd/MM/yyyy').parse(dateText);
+                  } catch (e) {
+                    Get.snackbar('Error', 'Invalid date format');
+                    return;
+                  }
+
+                  controller.confirmAddIncome(
+                      context, title, nominal, category, date, notes);
+                }
+              },
               nama: 'Tambah',
             ),
           ],
