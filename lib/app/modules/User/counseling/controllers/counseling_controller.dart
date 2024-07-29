@@ -13,42 +13,28 @@ class CounselingController extends GetxController {
   Stream<List<CounselingSessionWithUserData>> getListKonseling() {
     return firestore
         .collection('counselings')
-        .where('userId', isEqualTo:"")
+        .where('userId', isEqualTo: "")
         .snapshots()
         .asyncMap((snapshot) async {
       List<CounselingSessionWithUserData> sessions = [];
-      for (var doc in snapshot.docs) {      
-          CounselingSession counseling = CounselingSession.fromDocument(doc);
-          DocumentSnapshot userDoc =
-              await firestore.collection('users').doc(counseling.konselorId).get();
-          Map<String, dynamic> userData =
-              userDoc.data() as Map<String, dynamic>;
-          sessions.add(CounselingSessionWithUserData(
-              counseling: counseling, userData: userData));
-        }
+      for (var doc in snapshot.docs) {
+        CounselingSession counseling = CounselingSession.fromDocument(doc);
+        DocumentSnapshot userDoc = await firestore
+            .collection('users')
+            .doc(counseling.konselorId)
+            .get();
+        Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+        sessions.add(CounselingSessionWithUserData(
+            counseling: counseling, userData: userData));
+      }
       return sessions;
     });
   }
-
-  // Stream<QuerySnapshot> getListKonseling() {
-  //   return firestore
-  //       .collection('counselings')
-  //       .where('userId', isEqualTo: "")
-  //       .snapshots();
-  // }
-
-  // void updateCounselingList(QuerySnapshot snapshot) {
-  //   counselingList.clear();
-  //   counselingList.addAll(snapshot.docs
-  //       .map((doc) => CounselingSession.fromDocument(doc))
-  //       .toList());
-  // }
 
   void updateCounselingList(List<CounselingSessionWithUserData> sessions) {
     counselingList.clear();
     counselingList.addAll(sessions);
   }
-
 
   Stream<CounselingSessionWithUserData?> getCounselingSession() {
     return firestore
@@ -57,14 +43,13 @@ class CounselingController extends GetxController {
         .snapshots()
         .asyncMap((snapshot) async {
       if (snapshot.docs.isEmpty) {
-        return null; 
+        return null;
       }
       var doc = snapshot.docs.first;
       CounselingSession counseling = CounselingSession.fromDocument(doc);
       DocumentSnapshot userDoc =
           await firestore.collection('users').doc(counseling.konselorId).get();
-      Map<String, dynamic> userData =
-          userDoc.data() as Map<String, dynamic>;
+      Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
       return CounselingSessionWithUserData(
           counseling: counseling, userData: userData);
     });
@@ -72,13 +57,6 @@ class CounselingController extends GetxController {
 
   void updateCounselingSession(CounselingSessionWithUserData? session) {
     counselingSession.value = session;
-  }
-
-  void bookSchedule(String counselingId) {
-    firestore
-        .collection('counselings')
-        .doc(counselingId)
-        .update({'userId': firebaseAuth.currentUser!.uid});
   }
 
   Future<void> launchURL(String urlString) async {

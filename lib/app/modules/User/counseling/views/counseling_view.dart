@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:safeloan/app/modules/Konselor/homepageKonselor/controllers/homepage_konselor_controller.dart';
 import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 import '../controllers/counseling_controller.dart';
@@ -43,8 +44,14 @@ class CounselingView extends GetView<CounselingController> {
             leading: CircleAvatar(
               backgroundImage: NetworkImage(linkGambar),
             ),
-            title: Text(namaKonselor, style: Utils.titleStyle,),
-            subtitle: Text(keahlian, style: Utils.subtitle,),
+            title: Text(
+              namaKonselor,
+              style: Utils.titleStyle,
+            ),
+            subtitle: Text(
+              keahlian,
+              style: Utils.subtitle,
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -53,12 +60,17 @@ class CounselingView extends GetView<CounselingController> {
                 Icons.event,
                 size: 16,
               ),
-              const SizedBox(width: 5,),
+              const SizedBox(
+                width: 5,
+              ),
               const Text(
                 "Tanggal: ",
                 style: TextStyle(fontSize: 12, color: Utils.biruSatu),
               ),
-              Text(tanggal,  style: const TextStyle(fontSize: 12),),
+              Text(
+                tanggal,
+                style: const TextStyle(fontSize: 12),
+              ),
             ],
           ),
           Row(
@@ -88,7 +100,7 @@ class CounselingView extends GetView<CounselingController> {
   Widget build(BuildContext context) {
     final CounselingController counselingController =
         Get.put(CounselingController());
-
+    
     return Scaffold(
       body: StreamBuilder<CounselingSessionWithUserData?>(
         stream: counselingController.getCounselingSession(),
@@ -115,8 +127,9 @@ class CounselingView extends GetView<CounselingController> {
                 userData['profession'] ?? 'Psikolog handal',
                 DateFormat.yMMMMd().add_jm().format(counseling.jadwal),
                 '${counseling.durasi} menit',
-                () {
-                  // Logika untuk tautan meeting
+                () async {
+                  String meetingUrl = counseling.tautanGmeet;
+                  await counselingController.launchURL(meetingUrl);
                 },
               ),
             ],

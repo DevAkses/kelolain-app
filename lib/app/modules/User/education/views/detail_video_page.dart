@@ -79,19 +79,22 @@ class YouTubePlayerScreen extends GetView<EducationController> {
                 if (!controller.isFullScreen.value)
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          video.title,style: Utils.titleStyle,
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          video.description,style: Utils.subtitle,
-                        ),
-                        Text('Posted: ${video.postAt.toString()}', style: Utils.subtitle,),
-                        // Add other video details here
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.all(13.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            video.title,style: Utils.titleStyle,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            video.description,style: Utils.subtitle,
+                          ),
+                          Text('Posted: ${video.postAt.toString()}', style: Utils.subtitle,),
+                          // Add other video details here
+                        ],
+                      ),
                     ),
                   ),
               ],
