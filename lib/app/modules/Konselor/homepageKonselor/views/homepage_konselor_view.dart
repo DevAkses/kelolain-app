@@ -175,7 +175,7 @@ class HomepageKonselorView extends GetView<HomepageKonselorController> {
 
                     return CardItem(
                       session.counseling.id,
-                      "https://via.placeholder.com/150",
+                      session.userData['profileImageUrl'] ?? '',
                       "${session.userData['fullName'] ?? 'N/A'}",
                       "${session.userData['keahlian'] ?? 'N/A'}",
                       formattedDate,

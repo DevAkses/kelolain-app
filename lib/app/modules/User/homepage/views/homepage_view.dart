@@ -100,15 +100,16 @@ class HomepageView extends GetView<HomepageController> {
                     ),
                     Container(
                       margin: EdgeInsets.only(right: lebar * 0.05),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Obx(
-                            () => poin("assets/images/poin.png",
-                                '${controller.points.value}'),
-                          ),
-                          poin("assets/images/koin.png", '100'),
-                        ],
+                      child: Obx(
+                        () => Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            poin("assets/images/poin.png",
+                                '${detailController.userData['point']}'),
+                            poin("assets/images/koin.png",
+                                '${detailController.userData['coin']}'),
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -156,7 +157,6 @@ class HomepageView extends GetView<HomepageController> {
                 Obx(
                   () {
                     if (controller.articleImages.isEmpty) {
-                      // Menampilkan widget kosong atau placeholder jika tidak ada artikel
                       return const Center(
                           child: Text('Tidak ada artikel untuk ditampilkan'));
                     }

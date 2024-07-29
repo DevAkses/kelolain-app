@@ -13,7 +13,7 @@ import '../controllers/daftar_konseling_controller.dart';
 class DaftarKonselingView extends GetView<DaftarKonselingController> {
   const DaftarKonselingView({super.key});
 
-Widget buttonAjukan(VoidCallback onPressed) {
+  Widget buttonAjukan(VoidCallback onPressed) {
     return SizedBox(
       width: 150,
       child: ElevatedButton(
@@ -32,6 +32,7 @@ Widget buttonAjukan(VoidCallback onPressed) {
       ),
     );
   }
+
   Widget cardItem(String linkGambar, String namaKonselor, String keahlian,
       String tanggal, String waktu, int koin, VoidCallback onPressed) {
     return Container(
@@ -102,7 +103,7 @@ Widget buttonAjukan(VoidCallback onPressed) {
           Text(
             '$koin',
             style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-          )
+          ),
         ],
       ),
     );
@@ -165,7 +166,7 @@ Widget buttonAjukan(VoidCallback onPressed) {
                                   'succes', context);
                             } else {
                               showDialogInfoWidget(
-                                  "Kamu sudah memiliki jadwal konseling.",
+                                  "Kamu tidak dapat melakukan booking.",
                                   'fail',
                                   context);
                             }

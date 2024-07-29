@@ -150,19 +150,19 @@ class ProfileView extends GetView<ProfileController> {
                       buildListTile(
                         leadingIcon: Icons.calendar_today,
                         titleText: 'Umur',
-                        subtitleText: userData['age'].toString(),
+                        subtitleText: userData['age']?.toString() ?? "belum ada",
                         leadingIconColor: Utils.biruTiga,
                       ),
                       buildListTile(
                         leadingIcon: Icons.work,
                         titleText: 'Profesi',
-                        subtitleText: userData['profession'],
+                        subtitleText: userData['profession'] ?? "belum ada",
                         leadingIconColor: Utils.biruTiga,
                       ),
                       buildListTile(
                         leadingIcon: Icons.leaderboard,
                         titleText: 'Poin',
-                        subtitleText: userData['poin']?.toString() ?? '0',
+                        subtitleText: userData['point']?.toString() ?? '0',
                         leadingIconColor: Utils.biruTiga,
                       ),
                     ],
