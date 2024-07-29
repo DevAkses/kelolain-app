@@ -14,8 +14,8 @@ class ChallangePageController extends GetxController {
 
   void updateChallengeList(QuerySnapshot snapshot) {
     challengeList.clear();
-    challengeList
-        .addAll(snapshot.docs.map((doc) => Challenge.fromDocument(doc)).toList());
+    challengeList.addAll(
+        snapshot.docs.map((doc) => Challenge.fromDocument(doc)).toList());
   }
 
   Future<bool> isChallengeCompletedByUser(String challengeId) async {
@@ -38,34 +38,73 @@ class ChallangePageController extends GetxController {
   }
 
   Future<void> checkAndCompleteChallenges() async {
-    if (_currentUser == null) return;
+    if (_currentUser == null) {
+      return;
+    }
 
-    DocumentReference userRef =
-        firestore.collection('users').doc(_currentUser!.uid);
+    try {
+      DocumentReference userRef =
+          firestore.collection('users').doc(_currentUser!.uid);
 
+      // Check article challenges
+      await _checkChallenges(userRef, 'article', 'readArticle');
+
+      // Check video challenges
+      await _checkChallenges(userRef, 'video', 'watchVideo');
+    } catch (e) {
+      print("Error in checkAndCompleteChallenges: $e");
+    }
+  }
+
+  Future<void> _checkChallenges(DocumentReference userRef, String challengeType,
+      String userCollectionName) async {
     QuerySnapshot challengesSnapshot = await firestore
         .collection('challenges')
-        .where('category', isEqualTo: 'article')
+        .where('category', isEqualTo: challengeType)
         .get();
 
-    List<QueryDocumentSnapshot> challenges = challengesSnapshot.docs;
+    QuerySnapshot userItemsSnapshot =
+        await userRef.collection(userCollectionName).get();
+    int itemCount = userItemsSnapshot.docs.length;
 
-    QuerySnapshot readArticlesSnapshot =
-        await userRef.collection('readArticle').get();
-    int readArticlesCount = readArticlesSnapshot.docs.length;
-
-    for (QueryDocumentSnapshot challenge in challenges) {
+    for (QueryDocumentSnapshot challenge in challengesSnapshot.docs) {
       int requiredCount = challenge['requiredCount'];
-      DocumentReference challengeRef =
-          firestore.collection('challenges').doc(challenge.id);
+      int challengePoints = challenge['point'];
+      String challengeId = challenge.id;
 
-      if (readArticlesCount >= requiredCount) {
-        await challengeRef
-            .collection('completedBy')
-            .doc(_currentUser!.uid)
-            .set({
-          'completedAt': FieldValue.serverTimestamp(),
-        });
+      if (itemCount >= requiredCount) {
+        bool alreadyCompleted = await isChallengeCompletedByUser(challengeId);
+
+        if (!alreadyCompleted) {
+          await firestore
+              .collection('challenges')
+              .doc(challengeId)
+              .collection('completedBy')
+              .doc(_currentUser!.uid)
+              .set({
+            'completedAt': FieldValue.serverTimestamp(),
+          });
+
+          await firestore.runTransaction((transaction) async {
+            DocumentSnapshot userSnapshot = await transaction.get(userRef);
+
+            if (userSnapshot.exists) {
+              Map<String, dynamic> userData =
+                  userSnapshot.data() as Map<String, dynamic>;
+              int currentPoints = userData['point'] ?? 0;
+              int newPoints = currentPoints + challengePoints;
+
+              transaction.update(userRef, {'point': newPoints});
+            } else {
+              print("User document does not exist");
+            }
+          });
+        } else {
+          print("Challenge $challengeId already completed");
+        }
+      } else {
+        print(
+            "Challenge $challengeId not met ($challengeType count: $itemCount, required: $requiredCount)");
       }
     }
   }

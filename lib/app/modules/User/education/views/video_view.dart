@@ -107,6 +107,7 @@ class VideoWidget extends GetView<EducationController> {
   void _navigateToVideoPlayer(BuildContext context, Video video) {
     String? videoId = YoutubePlayer.convertUrlToId(video.link);
     if (videoId != null) {
+      controller.resetVideoWatchStatus();
       controller.initializeYoutubePlayer(videoId);
       Get.to(() => YouTubePlayerScreen(video: video));
     } else {

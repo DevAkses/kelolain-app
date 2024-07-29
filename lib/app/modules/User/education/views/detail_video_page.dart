@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -19,6 +22,16 @@ class YouTubePlayerScreen extends GetView<EducationController> {
       if (youtubeController == null) {
         return const Center(child: CircularProgressIndicator());
       }
+
+      youtubeController.addListener(() {
+        if (youtubeController.value.isPlaying) {
+          _startWatchTimer();
+        } else if (youtubeController.value.playerState == PlayerState.paused ||
+                   youtubeController.value.playerState == PlayerState.ended) {
+          _cancelWatchTimer();
+        }
+      });
+
       return YoutubePlayerBuilder(
         onExitFullScreen: () {
           SystemChrome.setPreferredOrientations(DeviceOrientation.values);
@@ -103,5 +116,21 @@ class YouTubePlayerScreen extends GetView<EducationController> {
         },
       );
     });
+  }
+
+  void _startWatchTimer() {
+    if (!controller.videoMarkedAsWatched.value) {
+      controller.watchTimer?.cancel();
+      controller.watchTimer = Timer(const Duration(seconds: 10), () {
+        if (!controller.videoMarkedAsWatched.value) {
+          controller.markVideoAsWatch(video.id, FirebaseAuth.instance.currentUser!.uid);
+          controller.videoMarkedAsWatched.value = true;
+        }
+      });
+    }
+  }
+
+  void _cancelWatchTimer() {
+    controller.watchTimer?.cancel();
   }
 }
