@@ -162,7 +162,7 @@ class ProfileView extends GetView<ProfileController> {
                       buildListTile(
                         leadingIcon: Icons.leaderboard,
                         titleText: 'Poin',
-                        subtitleText: userData['poin']?.toString() ?? '0',
+                        subtitleText: userData['point']?.toString() ?? '0',
                         leadingIconColor: Utils.biruTiga,
                       ),
                     ],
