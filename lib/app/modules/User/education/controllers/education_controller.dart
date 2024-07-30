@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -8,6 +10,9 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class EducationController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  Timer? watchTimer;
+  var videoMarkedAsWatched = false.obs;
 
   var articleList = <Article>[].obs;
   var videoList = <Video>[].obs;
@@ -83,6 +88,41 @@ class EducationController extends GetxController {
     await challengeController.checkAndCompleteChallenges();
   }
 
+  Future<void> markVideoAsWatch(String videoId, String userId) async {
+    if (videoMarkedAsWatched.value) return;
+
+    DocumentReference videoRef = firestore
+        .collection('educations')
+        .doc(educationDocumentId)
+        .collection('videos')
+        .doc(videoId);
+
+    await videoRef.collection('watchBy').doc(userId).set({
+      'isWatch': true,
+      'watchAt': FieldValue.serverTimestamp(),
+    });
+
+    await firestore
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('watchVideo')
+        .doc(videoId)
+        .set({
+      'watchAt': FieldValue.serverTimestamp(),
+    });
+
+    final challengeController = Get.put(ChallangePageController());
+    await challengeController.checkAndCompleteChallenges();
+
+    videoMarkedAsWatched.value = true;
+  }
+
+  void resetVideoWatchStatus() {
+    videoMarkedAsWatched.value = false;
+    watchTimer?.cancel();
+    watchTimer = null;
+  }
+
   String extractVideoId(String url) {
     final Uri uri = Uri.parse(url);
     if (uri.queryParameters.containsKey('v')) {
@@ -94,6 +134,7 @@ class EducationController extends GetxController {
   @override
   void onClose() {
     youtubeController.value?.dispose();
+    watchTimer?.cancel();
     super.onClose();
   }
 }

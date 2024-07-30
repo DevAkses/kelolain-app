@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:safeloan/app/utils/warna.dart';
-import 'package:safeloan/app/widgets/button_widget.dart';
+import 'package:safeloan/app/widgets/button_back_leading.dart';
 
 import '../controllers/challenge_admin_controller.dart';
 
@@ -10,88 +10,82 @@ class ChallengeAdminView extends GetView<ChallengeAdminController> {
   const ChallengeAdminView({super.key});
   @override
   Widget build(BuildContext context) {
-    final ChallengeAdminController challengeAdminController = Get.put(ChallengeAdminController());
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tambah Tantangan'),
+        leading: const ButtonBackLeading(),
+        title: const Text('Daftar Tantangan', style: Utils.header),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildTextField(challengeAdminController.challengeTitleC, 1, 'Judul Tantangan'),
-              _buildTextField(challengeAdminController.challengeDescriptionC, 5, 'Deskripsi Tantangan'),
-              _buildTextField(challengeAdminController.challengePointC, 1, 'Poin'),
-              const SizedBox(height: 10),
-              _buildCategoryDropdown(challengeAdminController),
-              const SizedBox(height: 40),
-              ButtonWidget(
-                onPressed: () {},
-                nama: "Tambah Tantangan",
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextField(
-      TextEditingController controller, int maxLines, String hintText) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: TextField(
-        controller: controller,
-        maxLines: maxLines,
-        decoration: InputDecoration(
-          hintText: hintText,
-          labelStyle: const TextStyle(
-            fontSize: 14,
-            color: Colors.black,
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Utils.backgroundCard),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Utils.biruDua),
-          ),
-          contentPadding: const EdgeInsets.fromLTRB(12, 16, 12, 0),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCategoryDropdown(ChallengeAdminController controller) {
-    return Obx(() {
-      return DropdownButtonFormField<String>(
-        value: controller.selectedCategory.value.isEmpty
-            ? null
-            : controller.selectedCategory.value,
-        onChanged: controller.selectCategory,
-        hint: const Text('Kategori'),
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Utils.backgroundCard),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Utils.biruDua),
-          ),
-          contentPadding: const EdgeInsets.fromLTRB(12, 16, 12, 0),
-        ),
-        items: controller.categories.map((category) {
-          return DropdownMenuItem<String>(
-            value: category,
-            child: Text(category),
+      body: StreamBuilder(
+        stream: controller.getChallengeStream(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text('No articles found'));
+          }
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              var challenge = snapshot.data!.docs[index];
+              return Container(
+                margin:
+                    const EdgeInsets.symmetric(vertical: 0.6, horizontal: 5),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Utils.backgroundCard,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.1),
+                        spreadRadius: 0,
+                        blurRadius: 20,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: ListTile(
+                    title: Text(
+                      challenge['title'],
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    subtitle: Text(
+                      challenge['description'],
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(
+                            Icons.edit,
+                            color: Colors.blue,
+                          ),
+                          onPressed: () => Get.toNamed('/edit-challenge-admin', parameters: {'id': challenge.id}),
+                        ),
+                        // IconButton(
+                        //   icon: const Icon(
+                        //     Icons.delete,
+                        //     color: Colors.red,
+                        //   ),
+                        //   onPressed: () {},
+                        // ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
           );
-        }).toList(),
-      );
-    });
+        },
+      ),
+    );
   }
 }

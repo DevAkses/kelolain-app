@@ -2,87 +2,83 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_back_leading.dart';
+import 'package:safeloan/app/widgets/button_widget.dart';
 import '../controllers/edit_challenge_admin_controller.dart';
 
 class EditChallengeAdminView extends GetView<EditChallengeAdminController> {
   const EditChallengeAdminView({super.key});
+  
   @override
   Widget build(BuildContext context) {
+    final EditChallengeAdminController editChallengeAdminController = Get.put(EditChallengeAdminController());
+    final String challengeId = Get.parameters['id'] ?? '';
+
+    if (challengeId.isNotEmpty) {
+      editChallengeAdminController.fetchChallengeData(challengeId);
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: const ButtonBackLeading(),
-        title: const Text('Daftar Tantangan', style: Utils.header),
+        title: const Text('Edit Tantangan'),
         centerTitle: true,
       ),
-      body: StreamBuilder(
-        stream: controller.getChallengeStream(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text('No articles found'));
-          }
-          return ListView.builder(
-            itemCount: snapshot.data!.docs.length,
-            itemBuilder: (context, index) {
-              var challenge = snapshot.data!.docs[index];
-              return Container(
-                margin:
-                    const EdgeInsets.symmetric(vertical: 0.6, horizontal: 5),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Utils.backgroundCard,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        spreadRadius: 0,
-                        blurRadius: 20,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: ListTile(
-                    title: Text(
-                      challenge['title'],
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    subtitle: Text(
-                      challenge['description'],
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: const Icon(
-                            Icons.edit,
-                            color: Colors.blue,
-                          ),
-                          onPressed: () {},
-                        ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.delete,
-                            color: Colors.red,
-                          ),
-                          onPressed: () {},
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-          );
-        },
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildTextField(editChallengeAdminController.challengeTitleC, 'Judul'),
+              _buildTextField(editChallengeAdminController.challengeSubTitleC, 'Sub Judul'),
+              _buildTextField(editChallengeAdminController.challengeDescriptionC, 'Deskripsi Tantangan'),
+              _buildTextField(editChallengeAdminController.challengePointC, 'Poin'),
+              _buildTextField(editChallengeAdminController.challengeTargetC, 'Target'),
+              const SizedBox(height: 40),
+              ButtonWidget(
+                onPressed: () {
+                  if (challengeId.isNotEmpty) {
+                    editChallengeAdminController.updateChallenge(challengeId).then((_) {
+                      Get.back();
+                      Get.snackbar('Success', 'Challenge updated successfully');
+                    }).catchError((e) {
+                      Get.snackbar('Error', 'Failed to update challenge');
+                    });
+                  }
+                },
+                nama: "Simpan",
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(
+      TextEditingController controller, String labelText) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: labelText,
+          labelStyle: const TextStyle(
+            fontSize: 14,
+            color: Colors.black,
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Utils.backgroundCard),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Utils.biruDua),
+          ),
+          contentPadding: const EdgeInsets.fromLTRB(12, 16, 12, 0),
+        ),
+        maxLines: null, // Makes the TextFormField expand vertically based on content
+        keyboardType: TextInputType.multiline,
       ),
     );
   }

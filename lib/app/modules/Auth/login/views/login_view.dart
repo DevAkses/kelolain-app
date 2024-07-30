@@ -27,87 +27,91 @@ class LoginView extends GetView<LoginController> {
             ],
           ),
         ),
-        bottomSheet: Container(
-          height: tinggi * 0.7,
-          width: lebar,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(15)
-          ),
-          child: Column(
-            children: [
-              Container(
-                width: lebar,
-                margin: EdgeInsets.only(left:lebar *0.1, top: 25, bottom: 20, right: lebar *0.1),
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        bottomSheet: SingleChildScrollView(
+          child: Container(
+            height: tinggi * 0.7,
+            width: lebar,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15)
+            ),
+            child: Column(
+              children: [
+                Container(
+                  width: lebar,
+                  margin: EdgeInsets.only(left:lebar *0.1, top: 25, bottom: 20, right: lebar *0.1),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(right: lebar * 0.1),
+                        child: TextButton(
+                          onPressed: () => Get.toNamed(Routes.RESET_PASSWORD),
+                          child: const Text("Lupa Password",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Utils.biruSatu)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                InputAkunWidget(
+                  controller: controller.emailController,
+                  hintText: "Masukan email",
+                  leadingIcon: Icons.email,
+                  nama: "Email",
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                InputAkunWidget(
+                  controller: controller.passwordController,
+                  hintText: "Masukan kata sandi",
+                  leadingIcon: Icons.security,
+                  nama: "Kata sandi",
+                  isPassword: true,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      "Hi!  👋",
-                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "Selamat datang, Masuk ke akun Anda",
-                      style: Utils.subtitle,
+                    Container(
+                      margin: EdgeInsets.only(right: lebar * 0.1),
+                      child: TextButton(
+                        onPressed: () => Get.toNamed(Routes.RESET_PASSWORD),
+                        child: const Text("Lupa Password",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Utils.biruSatu)),
+                      ),
                     ),
                   ],
                 ),
-              ),
-              InputAkunWidget(
-                controller: controller.emailController,
-                hintText: "Masukan email",
-                leadingIcon: Icons.email,
-                nama: "Email",
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              InputAkunWidget(
-                controller: controller.passwordController,
-                hintText: "Masukan kata sandi",
-                leadingIcon: Icons.security,
-                nama: "Kata sandi",
-                isPassword: true,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(right: lebar * 0.1),
-                    child: TextButton(
-                      onPressed: () => Get.toNamed(Routes.RESET_PASSWORD),
-                      child: const Text("Lupa Password",
+                ButtonWidget(
+                    onPressed: () => _login(context),
+                    nama: "Masuk"),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Belum punya akun?",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400, color: Utils.biruDua),
+                    ),
+                    TextButton(
+                      onPressed: () => Get.toNamed(Routes.REGISTER),
+                      child: const Text("Daftar",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Utils.biruSatu)),
                     ),
-                  ),
-                ],
-              ),
-              ButtonWidget(
-                  onPressed: () => _login(context),
-                  nama: "Masuk"),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Belum punya akun?",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w400, color: Utils.biruDua),
-                  ),
-                  TextButton(
-                    onPressed: () => Get.toNamed(Routes.REGISTER),
-                    child: const Text("Daftar",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Utils.biruSatu)),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

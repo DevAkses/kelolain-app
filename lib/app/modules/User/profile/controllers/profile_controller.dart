@@ -30,8 +30,8 @@ class ProfileController extends GetxController {
     _firestore.collection('users').doc(uid).snapshots().listen((userDoc) {
       if (userDoc.exists) {
         userData.value = userDoc.data() as Map<String, dynamic>;
-        if (!userData.containsKey('poinLeadherboard')) {
-          userData['poinLeadherboard'] = 0;
+        if (!userData.containsKey('point')) {
+          userData['point'] = 0;
         }
       }
     });
@@ -79,30 +79,41 @@ class ProfileController extends GetxController {
   }
 
   void deleteAccount(BuildContext context) async {
-    confirmShowDialog(judul: "Apakah kamu yakin ingin menghapus akun?",onPressed: () async {
-      Get.back();
-      try {
-        String uid = FirebaseAuth.instance.currentUser!.uid;
-        await FirebaseAuth.instance.currentUser!.delete();
-        await FirebaseFirestore.instance.collection('users').doc(uid).delete();
-        Get.offAllNamed(Routes.LOGIN);
-        showDialogInfoWidget("Berhasil menghapus akun.", 'succes', context);
-      } catch (e) {
-        showDialogInfoWidget("Gagal menghapus akun.", 'fail', context);
-      }
-    },context:  context);
+    confirmShowDialog(
+        judul: "Apakah kamu yakin ingin menghapus akun?",
+        onPressed: () async {
+          Get.back();
+          try {
+            String uid = FirebaseAuth.instance.currentUser!.uid;
+            await FirebaseAuth.instance.currentUser!.delete();
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(uid)
+                .delete();
+            Get.offAllNamed(Routes.LOGIN);
+            showDialogInfoWidget("Berhasil menghapus akun.", 'succes', context);
+          } catch (e) {
+            showDialogInfoWidget("Gagal menghapus akun.", 'fail', context);
+          }
+        },
+        context: context);
   }
 
   void logout(BuildContext context) async {
-    confirmShowDialog(judul: "Apakah kamu ingin Logout?",onPressed: () async {
-      Get.back();
-      try {
-        await FirebaseAuth.instance.signOut();
-        Get.offAllNamed(Routes.LOGIN);
-        showDialogInfoWidget("Berhasil Logout!", 'succes', context);
-      } catch (e) {
-        showDialogInfoWidget("Gagal Logout!", 'fail', context);
-      }
-    },context:  context);
+    confirmShowDialog(
+        judul: "Apakah kamu ingin Logout?",
+        onPressed: () async {
+          Get.back();
+          try {
+            await FirebaseAuth.instance.signOut();
+            Get.offAllNamed(Routes.LOGIN);
+            showDialogInfoWidget("Berhasil Logout!", 'succes', context);
+          } catch (e) {
+            showDialogInfoWidget("Gagal Logout!", 'fail', context);
+          }
+        },
+        context: context);
   }
+
+ 
 }
