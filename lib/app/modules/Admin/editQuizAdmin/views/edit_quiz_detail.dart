@@ -4,6 +4,7 @@ import 'package:safeloan/app/modules/Admin/editQuizAdmin/controllers/edit_quiz_a
 import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_back_leading.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
+import 'package:safeloan/app/widgets/input_admin_widget.dart';
 
 class EditQuizView extends StatefulWidget {
   final Quiz quiz;
@@ -31,21 +32,15 @@ class _EditQuizViewState extends State<EditQuizView> {
     return Scaffold(
       appBar: AppBar(
         leading: const ButtonBackLeading(),
-        title: const Text('Edit Quiz', style: Utils.header),
+        title: const Text('Edit Kuis', style: Utils.header),
         centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(
-              controller: titleController,
-              decoration: const InputDecoration(labelText: 'Title'),
-            ),
-            TextField(
-              controller: descriptionController,
-              decoration: const InputDecoration(labelText: 'Description'),
-            ),
+            inputAdminWidget(titleController, 'Judul'),
+            inputAdminWidget(descriptionController, 'Deskripsi'),
             const Spacer(),
             ButtonWidget(onPressed: (){
               controller.updateQuiz(

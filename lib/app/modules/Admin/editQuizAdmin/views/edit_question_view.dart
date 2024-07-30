@@ -4,6 +4,7 @@ import 'package:safeloan/app/modules/Admin/editQuizAdmin/controllers/edit_quiz_a
 import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_back_leading.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
+import 'package:safeloan/app/widgets/input_admin_widget.dart';
 
 class EditQuestionView extends StatefulWidget {
   final String quizId;
@@ -49,42 +50,18 @@ class _EditQuestionViewState extends State<EditQuestionView> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
+        child: ListView(
           children: [
-            TextField(
-              controller: questionController,
-              decoration: const InputDecoration(labelText: 'Question'),
-            ),
-            TextField(
-              controller: explanationController,
-              decoration: const InputDecoration(labelText: 'Explanation'),
-            ),
-            TextField(
-              controller: optionAController,
-              decoration: const InputDecoration(labelText: 'Option A'),
-            ),
-            TextField(
-              controller: optionBController,
-              decoration: const InputDecoration(labelText: 'Option B'),
-            ),
-            TextField(
-              controller: optionCController,
-              decoration: const InputDecoration(labelText: 'Option C'),
-            ),
-            TextField(
-              controller: optionDController,
-              decoration: const InputDecoration(labelText: 'Option D'),
-            ),
-            TextField(
-              controller: answerController,
-              decoration: const InputDecoration(labelText: 'Answer'),
-            ),
-            TextField(
-              controller: pointController,
-              decoration: const InputDecoration(labelText: 'Point'),
-              keyboardType: TextInputType.number,
-            ),
+            inputAdminWidget(questionController, 'Pertanyaan'),
+            inputAdminWidget(explanationController, 'Penjelasan'),
+            inputAdminWidget(optionAController, 'Opsi A'),
+            inputAdminWidget(optionBController, 'Opsi B'),
+            inputAdminWidget(optionCController, 'Opsi C'),
+            inputAdminWidget(optionDController, 'Opsi D'),
+            inputAdminWidget(answerController, 'Jawaban'),
+            inputAdminWidget(pointController, 'Poin'),
             const Spacer(),
+            const SizedBox(height: 20),
             ButtonWidget(onPressed: (){controller.updateQuestion(
                   widget.quizId,
                   widget.question.id,
