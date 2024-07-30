@@ -11,63 +11,91 @@ class ChallangePageView extends GetView<ChallangePageController> {
   @override
   final ChallangePageController controller = Get.put(ChallangePageController());
 
-  void showChallengeDetails(BuildContext context, String title,
-      String description, String imageChallenge) {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return Container(
-          color: Colors.white,
-          width: Get.width,
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(Icons.close),
+  void showChallengeDetails(BuildContext context, String challengeId) async {
+    var challengeDetails = await controller.getChallengeDetails(challengeId);
+
+    if (challengeDetails.isNotEmpty) {
+      String routeName;
+      switch (challengeDetails['category']) {
+        case 'artikel':
+          routeName = '/education';
+          break;
+        case 'video':
+          routeName = '/education';
+          break;
+        case 'finance':
+          routeName = '/finance';
+          break;
+        default:
+          routeName = '/default';
+      }
+
+      showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        builder: (context) {
+          return Container(
+            color: Colors.white,
+            width: Get.width,
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  leading: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(Icons.close),
+                  ),
+                  title: Text(
+                    challengeDetails['title'] ?? 'No Title',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 24),
+                  ),
                 ),
-                title: Text(
-                  title,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 24),
+                const SizedBox(height: 10),
+                Text(challengeDetails['description'] ?? 'No Description'),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildInfoColumn(
+                        challengeDetails['requiredCount']?.toString() ?? 'N/A',
+                        challengeDetails['category']),
+                    _buildInfoColumn(
+                        challengeDetails['point']?.toString() ?? 'N/A', "Poin"),
+                    _buildInfoColumn('5', "Menit"),
+                  ],
                 ),
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                  'Buka menu edukasi dan tonton video edukasi sekarang juga untuk mendapatkan poin'),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildInfoColumn("2", "Video"),
-                  _buildInfoColumn("30", "Poin"),
-                  _buildInfoColumn("5", "Menit"),
-                ],
-              ),
-              const SizedBox(height: 40),
-              ButtonWidget(
-                onPressed: () => Get.toNamed('/education'),
-                nama: 'Selesaikan Sekarang',
-              ),
-            ],
-          ),
-        );
-      },
-    );
+                const SizedBox(height: 40),
+                ButtonWidget(
+                  onPressed: () => Get.toNamed(
+                      routeName),
+                  nama: 'Selesaikan Sekarang',
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    } else {
+      print('error');
+    }
   }
 
-  Widget cardItem(String title, String deskripsi, IconData icon,
-      Color iconColor, String imageChallenge, BuildContext context) {
+  Widget cardItem(
+      String challengeId,
+      String title,
+      String deskripsi,
+      IconData icon,
+      Color iconColor,
+      String imageChallenge,
+      BuildContext context) {
     return GestureDetector(
-      onTap: () =>
-          showChallengeDetails(context, title, deskripsi, imageChallenge),
+      onTap: () => showChallengeDetails(context, challengeId),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(15),
@@ -170,8 +198,9 @@ class ChallangePageView extends GetView<ChallangePageController> {
                         if (completedSnapshot.connectionState ==
                             ConnectionState.waiting) {
                           return cardItem(
+                            challenge.id,
                             challenge.title,
-                            challenge.description,
+                            challenge.subTitle,
                             Icons.hourglass_empty,
                             Utils.backgroundCard,
                             challenge.imageChallenge,
@@ -181,8 +210,9 @@ class ChallangePageView extends GetView<ChallangePageController> {
                         if (completedSnapshot.hasData &&
                             completedSnapshot.data == true) {
                           return cardItem(
+                            challenge.id,
                             challenge.title,
-                            challenge.description,
+                            challenge.subTitle,
                             Icons.check_circle,
                             Utils.biruTiga,
                             challenge.imageChallenge,
@@ -190,8 +220,9 @@ class ChallangePageView extends GetView<ChallangePageController> {
                           );
                         } else {
                           return cardItem(
+                            challenge.id,
                             challenge.title,
-                            challenge.description,
+                            challenge.subTitle,
                             Icons.history,
                             Colors.white,
                             challenge.imageChallenge,

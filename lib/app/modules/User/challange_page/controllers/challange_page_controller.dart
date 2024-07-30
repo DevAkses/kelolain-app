@@ -18,6 +18,19 @@ class ChallangePageController extends GetxController {
         snapshot.docs.map((doc) => Challenge.fromDocument(doc)).toList());
   }
 
+  Future<Map<String, dynamic>> getChallengeDetails(String challengeId) async {
+    try {
+      DocumentSnapshot doc = await FirebaseFirestore.instance
+          .collection('challenges')
+          .doc(challengeId)
+          .get();
+      return doc.data() as Map<String, dynamic>;
+    } catch (e) {
+      print("Error getting challenge details: $e");
+      return {};
+    }
+  }
+
   Future<bool> isChallengeCompletedByUser(String challengeId) async {
     if (_currentUser == null) return false;
 
@@ -46,10 +59,8 @@ class ChallangePageController extends GetxController {
       DocumentReference userRef =
           firestore.collection('users').doc(_currentUser!.uid);
 
-      // Check article challenges
-      await _checkChallenges(userRef, 'article', 'readArticle');
+      await _checkChallenges(userRef, 'artikel', 'readArticle');
 
-      // Check video challenges
       await _checkChallenges(userRef, 'video', 'watchVideo');
     } catch (e) {
       print("Error in checkAndCompleteChallenges: $e");

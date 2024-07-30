@@ -1,19 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 class ChallengeAdminController extends GetxController {
-  final challengeTitleC = TextEditingController();
-  final challengeDescriptionC = TextEditingController();
-  final challengePointC = TextEditingController();
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  final RxString selectedCategory = ''.obs;
-  final List<String> categories = [
-    'article',
-    'video',
-    'keuangan',
-  ];
-
-  void selectCategory(String? value) {
-    selectedCategory.value = value ?? '';
+  Stream<QuerySnapshot> getChallengeStream() {
+    return firestore.collection('challenges').snapshots();
   }
 }
