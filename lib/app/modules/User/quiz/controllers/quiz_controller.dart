@@ -6,6 +6,7 @@ import 'package:safeloan/app/modules/User/quiz/models/quiz_model.dart';
 class QuizController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  String currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
 
   var quizList = <Quiz>[].obs;
   var questionList = <Question>[].obs;

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:safeloan/app/modules/User/profile/controllers/profile_controller.dart';
+import 'package:safeloan/app/modules/User/tab_quiz/controllers/tab_quiz_controller.dart';
 import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_back_leading.dart';
 
-class LeaderBoard extends StatelessWidget {
-  const LeaderBoard({super.key});
-
+// ignore: must_be_immutable
+class LeaderBoard extends GetView<TabQuizController> {
+  LeaderBoard({super.key});
+  final ProfileController profileController = Get.put(ProfileController());
   Widget cardHeader(String deskripsi, String linkGambar, VoidCallback onTap) {
     return Container(
       width: double.infinity,
@@ -43,21 +47,6 @@ class LeaderBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final leaderboardData = [
-      {'name': 'Alice', 'points': 1500},
-      {'name': 'Bob', 'points': 1200},
-      {'name': 'Charlie', 'points': 1100},
-      {'name': 'David', 'points': 1000},
-      {'name': 'Eve', 'points': 950},
-      {'name': 'Anda', 'points': 900},
-      {'name': 'Ulul', 'points': 930},
-      {'name': 'Yusril', 'points': 800},
-      {'name': 'Yusril', 'points': 800},
-      {'name': 'Yusril', 'points': 800},
-      {'name': 'Yusril', 'points': 800},
-      {'name': 'Yusril', 'points': 800},
-    ];
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -75,43 +64,64 @@ class LeaderBoard extends StatelessWidget {
             () {},
           ),
           Expanded(
-            child: Container(
-              padding: const EdgeInsets.only(top: 25),
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                color: Utils.backgroundCard,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.05),
-                    spreadRadius: 0,
-                    blurRadius: 30,
-                    offset: const Offset(0, 5),
-                  ),
-                ],
-              ),
-              child: ListView.builder(
-                itemCount: leaderboardData.length - 2,
-                itemBuilder: (context, index) {
-                  if (index == 0) {
+            child: FutureBuilder<List<Map<String, dynamic>>>(
+              future: controller.fetchLeaderboardData(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                }
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text('No data available'));
+                }
+
+                final leaderboardData = snapshot.data!;
+
+                return Column(
+                  children: [
                     // Top 3 section
-                    return Container(
-                      height: 150,
+                    Container(
+                      height: 180,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: List.generate(3, (i) {
-                          final user = leaderboardData[i];
-                          return _buildTopThreeItem(i, user);
-                        }),
+                        children: [
+                          _buildTopThreeItem(0, leaderboardData[0]),
+                          _buildTopThreeItem(1, leaderboardData[1]),
+                          _buildTopThreeItem(2, leaderboardData[2]),
+                        ],
                       ),
-                    );
-                  } else {
+                    ),
                     // Rest of the list
-                    final user = leaderboardData[index + 2];
-                    return _buildListItem(index + 3, user);
-                  }
-                },
-              ),
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.only(top: 25),
+                        margin: const EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                          color: Utils.backgroundCard,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.05),
+                              spreadRadius: 0,
+                              blurRadius: 30,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        child: ListView.builder(
+                          itemCount: leaderboardData.length - 3,
+                          itemBuilder: (context, index) {
+                            return _buildListItem(
+                                index + 4, leaderboardData[index + 3]);
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         ],
@@ -120,7 +130,10 @@ class LeaderBoard extends StatelessWidget {
   }
 
   Widget _buildTopThreeItem(int index, Map<String, dynamic> user) {
-    return Container(
+    bool isCurrentUser = user['name'] == profileController.userData['fullName'];
+    String displayName = isCurrentUser ? 'Anda' : user['name'];
+
+    return SizedBox(
       width: 100,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -139,12 +152,19 @@ class LeaderBoard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            '${user['name']}',
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            displayName,
+            style: TextStyle(
+              fontWeight: isCurrentUser ? FontWeight.bold : FontWeight.normal,
+              color: isCurrentUser ? Utils.biruDua : Colors.black,
+            ),
           ),
           Text(
             '${user['points']} pts',
-            style: const TextStyle(fontSize: 14, color: Colors.grey),
+            style: TextStyle(
+              fontSize: 14,
+              color: isCurrentUser ? Utils.biruSatu : Colors.grey,
+              fontWeight: isCurrentUser ? FontWeight.bold : FontWeight.normal,
+            ),
           ),
           const SizedBox(height: 4),
           Container(
@@ -160,53 +180,54 @@ class LeaderBoard extends StatelessWidget {
     );
   }
 
- Widget _buildListItem(int index, Map<String, dynamic> user) {
-  bool isCurrentUser = user['name'] == 'Anda';
-  
-  return Container(
-    margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(15),
-      color: isCurrentUser ? Utils.biruLima : Colors.transparent,
-    ),
-    child: ListTile(
-      leading: CircleAvatar(
-        backgroundColor: Utils.biruSatu,
-        child: Text(
-          '$index',
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+  Widget _buildListItem(int index, Map<String, dynamic> user) {
+    bool isCurrentUser = user['name'] == profileController.userData['fullName'];
+    String displayName = isCurrentUser ? 'Anda' : user['name'];
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: isCurrentUser ? Utils.biruLima : Colors.transparent,
+      ),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Utils.biruSatu,
+          child: Text(
+            '$index',
+            style: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+        ),
+        title: Text(
+          displayName,
+          style: TextStyle(
+            fontWeight: isCurrentUser ? FontWeight.bold : FontWeight.normal,
+            color: isCurrentUser ? Utils.biruDua : Colors.black,
+          ),
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '${user['points']}',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: isCurrentUser ? Utils.biruDua : Colors.grey,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Container(
+              padding: const EdgeInsets.all(4.0),
+              decoration: BoxDecoration(
+                color: Colors.yellow[700],
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.star, color: Colors.white, size: 15),
+            ),
+          ],
         ),
       ),
-      title: Text(
-        '${user['name']}',
-        style: TextStyle(
-          fontWeight: isCurrentUser ? FontWeight.bold : FontWeight.normal,
-          color: isCurrentUser ? Utils.biruDua : Colors.black,
-        ),
-      ),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            '${user['points']}',
-            style: TextStyle(
-              fontSize: 14, 
-              fontWeight: FontWeight.bold,
-              color: isCurrentUser ? Utils.biruDua : Colors.grey,
-            ),
-          ),
-          const SizedBox(width: 8),
-          Container(
-            padding: const EdgeInsets.all(4.0),
-            decoration: BoxDecoration(
-              color: Colors.yellow[700],
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.star, color: Colors.white, size: 15),
-          ),
-        ],
-      ),
-    ),
-  );
-}
+    );
+  }
 }
