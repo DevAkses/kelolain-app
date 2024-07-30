@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Challenge {
   final String id;
   final String title;
+  final String subTitle;
   final String description;
   final int point;
   final int requiredCount;
@@ -13,6 +14,7 @@ class Challenge {
   Challenge({
     required this.id,
     required this.title,
+    required this.subTitle,
     required this.description,
     required this.point,
     required this.requiredCount,
@@ -26,6 +28,7 @@ class Challenge {
     return Challenge(
       id: doc.id,
       title: data['title'] ?? '',
+      subTitle: data['subTitle'] ?? '',
       description: data['description'] ?? '',
       point: data['point'],
       requiredCount: data['requiredCount'],

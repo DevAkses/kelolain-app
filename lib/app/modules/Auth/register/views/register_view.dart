@@ -4,17 +4,12 @@ import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_back_leading.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 import 'package:safeloan/app/widgets/input_akun_widget.dart';
-import 'package:safeloan/app/widgets/show_dialog_info_widget.dart';
 import '../controllers/register_controller.dart';
 
 class RegisterView extends GetView<RegisterController> {
   RegisterView({super.key});
 
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController fullNameController = TextEditingController();
   final List<String> roles = ['Pengguna', 'Konselor'];
-  String selectedRole = 'Pengguna';
 
   @override
   Widget build(BuildContext context) {
@@ -67,20 +62,20 @@ class RegisterView extends GetView<RegisterController> {
                   ),
                 ),
                 InputAkunWidget(
-                    controller: fullNameController,
+                    controller: controller.fullNameController,
                     nama: "Nama lengkap",
                     hintText: "Masukan nama lengkap",
                     leadingIcon: Icons.person),
                 const SizedBox(height: 10),
                 InputAkunWidget(
-                  controller: emailController,
+                  controller: controller.emailController,
                   hintText: "Masukan email",
                   leadingIcon: Icons.email,
                   nama: "Alamat email",
                 ),
                 const SizedBox(height: 10),
                 InputAkunWidget(
-                  controller: passwordController,
+                  controller: controller.passwordController,
                   nama: "Kata sandi",
                   hintText: "Masukan kata sandi",
                   leadingIcon: Icons.lock,
@@ -93,26 +88,25 @@ class RegisterView extends GetView<RegisterController> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       DropdownButton<String>(
-                        value: selectedRole,
-                        onChanged: (String? newValue) {
-                          selectedRole = newValue!;
-                        },
-                        items:
-                            roles.map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
+                            value: controller.roleController.text.isEmpty
+                                ? 'Pengguna'
+                                : controller.roleController.text,
+                            onChanged: (String? newValue) {
+                              controller.roleController.text = newValue!;
+                            },
+                            items: roles.map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 15),
                 ButtonWidget(
-                    onPressed: () {
-                      _validateAndSignup(context);
-                    },
+                    onPressed: () => controller.signup(context),
                     nama: "Daftar"),
                 const SizedBox(height: 10),
                 Row(
@@ -138,21 +132,5 @@ class RegisterView extends GetView<RegisterController> {
         ),
       ),
     );
-  }
-
-  void _validateAndSignup(BuildContext context) {
-    if (emailController.text.isEmpty ||
-        passwordController.text.isEmpty ||
-        fullNameController.text.isEmpty) {
-      showDialogInfoWidget('Data Tidak Boleh Kosong', 'fail', context);
-    } else {
-      controller.signup(
-        emailController.text,
-        passwordController.text,
-        fullNameController.text,
-        selectedRole,
-        context,
-      );
-    }
   }
 }
