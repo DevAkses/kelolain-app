@@ -6,14 +6,12 @@ class CategoryCard extends StatelessWidget {
     Key? key,
     required this.icon,
     required this.judul,
-    required this.date,
     required this.nominal,
     this.colorNominal = Colors.green,
   }) : super(key: key);
 
   final IconData icon;
   final String judul;
-  final String date;
   final String nominal;
   final Color colorNominal;
 
@@ -36,12 +34,8 @@ class CategoryCard extends StatelessWidget {
         judul,
         style: Utils.titleStyle,
       ),
-      subtitle: Text(
-        date,
-        style: TextStyle(fontSize: 10, color: Colors.grey),
-      ),
       trailing: Text(
-        'Rp $nominal',
+        nominal,
         style: TextStyle(color: colorNominal, fontWeight: FontWeight.bold),
       ),
     );

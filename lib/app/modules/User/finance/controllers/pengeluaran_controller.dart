@@ -31,6 +31,7 @@ class PengeluaranController extends GetxController {
         if (data['date'] is Timestamp) {
           data['date'] = (data['date'] as Timestamp).toDate();
         }
+        data['docId'] = doc.id; 
         return data;
       }).toList();
 
@@ -56,22 +57,21 @@ class PengeluaranController extends GetxController {
         startDate = DateTime(now.year, now.month, now.day);
         break;
       case 'Mingguan':
-        startDate = now.subtract(Duration(days: now.weekday));
+        startDate = now.subtract(Duration(days: now.weekday - 1));
         break;
       case 'Bulanan':
-        startDate = DateTime(now.year, now.month);
+        startDate = DateTime(now.year, now.month, 1);
         break;
       case 'Tahunan':
-        startDate = DateTime(now.year);
+        startDate = DateTime(now.year, 1, 1);
         break;
-      case 'Semua Data':
       default:
-        return data; 
+        return data;
     }
 
     return data.where((item) {
       DateTime itemDate = item['date'] is DateTime ? item['date'] as DateTime : DateTime.parse(item['date'].toString());
-      return itemDate.isAfter(startDate);
+      return itemDate.isAfter(startDate.subtract(Duration(days: 1)));
     }).toList();
   }
 }

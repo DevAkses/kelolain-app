@@ -192,7 +192,7 @@ class HomepageView extends GetView<HomepageController> {
                                     errorBuilder: (context, error, stackTrace) {
                                       return const Center(
                                           child: Icon(Icons
-                                              .error)); // Menampilkan ikon kesalahan jika gambar gagal dimuat
+                                              .error)); 
                                     },
                                   ),
                                 ),
@@ -277,7 +277,7 @@ class HomepageView extends GetView<HomepageController> {
                     ),
                     const SizedBox(height: 20),
                     const SizedBox(
-                      height: 400, // Adjust height as needed
+                      height: 400, 
                       child: TabBarView(
                         children: [
                           ListCategoryByDays(),
