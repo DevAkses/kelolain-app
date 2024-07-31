@@ -65,7 +65,8 @@ class QuestionList extends GetView<QuizController> {
                         children: [
                           ListTile(
                             title: Container(
-                              margin: const EdgeInsets.only(top: 25, bottom: 25, left: 10),
+                              margin: const EdgeInsets.only(
+                                  top: 25, bottom: 25, left: 10),
                               color: Utils.backgroundCard,
                               child: Text(
                                 question.pertanyaan,
@@ -97,7 +98,9 @@ class QuestionList extends GetView<QuizController> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 50,),
+                          const SizedBox(
+                            height: 50,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -114,10 +117,7 @@ class QuestionList extends GetView<QuizController> {
                                   },
                                 )
                               else
-                                const SizedBox(
-                                    width:
-                                        80), // Placeholder untuk menjaga layout
-
+                                const SizedBox(width: 80),
                               if (index <
                                   quizController.questionList.length - 1)
                                 button(
@@ -136,14 +136,13 @@ class QuestionList extends GetView<QuizController> {
                                 button(
                                   const Icon(Icons.save, color: Colors.white),
                                   () async {
+                                    print('Save button pressed');
                                     await quizController.checkAnswer(quizId);
                                     Get.off(ResultPage(quizId: quizId));
                                   },
                                 )
                               else
-                                const SizedBox(
-                                    width:
-                                        80), // Placeholder untuk menjaga layout
+                                const SizedBox(width: 80),
                             ],
                           ),
                         ],

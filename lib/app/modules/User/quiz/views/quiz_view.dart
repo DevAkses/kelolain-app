@@ -14,7 +14,7 @@ class QuizView extends GetView<QuizController> {
     return Scaffold(
       body: Stack(
         children: [
-          QuizList(),
+          const QuizList(),
           Positioned(
             bottom: 20,
             right: 18,
@@ -22,11 +22,11 @@ class QuizView extends GetView<QuizController> {
               onPressed: () {
                 Get.to(LeaderBoard());
               },
-              child: Icon(
+              backgroundColor: Utils.biruLima,
+              child: const Icon(
                 Icons.leaderboard,
                 color: Utils.biruDua,
               ),
-              backgroundColor: Utils.biruLima,
             ),
           ),
         ],

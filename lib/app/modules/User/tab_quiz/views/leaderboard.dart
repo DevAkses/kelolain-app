@@ -9,6 +9,7 @@ import 'package:safeloan/app/widgets/button_back_leading.dart';
 class LeaderBoard extends GetView<TabQuizController> {
   LeaderBoard({super.key});
   final ProfileController profileController = Get.put(ProfileController());
+  
   Widget cardHeader(String deskripsi, String linkGambar, VoidCallback onTap) {
     return Container(
       width: double.infinity,
@@ -47,6 +48,7 @@ class LeaderBoard extends GetView<TabQuizController> {
 
   @override
   Widget build(BuildContext context) {
+    final TabQuizController controller = Get.put(TabQuizController());
     return Scaffold(
       appBar: AppBar(
         title: const Text(

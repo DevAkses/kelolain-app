@@ -33,6 +33,15 @@ class ListCategoryByMonths extends StatelessWidget {
         ));
       });
 
+      if (categoryCards.isEmpty) {
+        return const Center(
+          child: Text(
+            'Tidak ada data Minggu ini',
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+          ),
+        );
+      }
+
       return SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

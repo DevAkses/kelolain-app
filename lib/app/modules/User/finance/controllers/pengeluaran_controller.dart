@@ -71,7 +71,7 @@ class PengeluaranController extends GetxController {
 
     return data.where((item) {
       DateTime itemDate = item['date'] is DateTime ? item['date'] as DateTime : DateTime.parse(item['date'].toString());
-      return itemDate.isAfter(startDate.subtract(Duration(days: 1)));
+      return itemDate.isAfter(startDate);
     }).toList();
   }
 }

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safeloan/app/modules/User/navigation/controllers/navigation_controller.dart';
-import 'package:safeloan/app/modules/User/navigation/views/navigation_view.dart';
 import 'package:safeloan/app/modules/User/quiz/controllers/quiz_controller.dart';
+import 'package:safeloan/app/modules/User/navigation/views/navigation_view.dart';
 import 'package:safeloan/app/modules/User/tab_quiz/views/tab_quiz_view.dart';
 import 'package:safeloan/app/utils/warna.dart';
-import 'package:safeloan/app/widgets/button_widget.dart';
 
 class ResultPage extends GetView<QuizController> {
   final String quizId;
@@ -38,58 +36,77 @@ class ResultPage extends GetView<QuizController> {
 
   @override
   Widget build(BuildContext context) {
-    final QuizController quizController = Get.put(QuizController());
+    final QuizController quizController = Get.find<QuizController>();
     var tinggi = MediaQuery.of(context).size.height;
-    return Obx(() {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Hasil Kuis',
-            style: Utils.header,
-          ),
-          centerTitle: true,
+
+    // Fetch the quiz result when this page is built
+    quizController.fetchQuizResult(quizId);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Hasil Kuis',
+          style: Utils.header,
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: tinggi * 0.3),
-              Text(
-                'Skor Kamu: ${quizController.score.value}',
-                style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              margin: const EdgeInsets.all(20),
+              width: double.infinity,
+              height: tinggi * 0.4,
+              decoration: BoxDecoration(
+                color: Utils.backgroundCard,
+                borderRadius: BorderRadius.circular(15),
               ),
-              const Spacer(),
-              Container(
-                margin: const EdgeInsets.only(bottom: 30),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ButtonWidget(
-                        nama: "Selanjutnya",
-                        colorBackground: Utils.biruDua,
-                        onPressed: () => Get.off(const TabQuizView())),
-                    const SizedBox(height: 20),
-                    ButtonWidget(
-                      nama: "Kembali",
-                      colorText: Utils.biruSatu,
-                      colorBackground: Utils.biruLima,
-                      onPressed: () => Get.offAll(
-                        () => const NavigationView(),
-                        binding: BindingsBuilder(
-                          () {
-                            Get.put(NavigationController()).changePage(3);
-                          },
-                        ),
-                      ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Nilai Anda',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
-                  ],
-                ),
-              )
-            ],
-          ),
+                  ),
+                  const SizedBox(height: 20),
+                  Obx(() {
+                    final point = quizController.quizResult['point'] ?? 0;
+                    return Text(
+                      '$point',
+                      style: const TextStyle(
+                        fontSize: 48,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                      ),
+                    );
+                  }),
+                ],
+              ),
+            ),
+            const SizedBox(height: 50),
+            button(
+              nama: 'Kembali ke Beranda',
+              backgroundColor: Utils.biruDua,
+              onPressed: () {
+                Get.offAll(() => const NavigationView());
+              },
+            ),
+            button(
+              nama: 'Coba Kuis Lain',
+              backgroundColor: Colors.orange,
+              onPressed: () {
+                Get.off(() => const TabQuizView());
+              },
+            ),
+          ],
         ),
-      );
-    });
+      ),
+    );
   }
 }
