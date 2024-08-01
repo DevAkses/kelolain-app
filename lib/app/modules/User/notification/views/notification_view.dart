@@ -7,7 +7,7 @@ import 'package:safeloan/app/widgets/button_back_leading.dart';
 import '../controllers/notification_controller.dart';
 
 class NotificationView extends GetView<NotificationController> {
-  const NotificationView({Key? key}) : super(key: key);
+  const NotificationView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class NotificationView extends GetView<NotificationController> {
 class NotificationCard extends StatelessWidget {
   final Map<String, dynamic> notification;
 
-  const NotificationCard({Key? key, required this.notification}) : super(key: key);
+  const NotificationCard({super.key, required this.notification});
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +81,7 @@ class NotificationCard extends StatelessWidget {
               const SizedBox(height: 10),
               Text(
                 DateFormat('dd MMMM yyyy, HH:mm').format(
-                  (notification['created_at'] as Timestamp).toDate(),
+                  (notification['createdAt'] as Timestamp).toDate(),
                 ),
                 style: const TextStyle(
                   fontSize: 14,
