@@ -46,13 +46,13 @@ class HomepageAdminView extends GetView<HomepageAdminController> {
             _buildMenuItem(
               icon: Icons.quiz,
               label: 'Kuis',
-              onTap: () => Get.toNamed('edit-quiz-admin'),
+              onTap: () => Get.toNamed('/edit-quiz-admin'),
             ),
             const SizedBox(height: 16),
             _buildMenuItem(
               icon: Icons.flag,
               label: 'Tantangan',
-              onTap: () => Get.toNamed('edit-challenge-admin'),
+              onTap: () => Get.toNamed('/challenge-admin'),
             ),
           ],
         ),

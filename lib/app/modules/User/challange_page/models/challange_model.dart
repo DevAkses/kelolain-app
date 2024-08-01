@@ -3,8 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Challenge {
   final String id;
   final String title;
+  final String subTitle;
   final String description;
   final int point;
+  final int coin;
   final int requiredCount;
   final String category;
   final DateTime createdAt;
@@ -13,8 +15,10 @@ class Challenge {
   Challenge({
     required this.id,
     required this.title,
+    required this.subTitle,
     required this.description,
     required this.point,
+    required this.coin,
     required this.requiredCount,
     required this.category,
     required this.createdAt,
@@ -26,8 +30,10 @@ class Challenge {
     return Challenge(
       id: doc.id,
       title: data['title'] ?? '',
+      subTitle: data['subTitle'] ?? '',
       description: data['description'] ?? '',
       point: data['point'],
+      coin: data['coin'],
       requiredCount: data['requiredCount'],
       category: data['category'],
       createdAt: (data['createdAt'] as Timestamp).toDate(),

@@ -3,81 +3,87 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:safeloan/app/modules/User/finance/views/widgets/expense_view.dart';
 import 'package:safeloan/app/utils/warna.dart';
+import '../../../detailFinance/views/detail_finance_view.dart';
 import '../../controllers/pengeluaran_controller.dart';
 
 class PengeluaranListPage extends GetView<PengeluaranController> {
   const PengeluaranListPage({super.key});
 
   Widget cardItem(String title, double nominal, String kategori,
-      Color colorCategory, DateTime tanggal) {
+      Color colorCategory, DateTime tanggal, String docId) {
     final NumberFormat numberFormat = NumberFormat('#,##0', 'id_ID');
     String formattedNominal = numberFormat.format(nominal);
     String formattedDate = DateFormat('dd/MM/yyyy').format(tanggal);
 
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.all(10),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Utils.backgroundCard,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.05),
-            spreadRadius: 0,
-            blurRadius: 30,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title, style: Utils.titleStyle),
-                    const SizedBox(height: 8),
-                    Text('Rp $formattedNominal', style: Utils.subtitle),
-                  ],
-                ),
-                const Icon(
-                  Icons.arrow_downward_outlined,
-                  color: Colors.red,
-                  size: 24,
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: colorCategory,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Text(
-                    kategori,
-                    style: const TextStyle(color: Colors.white, fontSize: 12),
-                  ),
-                ),
-                Text(
-                  formattedDate,
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 10,
-                  ),
-                ),
-              ],
+    return GestureDetector(
+      onTap: () {
+         Get.to(() => const DetailFinanceView(), arguments: {'docId': docId, 'type': 'expense',},);
+      },
+      child: Container(
+        width: double.infinity,
+        margin: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Utils.backgroundCard,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.05),
+              spreadRadius: 0,
+              blurRadius: 30,
+              offset: const Offset(0, 5),
             ),
           ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(title, style: Utils.titleStyle),
+                      const SizedBox(height: 8),
+                      Text('Rp $formattedNominal', style: Utils.subtitle),
+                    ],
+                  ),
+                  const Icon(
+                    Icons.arrow_downward_outlined,
+                    color: Colors.red,
+                    size: 24,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: colorCategory,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      kategori,
+                      style: const TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                  ),
+                  Text(
+                    formattedDate,
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 10,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -188,8 +194,9 @@ class PengeluaranListPage extends GetView<PengeluaranController> {
                             expense['title'] ?? 'Unknown',
                             (expense['nominal'] as num).toDouble(), 
                             expense['category'] ?? 'Unknown',
-                            Utils.biruDua, // Update to category color if needed
+                            Utils.biruDua, 
                             expense['date'] is DateTime ? expense['date'] as DateTime : DateTime.parse(expense['date'].toString()), // Ensure DateTime
+                            expense['docId'] ?? '', 
                           );
                         },
                       );

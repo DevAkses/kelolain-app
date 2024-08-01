@@ -7,7 +7,6 @@ import 'package:safeloan/app/widgets/input_akun_widget.dart';
 import '../controllers/reset_password_controller.dart';
 
 class ResetPasswordView extends GetView<ResetPasswordController> {
-  final emailController = TextEditingController();
   ResetPasswordView({super.key});
   @override
   Widget build(BuildContext context) {
@@ -61,9 +60,9 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
                     ],
                   ),
                 ),
-                InputAkunWidget(controller: emailController, nama: "Alamat email", hintText: "Masukan alamat email", leadingIcon: Icons.email),
+                InputAkunWidget(controller: controller.emailController, nama: "Alamat email", hintText: "Masukan alamat email", leadingIcon: Icons.email),
                 const SizedBox(height: 20,),
-                ButtonWidget(onPressed: () => (), nama: "Kirim Email"),
+                ButtonWidget(onPressed: () => (controller.resetPassword(context)), nama: "Kirim Email"),
                 const SizedBox(
                   height: 10,
                 ),

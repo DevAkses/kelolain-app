@@ -1,77 +1,101 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:safeloan/app/widgets/category_card.dart';
+
+import '../controllers/list_category_by_month_controller.dart';
 
 class ListCategoryByMonths extends StatelessWidget {
   const ListCategoryByMonths({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Kategori Bulanan",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+    final MonthlyController controller = Get.put(MonthlyController());
+
+    return Obx(() {
+      List<Widget> categoryCards = [];
+
+      controller.incomeTotalsByCategory.forEach((category, total) {
+        categoryCards.add(CategoryCard(
+          icon: _getIconForCategory(category, true),
+          judul: category,
+          nominal: NumberFormat.currency(locale: 'id_ID').format(total),
+          colorNominal: Colors.green,
+        ));
+      });
+
+      controller.expenseTotalsByCategory.forEach((category, total) {
+        categoryCards.add(CategoryCard(
+          icon: _getIconForCategory(category, false),
+          judul: category,
+          nominal: NumberFormat.currency(locale: 'id_ID').format(total),
+          colorNominal: Colors.red,
+        ));
+      });
+
+      if (categoryCards.isEmpty) {
+        return const Center(
+          child: Text(
+            'Tidak ada data Bulan ini',
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+          ),
+        );
+      }
+
+      return SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Kategori Bulanan",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            SizedBox(height: 16),
-            Wrap(
-              spacing: 16,
-              runSpacing: 16,
-              children: [
-                  CategoryCard(
-                  icon: Icons.money,
-                  judul: "Gaji Bulan Juni",
-                  date: "24 Juni 2024",
-                  nominal: "2.000.000",
-                  colorNominal: Colors.green, // Income color
-                ),
-                CategoryCard(
-                  icon: Icons.shopping_cart,
-                  judul: "Belanja bulanan",
-                  date: "24 Juni 2024",
-                  nominal: "500.000",
-                  colorNominal: Colors.red, // Expense color
-                ),
-                CategoryCard(
-                  icon: Icons.fastfood,
-                  judul: "Makan hari ini",
-                  date: "24 Juni 2024",
-                  nominal: "100.000",
-                  colorNominal: Colors.red, // Expense color
-                ),
-                CategoryCard(
-                  icon: Icons.work,
-                  judul: "Bonus lembur",
-                  date: "23 Juni 2024",
-                  nominal: "500.000",
-                  colorNominal: Colors.green, // Income color
-                ),
-                CategoryCard(
-                  icon: Icons.directions_car,
-                  judul: "Kereta api",
-                  date: "15 Juni 2024",
-                  nominal: "300.000",
-                  colorNominal: Colors.red, // Expense color
-                ),
-                CategoryCard(
-                  icon: Icons.home,
-                  judul: "Bayar kos bulan Juni",
-                  date: "14 Juni 2024",
-                  nominal: "1.000.000",
-                  colorNominal: Colors.red, // Expense color
-                ),
-                // Add more CategoryCard items for monthly view
-              ],
-            ),
-          ],
+              const SizedBox(height: 16),
+              Wrap(
+                spacing: 16,
+                runSpacing: 16,
+                children: categoryCards,
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
+  }
+
+  IconData _getIconForCategory(String category, bool isIncome) {
+    switch (category) {
+      case 'Gaji':
+        return Icons.money;
+      case 'Hadiah':
+        return Icons.card_giftcard;
+      case 'Investasi':
+        return Icons.trending_up;
+      case 'Freelance':
+        return Icons.work;
+      case 'Darurat':
+        return Icons.warning;
+      case 'Pangan':
+        return Icons.fastfood;
+      case 'Pakaian':
+        return Icons.shopping_bag;
+      case 'Hiburan':
+        return Icons.movie;
+      case 'Pendidikan':
+        return Icons.school;
+      case 'Kesehatan':
+        return Icons.local_hospital;
+      case 'Cicilan':
+        return Icons.payment;
+      case 'Rumahan':
+        return Icons.home;
+      default:
+        return isIncome ? Icons.attach_money : Icons.money_off;
+    }
   }
 }

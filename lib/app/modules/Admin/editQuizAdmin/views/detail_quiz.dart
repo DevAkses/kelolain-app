@@ -24,26 +24,38 @@ class QuizDetailView extends StatelessWidget {
           var question = quiz.questions[index];
           return Container(
             margin: const EdgeInsets.symmetric(vertical: 0.6, horizontal: 5),
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            child: Card.outlined(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Utils.backgroundCard,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 0,
+                    blurRadius: 20,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
-              elevation: 5,
               child: ListTile(
                 title: Text(
                   question.question,
-                   style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Answer: ${question.answer}'),
-                    Text('Explanation: ${question.explanation}', maxLines: 2, overflow: TextOverflow.ellipsis,),
-                    
+                    Text(
+                      'Explanation: ${question.explanation}',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ],
                 ),
                 trailing: IconButton(

@@ -2,11 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
+import '../../challange_page/controllers/challange_page_controller.dart';
+
 class PemasukanController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  
-  FirebaseAuth get auth => _auth;
+  final ChallangePageController challengeController = Get.put(ChallangePageController());
 
   var incomeList = <Map<String, dynamic>>[].obs;
   var totalIncome = 0.0.obs;
@@ -28,6 +29,7 @@ class PemasukanController extends GetxController {
     incomeCollection.snapshots().listen((snapshot) {
       var incomeDocs = snapshot.docs.map((doc) {
         var data = doc.data() as Map<String, dynamic>;
+        data['docId'] = doc.id; 
         if (data['date'] is Timestamp) {
           data['date'] = (data['date'] as Timestamp).toDate();
         }
@@ -56,22 +58,21 @@ class PemasukanController extends GetxController {
         startDate = DateTime(now.year, now.month, now.day);
         break;
       case 'Mingguan':
-        startDate = now.subtract(Duration(days: now.weekday));
+        startDate = now.subtract(Duration(days: now.weekday - 1));
         break;
       case 'Bulanan':
-        startDate = DateTime(now.year, now.month);
+        startDate = DateTime(now.year, now.month, 1);
         break;
       case 'Tahunan':
-        startDate = DateTime(now.year);
+        startDate = DateTime(now.year, 1, 1);
         break;
-      case 'Semua Data':
       default:
-        return data; 
+        return data;
     }
 
     return data.where((item) {
-      DateTime itemDate = item['date'] is DateTime ? item['date'] as DateTime : DateTime.parse(item['date'].toString());
-      return itemDate.isAfter(startDate);
+      DateTime date = item['date'] is DateTime ? item['date'] as DateTime : DateTime.parse(item['date'].toString());
+      return date.isAfter(startDate);
     }).toList();
   }
 }

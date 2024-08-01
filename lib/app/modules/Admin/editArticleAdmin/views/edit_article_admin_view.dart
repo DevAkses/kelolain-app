@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_back_leading.dart';
+import 'package:safeloan/app/widgets/input_admin_widget.dart';
 import '../controllers/edit_article_admin_controller.dart';
 
 class EditArticleAdminView extends GetView<EditArticleAdminController> {
@@ -103,34 +104,39 @@ class EditArticleAdminView extends GetView<EditArticleAdminController> {
     TextEditingController sourceController =
         TextEditingController(text: article['source']);
 
-    Get.defaultDialog(
-      title: "Edit Article",
-      content: Column(
-        children: [
-          TextField(
-            controller: titleController,
-            decoration: const InputDecoration(labelText: 'Title'),
+    Get.dialog(
+      AlertDialog(
+        title: const Text("Edit Article"),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              inputAdminWidget(titleController, 'Judul'),
+              inputAdminWidget(contentController, 'Konten'),
+              inputAdminWidget(sourceController, 'Sumber'),
+            ],
           ),
-          TextField(
-            controller: contentController,
-            decoration: const InputDecoration(labelText: 'Content'),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              controller.editArticle(article.id, {
+                'title': titleController.text,
+                'content': contentController.text,
+                'source': sourceController.text,
+              });
+              Get.back();
+            },
+            child: const Text("Save"),
           ),
-          TextField(
-            controller: sourceController,
-            decoration: const InputDecoration(labelText: 'Source'),
+          TextButton(
+            onPressed: () {
+              Get.back();
+            },
+            child: const Text("Cancel"),
           ),
         ],
       ),
-      textConfirm: "Save",
-      onConfirm: () {
-        controller.editArticle(article.id, {
-          'title': titleController.text,
-          'content': contentController.text,
-          'source': sourceController.text,
-        });
-        Get.back();
-      },
-      textCancel: "Cancel",
     );
   }
 }

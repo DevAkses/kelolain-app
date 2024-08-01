@@ -3,13 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class DetailLoanController extends GetxController {
-  var loanData = <String, dynamic>{}.obs;  // Initialize as empty map with Rx type
+  var loanData = <String, dynamic>{}.obs;  
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   void onInit() {
     super.onInit();
-    String loanId = Get.arguments as String;  // Get the loan ID from the arguments
+    String loanId = Get.arguments as String;  
     fetchLoanData(loanId);
   }
 

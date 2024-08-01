@@ -6,11 +6,21 @@ import 'package:safeloan/app/modules/User/quiz/models/quiz_model.dart';
 class QuizController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  String currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
 
   var quizList = <Quiz>[].obs;
   var questionList = <Question>[].obs;
   var selectedAnswers = <String?>[].obs;
   var score = 0.obs;
+  var totalCoins = 0.obs; // Tambahkan ini
+  var quizResult = {}.obs;
+  var completedQuizzes = <String>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchCompletedQuizzes();
+  }
 
   Stream<QuerySnapshot> getQuizList() {
     return firestore.collection('quiz').snapshots();
@@ -18,8 +28,7 @@ class QuizController extends GetxController {
 
   void updateQuizList(QuerySnapshot snapshot) {
     quizList.clear();
-    quizList
-        .addAll(snapshot.docs.map((doc) => Quiz.fromDocument(doc)).toList());
+    quizList.addAll(snapshot.docs.map((doc) => Quiz.fromDocument(doc)).toList());
   }
 
   Stream<QuerySnapshot> getQuestionList(String quizId) {
@@ -43,14 +52,19 @@ class QuizController extends GetxController {
   }
 
   Future<void> checkAnswer(String quizId) async {
+    print('checkAnswer called');
     score.value = 0;
+    totalCoins.value = 0;  // Reset totalCoins
+
     for (int i = 0; i < questionList.length; i++) {
-    
       if (selectedAnswers[i] == questionList[i].jawaban) {
         score.value += questionList[i].poin;
+        totalCoins.value += questionList[i].coin;  // Tambahkan ini
       }
     }
 
+    print('Total Score: ${score.value}');
+    print('Total Coins: ${totalCoins.value}');  // Tambahkan ini
     await saveResult(quizId);
   }
 
@@ -59,9 +73,56 @@ class QuizController extends GetxController {
       'finishAt': DateTime.now(),
       'quizId': quizId,
       'point': score.value,
+      'coin': totalCoins.value,  // Tambahkan ini
       'userId': firebaseAuth.currentUser!.uid
     });
+    print('Result saved');
+    await updateUserPointsAndCoins(); // Tambahkan ini
+    fetchCompletedQuizzes(); // Tambahkan ini untuk memperbarui status quiz yang sudah dikerjakan
+    fetchQuizResult(quizId);
   }
 
-  
+  Future<void> updateUserPointsAndCoins() async {
+    DocumentReference userRef = firestore.collection('users').doc(firebaseAuth.currentUser!.uid);
+    DocumentSnapshot userDoc = await userRef.get();
+
+    if (userDoc.exists) {
+      int currentPoints = userDoc['point'];
+      int currentCoins = userDoc['coin'];
+
+      await userRef.update({
+        'point': currentPoints + score.value,
+        'coin': currentCoins + totalCoins.value,
+      });
+      print('User points and coins updated');
+    } else {
+      print('User document does not exist');
+    }
+  }
+
+  void fetchCompletedQuizzes() async {
+    final resultSnapshot = await firestore
+        .collection('quizResult')
+        .where('userId', isEqualTo: firebaseAuth.currentUser!.uid)
+        .get();
+
+    completedQuizzes.clear();
+    for (var doc in resultSnapshot.docs) {
+      completedQuizzes.add(doc['quizId']);
+    }
+  }
+
+  void fetchQuizResult(String quizId) async {
+    final resultSnapshot = await firestore
+        .collection('quizResult')
+        .where('quizId', isEqualTo: quizId)
+        .where('userId', isEqualTo: firebaseAuth.currentUser!.uid)
+        .orderBy('finishAt', descending: true)
+        .limit(1)
+        .get();
+
+    if (resultSnapshot.docs.isNotEmpty) {
+      quizResult.value = resultSnapshot.docs.first.data();
+    }
+  }
 }

@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/Admin/challenge_admin/bindings/challenge_admin_binding.dart';
+import '../modules/Admin/challenge_admin/views/challenge_admin_view.dart';
 import '../modules/Admin/editArticleAdmin/bindings/edit_article_admin_binding.dart';
 import '../modules/Admin/editArticleAdmin/views/edit_article_admin_view.dart';
 import '../modules/Admin/editChallengeAdmin/bindings/edit_challenge_admin_binding.dart';
@@ -64,6 +66,8 @@ import '../modules/User/navigation/bindings/navigation_binding.dart';
 import '../modules/User/navigation/views/navigation_view.dart';
 import '../modules/User/notification/bindings/notification_binding.dart';
 import '../modules/User/notification/views/notification_view.dart';
+import '../modules/User/pinjolList/bindings/pinjol_list_binding.dart';
+import '../modules/User/pinjolList/views/pinjol_list_view.dart';
 import '../modules/User/profile/bindings/profile_binding.dart';
 import '../modules/User/profile/views/profile_view.dart';
 import '../modules/User/quiz/bindings/quiz_binding.dart';
@@ -72,10 +76,8 @@ import '../modules/User/tab_counseling/bindings/tab_counseling_binding.dart';
 import '../modules/User/tab_counseling/views/tab_counseling_view.dart';
 import '../modules/User/tab_quiz/bindings/tab_quiz_binding.dart';
 import '../modules/User/tab_quiz/views/tab_quiz_view.dart';
-import '../modules/Admin/challenge_admin/bindings/challenge_admin_binding.dart';
-import '../modules/Admin/challenge_admin/views/challenge_admin_view.dart';
-import '../modules/User/pinjolList/bindings/pinjol_list_binding.dart';
-import '../modules/User/pinjolList/views/pinjol_list_view.dart';
+import '../modules/User/detailFinance/bindings/detail_finance_binding.dart';
+import '../modules/User/detailFinance/views/detail_finance_view.dart';
 
 part 'app_routes.dart';
 
@@ -265,7 +267,7 @@ class AppPages {
       page: () => const DetailLoanView(),
       binding: DetailLoanBinding(),
     ),
-     GetPage(
+    GetPage(
       name: _Paths.CHALLENGE_ADMIN,
       page: () => const ChallengeAdminView(),
       binding: ChallengeAdminBinding(),
@@ -274,6 +276,11 @@ class AppPages {
       name: _Paths.PINJOL_LIST,
       page: () => const PinjolListView(),
       binding: PinjolListBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL_FINANCE,
+      page: () => const DetailFinanceView(),
+      binding: DetailFinanceBinding(),
     ),
   ];
 }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_back_leading.dart';
 import 'package:safeloan/app/widgets/confirm_show_dialog_widget.dart';
@@ -12,6 +13,8 @@ class LoanView extends GetView<LoanController> {
 
   @override
   Widget build(BuildContext context) {
+    final numberFormat = NumberFormat('#,##0', 'id_ID');
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -110,7 +113,7 @@ class LoanView extends GetView<LoanController> {
                                       color: Colors.green),
                                   const SizedBox(width: 10),
                                   Text(
-                                      'Rp. ${loanData['jumlahPinjaman'] ?? 0}'),
+                                      'Rp. ${numberFormat.format(loanData['jumlahPinjaman'])}'),
                                 ],
                               ),
                               const SizedBox(height: 10),

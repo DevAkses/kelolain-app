@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_back_leading.dart';
+import 'package:safeloan/app/widgets/input_admin_widget.dart';
 import '../controllers/edit_video_admin_controller.dart';
 
 class EditVideoAdminView extends GetView<EditVideoAdminController> {
@@ -96,37 +97,39 @@ class EditVideoAdminView extends GetView<EditVideoAdminController> {
     TextEditingController linkController =
         TextEditingController(text: video['link']);
 
-    Get.defaultDialog(
-      title: "Edit Video",
-      content: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: titleController,
-              decoration: const InputDecoration(labelText: 'Title'),
-            ),
-            TextField(
-              controller: descriptionController,
-              decoration: const InputDecoration(labelText: 'Description'),
-            ),
-            TextField(
-              controller: linkController,
-              decoration: const InputDecoration(labelText: 'Link'),
-            ),
-          ],
+    Get.dialog(
+      AlertDialog(
+        title: const Text("Edit Video"),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              inputAdminWidget(titleController, 'Judul'),
+              inputAdminWidget(descriptionController, 'Deskripsi'),
+              inputAdminWidget(linkController, 'Tautan'),
+            ],
+          ),
         ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              controller.editVideo(video.id, {
+                'title': titleController.text,
+                'content': descriptionController.text,
+                'source': linkController.text,
+              });
+              Get.back();
+            },
+            child: const Text("Save"),
+          ),
+          TextButton(
+            onPressed: () {
+              Get.back();
+            },
+            child: const Text("Cancel"),
+          ),
+        ],
       ),
-      textConfirm: "Save",
-      onConfirm: () {
-        controller.editVideo(video.id, {
-          'title': titleController.text,
-          'description': descriptionController.text,
-          'link': linkController.text,
-        });
-        Get.back();
-      },
-      textCancel: "Cancel",
     );
   }
 }
