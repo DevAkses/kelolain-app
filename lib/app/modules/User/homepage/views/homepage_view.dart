@@ -105,9 +105,9 @@ class HomepageView extends GetView<HomepageController> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             poin("assets/images/poin.png",
-                                '${detailController.userData['point']}'),
+                                '${detailController.userData['point'] ?? 0}'),
                             poin("assets/images/koin.png",
-                                '${detailController.userData['coin']}'),
+                                '${detailController.userData['coin'] ?? 0}'),
                           ],
                         ),
                       ),

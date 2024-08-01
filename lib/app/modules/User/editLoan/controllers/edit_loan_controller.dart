@@ -6,14 +6,41 @@ import 'package:intl/intl.dart';
 
 class EditLoanController extends GetxController {
   late TextEditingController namaPinjamanC;
-  var jumlahPinjaman = 0.obs;
-  var angsuran = 0.obs;
-  var bunga = 0.obs;
+  late TextEditingController jumlahPinjamanC;
+  late TextEditingController angsuranC;
+  late TextEditingController bungaC;
+
+  final jumlahPinjamanValue = 0.0.obs;
+  final formattedJumlahPinjamanValue = '0'.obs;
+
+  final angsuranValue = 1.obs;
+  final formattedAngsuranValue = '1'.obs;
+
+  final bungaValue = 0.0.obs;
+  final formattedBungaValue = '0'.obs;
+
   var tanggalPinjaman = ''.obs;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   String? loanId;
+
+  @override
+  void onInit() {
+    super.onInit();
+    namaPinjamanC = TextEditingController();
+    jumlahPinjamanC = TextEditingController();
+    angsuranC = TextEditingController();
+    bungaC = TextEditingController();
+    loanId = Get.arguments as String?;
+    if (loanId != null) {
+      getLoanData();
+    }
+
+    updateFormattedJumlahPinjamanValue(jumlahPinjamanValue.value);
+    updateFormattedAngsuranValue(angsuranValue.value);
+    updateFormattedBungaValue(bungaValue.value);
+  }
 
   void getLoanData() async {
     if (loanId != null) {
@@ -28,10 +55,14 @@ class EditLoanController extends GetxController {
         var data = doc.data();
         if (data != null) {
           namaPinjamanC.text = data['namaPinjaman'] ?? '';
-          jumlahPinjaman.value = data['jumlahPinjaman'] ?? 0;
-          angsuran.value = data['angsuran'] ?? 0;
-          bunga.value = data['bunga'] ?? 0;
+          jumlahPinjamanValue.value = data['jumlahPinjaman'] ?? 0;
+          angsuranValue.value = data['angsuran'] ?? 0;
+          bungaValue.value = data['bunga'] ?? 0;
           tanggalPinjaman.value = data['tanggalPinjaman'] ?? '';
+
+          updateFormattedJumlahPinjamanValue(jumlahPinjamanValue.value);
+          updateFormattedAngsuranValue(angsuranValue.value);
+          updateFormattedBungaValue(bungaValue.value);
         }
       }
     }
@@ -50,12 +81,67 @@ class EditLoanController extends GetxController {
     }
   }
 
+  void updateJumlahPinjamanFromTextField(String value) {
+    _updateValueFromTextField(value, jumlahPinjamanValue, updateFormattedJumlahPinjamanValue, max: 100000000);
+  }
+
+  void updateAngsuranFromSlider(double value) {
+    angsuranValue.value = value.toInt();
+    updateFormattedAngsuranValue(value.toInt());
+  }
+
+  void updateAngsuranFromTextField(String value) {
+    String numericValue = value.replaceAll(RegExp(r'[^0-9]'), '');
+    if (numericValue.isNotEmpty) {
+      int intValue = int.parse(numericValue);
+      if (intValue >= 1 && intValue <= 360) {
+        angsuranValue.value = intValue;
+        updateFormattedAngsuranValue(intValue);
+      }
+    }
+  }
+
+  void updateBungaFromTextField(String value) {
+    _updateValueFromTextField(value, bungaValue, updateFormattedBungaValue, max: 100);
+  }
+
+  void _updateValueFromTextField(String value, RxDouble rxValue, Function(double) updateFormatted, {double max = 100000000}) {
+    String numericValue = value.replaceAll(RegExp(r'[^0-9.]'), '');
+    if (numericValue.isNotEmpty) {
+      double doubleValue = double.parse(numericValue);
+      if (doubleValue >= 0 && doubleValue <= max) {
+        rxValue.value = doubleValue;
+        updateFormatted(doubleValue);
+      }
+    }
+  }
+
+  void updateFormattedJumlahPinjamanValue(double value) {
+    formattedJumlahPinjamanValue.value = formatCurrency(value);
+    jumlahPinjamanC.text = formattedJumlahPinjamanValue.value;
+  }
+
+  void updateFormattedAngsuranValue(int value) {
+    formattedAngsuranValue.value = value.toString();
+    angsuranC.text = formattedAngsuranValue.value;
+  }
+
+  void updateFormattedBungaValue(double value) {
+    formattedBungaValue.value = value.toStringAsFixed(2);
+    bungaC.text = formattedBungaValue.value;
+  }
+
+  String formatCurrency(double value) {
+    return value.toStringAsFixed(0).replaceAllMapped(
+        RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.');
+  }
+
   Future<bool> updateLoanData() async {
     if (loanId != null) {
       if (namaPinjamanC.text.isEmpty ||
-          jumlahPinjaman.value == 0 ||
-          angsuran.value == 0 ||
-          bunga.value == 0 ||
+          jumlahPinjamanValue.value == 0 ||
+          angsuranValue.value == 0 ||
+          bungaValue.value == 0 ||
           tanggalPinjaman.value.isEmpty) {
         Get.snackbar('Error', 'All fields must be filled');
         return false;
@@ -68,9 +154,9 @@ class EditLoanController extends GetxController {
             .doc(loanId)
             .update({
           'namaPinjaman': namaPinjamanC.text,
-          'jumlahPinjaman': jumlahPinjaman.value,
-          'angsuran': angsuran.value,
-          'bunga': bunga.value,
+          'jumlahPinjaman': jumlahPinjamanValue.value,
+          'angsuran': angsuranValue.value,
+          'bunga': bungaValue.value,
           'tanggalPinjaman': tanggalPinjaman.value,
         });
         return true;
@@ -83,18 +169,11 @@ class EditLoanController extends GetxController {
   }
 
   @override
-  void onInit() {
-    namaPinjamanC = TextEditingController();
-    loanId = Get.arguments as String?;
-    if (loanId != null) {
-      getLoanData();
-    }
-    super.onInit();
-  }
-
-  @override
   void dispose() {
     namaPinjamanC.dispose();
+    jumlahPinjamanC.dispose();
+    angsuranC.dispose();
+    bungaC.dispose();
     super.dispose();
   }
 }
