@@ -6,6 +6,7 @@ class Challenge {
   final String subTitle;
   final String description;
   final int point;
+  final int coin;
   final int requiredCount;
   final String category;
   final DateTime createdAt;
@@ -17,6 +18,7 @@ class Challenge {
     required this.subTitle,
     required this.description,
     required this.point,
+    required this.coin,
     required this.requiredCount,
     required this.category,
     required this.createdAt,
@@ -31,6 +33,7 @@ class Challenge {
       subTitle: data['subTitle'] ?? '',
       description: data['description'] ?? '',
       point: data['point'],
+      coin: data['coin'],
       requiredCount: data['requiredCount'],
       category: data['category'],
       createdAt: (data['createdAt'] as Timestamp).toDate(),

@@ -57,7 +57,7 @@ class ListCategoryByWeeks extends StatelessWidget {
       if (categoryCards.isEmpty) {
         return const Center(
           child: Text(
-            'Tidak ada data hari ini',
+            'Tidak ada data Minggu ini',
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
           ),
         );

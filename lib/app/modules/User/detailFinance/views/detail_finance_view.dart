@@ -28,9 +28,7 @@ class DetailFinanceView extends GetView<DetailFinanceController> {
           final titleController =
               TextEditingController(text: financeData['title']);
           final jumlahController =
-              TextEditingController(text: financeData['nominal']?.toString());
-          final kategoriController =
-              TextEditingController(text: financeData['category']);
+              TextEditingController(text: financeData['nominal']?.toStringAsFixed(0));
           final deskripsiController =
               TextEditingController(text: financeData['notes']);
 
@@ -52,7 +50,7 @@ class DetailFinanceView extends GetView<DetailFinanceController> {
                         controller: jumlahController,
                         keyboardType: TextInputType.number,
                       ),
-                      _buildEditableCard(
+                      _buildNonEditableCard(
                         title: 'Tanggal',
                         icon: FontAwesomeIcons.calendarDays,
                         content: financeData['date'] != null
@@ -60,10 +58,10 @@ class DetailFinanceView extends GetView<DetailFinanceController> {
                                 .format(financeData['date'])
                             : 'N/A',
                       ),
-                      _buildEditableCard(
+                      _buildNonEditableCard(
                         title: 'Kategori',
                         icon: FontAwesomeIcons.tag,
-                        controller: kategoriController,
+                        content: financeData['category'],
                       ),
                       _buildEditableCard(
                         title: 'Deskripsi',
@@ -82,7 +80,6 @@ class DetailFinanceView extends GetView<DetailFinanceController> {
                             controller,
                             titleController,
                             jumlahController,
-                            kategoriController,
                             deskripsiController);
                       },
                       child: const Text('Simpan'),
@@ -107,7 +104,6 @@ class DetailFinanceView extends GetView<DetailFinanceController> {
     required String title,
     required IconData icon,
     TextEditingController? controller,
-    String? content,
     TextInputType? keyboardType,
   }) {
     return Card(
@@ -116,13 +112,27 @@ class DetailFinanceView extends GetView<DetailFinanceController> {
       child: ListTile(
         leading: Icon(icon, color: Colors.blue),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: controller != null
-            ? TextField(
-                controller: controller,
-                keyboardType: keyboardType,
-                decoration: InputDecoration(border: UnderlineInputBorder()),
-              )
-            : Text(content ?? 'N/A'),
+        subtitle: TextField(
+          controller: controller,
+          keyboardType: keyboardType,
+          decoration: InputDecoration(border: UnderlineInputBorder()),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNonEditableCard({
+    required String title,
+    required IconData icon,
+    required String content,
+  }) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      elevation: 5,
+      child: ListTile(
+        leading: Icon(icon, color: Colors.blue),
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        subtitle: Text(content),
       ),
     );
   }
@@ -131,17 +141,28 @@ class DetailFinanceView extends GetView<DetailFinanceController> {
       DetailFinanceController controller,
       TextEditingController titleController,
       TextEditingController jumlahController,
-      TextEditingController kategoriController,
       TextEditingController deskripsiController) {
+    final jumlah = jumlahController.text;
+    final nominal = double.tryParse(jumlah);
+
+    if (nominal == null) {
+      Get.snackbar('Error', 'Jumlah harus berupa angka.');
+      return;
+    }
+
     try {
-      final financeId = Get.arguments['docId'] as String;
-      final type = Get.arguments['type'] as String;
+      final financeId = Get.arguments['docId'] as String?;
+      final type = Get.arguments['type'] as String?;
+
+      if (financeId == null || type == null) {
+        Get.snackbar('Error', 'Invalid arguments for updating finance data.');
+        return;
+      }
+
       controller.updateFinanceData(financeId, type, {
         'title': titleController.text,
-        'nominal': double.tryParse(jumlahController.text) ?? 0.0,
-        'category': kategoriController.text,
+        'nominal': nominal,
         'notes': deskripsiController.text,
-        'date': DateTime.now(),
       });
       Get.back();
       Get.back();
@@ -152,25 +173,26 @@ class DetailFinanceView extends GetView<DetailFinanceController> {
   }
 
   void _showDeleteConfirmationDialog(DetailFinanceController controller) {
+    final financeId = Get.arguments['docId'] as String?;
+    final type = Get.arguments['type'] as String?;
+
+    // Debug logging
+    print('Delete Confirmation: docId = $financeId, type = $type');
+
+    if (financeId == null || type == null) {
+      Get.snackbar('Error', 'Invalid arguments for deleting finance data.');
+      return;
+    }
+
     Get.defaultDialog(
-      title: 'Confirm Delete',
-      middleText: 'Are you sure you want to delete this finance data?',
-      confirm: ElevatedButton(
-        onPressed: () {
-          try {
-            final financeId = Get.arguments['docId'] as String;
-            final type = Get.arguments['type'] as String;
-            controller.deleteFinanceData(financeId, type);
-          } catch (e) {
-            Get.snackbar('Error', 'Failed to delete finance data: $e');
-          }
-        },
-        child: const Text('Delete'),
-      ),
-      cancel: ElevatedButton(
-        onPressed: () => Get.back(),
-        child: const Text('Cancel'),
-      ),
+      title: 'Konfirmasi Hapus',
+      middleText: 'Apakah Anda yakin ingin menghapus data ini?',
+      onConfirm: () {
+        controller.deleteFinanceData(financeId, type);
+        Get.back();
+        Get.back();
+      },
+      onCancel: () => Get.back(),
     );
   }
 }

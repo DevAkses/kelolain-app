@@ -36,7 +36,7 @@ class ListCategoryByMonths extends StatelessWidget {
       if (categoryCards.isEmpty) {
         return const Center(
           child: Text(
-            'Tidak ada data Minggu ini',
+            'Tidak ada data Bulan ini',
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
           ),
         );

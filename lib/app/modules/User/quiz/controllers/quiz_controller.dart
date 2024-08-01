@@ -12,7 +12,15 @@ class QuizController extends GetxController {
   var questionList = <Question>[].obs;
   var selectedAnswers = <String?>[].obs;
   var score = 0.obs;
-  var quizResult = {}.obs; // Observable map to store quiz result
+  var totalCoins = 0.obs; // Tambahkan ini
+  var quizResult = {}.obs;
+  var completedQuizzes = <String>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchCompletedQuizzes();
+  }
 
   Stream<QuerySnapshot> getQuizList() {
     return firestore.collection('quiz').snapshots();
@@ -46,18 +54,17 @@ class QuizController extends GetxController {
   Future<void> checkAnswer(String quizId) async {
     print('checkAnswer called');
     score.value = 0;
-    for (int i = 0; i < questionList.length; i++) {
-      print('Question: ${questionList[i].pertanyaan}');
-      print('Selected Answer: ${selectedAnswers[i]}');
-      print('Correct Answer: ${questionList[i].jawaban}');
-      print('Point: ${questionList[i].poin}');
+    totalCoins.value = 0;  // Reset totalCoins
 
+    for (int i = 0; i < questionList.length; i++) {
       if (selectedAnswers[i] == questionList[i].jawaban) {
         score.value += questionList[i].poin;
+        totalCoins.value += questionList[i].coin;  // Tambahkan ini
       }
     }
 
     print('Total Score: ${score.value}');
+    print('Total Coins: ${totalCoins.value}');  // Tambahkan ini
     await saveResult(quizId);
   }
 
@@ -66,14 +73,46 @@ class QuizController extends GetxController {
       'finishAt': DateTime.now(),
       'quizId': quizId,
       'point': score.value,
+      'coin': totalCoins.value,  // Tambahkan ini
       'userId': firebaseAuth.currentUser!.uid
     });
     print('Result saved');
+    await updateUserPointsAndCoins(); // Tambahkan ini
+    fetchCompletedQuizzes(); // Tambahkan ini untuk memperbarui status quiz yang sudah dikerjakan
     fetchQuizResult(quizId);
   }
 
+  Future<void> updateUserPointsAndCoins() async {
+    DocumentReference userRef = firestore.collection('users').doc(firebaseAuth.currentUser!.uid);
+    DocumentSnapshot userDoc = await userRef.get();
+
+    if (userDoc.exists) {
+      int currentPoints = userDoc['point'];
+      int currentCoins = userDoc['coin'];
+
+      await userRef.update({
+        'point': currentPoints + score.value,
+        'coin': currentCoins + totalCoins.value,
+      });
+      print('User points and coins updated');
+    } else {
+      print('User document does not exist');
+    }
+  }
+
+  void fetchCompletedQuizzes() async {
+    final resultSnapshot = await firestore
+        .collection('quizResult')
+        .where('userId', isEqualTo: firebaseAuth.currentUser!.uid)
+        .get();
+
+    completedQuizzes.clear();
+    for (var doc in resultSnapshot.docs) {
+      completedQuizzes.add(doc['quizId']);
+    }
+  }
+
   void fetchQuizResult(String quizId) async {
-    // Assuming you want to fetch the latest result for the given quizId and userId
     final resultSnapshot = await firestore
         .collection('quizResult')
         .where('quizId', isEqualTo: quizId)

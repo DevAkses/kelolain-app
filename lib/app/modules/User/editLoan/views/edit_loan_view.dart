@@ -4,6 +4,7 @@ import 'package:safeloan/app/modules/User/editLoan/controllers/edit_loan_control
 import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_back_leading.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
+import 'package:safeloan/app/widgets/show_dialog_info_widget.dart';
 
 class EditLoanView extends GetView<EditLoanController> {
   const EditLoanView({super.key});
@@ -100,13 +101,18 @@ class EditLoanView extends GetView<EditLoanController> {
                   try {
                     bool success = await controller.updateLoanData();
                     if (success) {
-                      Get.snackbar('Sukses', 'Pinjaman berhasil ditambahkan');
+                      Get.back();
+                      showDialogInfoWidget(
+                          "Berhasil mengupdate pinjaman", 'succes', context);
+
                     } else {
-                      Get.snackbar('Gagal', 'Pinjaman gagal ditambahkan');
+                      showDialogInfoWidget(
+                          "Gagal mengupdate pinjaman", 'fail', context);
                     }
                   } catch (e) {
                     print('Error saat menambahkan pinjaman: $e');
-                    Get.snackbar('Error', 'Terjadi kesalahan: $e');
+                    showDialogInfoWidget(
+                        "Terjadi masalah saat mengupdate pinjaman", 'fail', context);
                   }
                 },
                 nama: 'Update',

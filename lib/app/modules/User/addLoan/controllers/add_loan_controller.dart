@@ -19,7 +19,7 @@ class AddLoanController extends GetxController {
   final bungaValue = 0.0.obs;
   final formattedBungaValue = '0'.obs;
 
-  var tanggalPinjaman = ''.obs;
+  var tanggalPinjaman = Rxn<DateTime>();
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -39,13 +39,19 @@ class AddLoanController extends GetxController {
   Future<void> pickDate(BuildContext context) async {
     DateTime? selectedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: tanggalPinjaman.value ?? DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );
 
     if (selectedDate != null) {
-      tanggalPinjaman.value = DateFormat('dd/MM/yyyy').format(selectedDate);
+      tanggalPinjaman.value = DateTime(
+        selectedDate.year,
+        selectedDate.month,
+        selectedDate.day,
+        DateTime.now().hour,
+        DateTime.now().minute,
+      );
     }
   }
 
@@ -116,12 +122,14 @@ class AddLoanController extends GetxController {
         jumlahPinjamanValue.value == 0 ||
         angsuranValue.value == 0 ||
         bungaValue.value == 0 ||
-        tanggalPinjaman.value.isEmpty) {
+        tanggalPinjaman.value == null) {
       return false;
     }
 
     try {
-      await firestore.collection('users')
+      final numberFormat = NumberFormat('#,##0', 'id_ID');
+      await firestore
+          .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection('loans')
           .add({
@@ -129,9 +137,20 @@ class AddLoanController extends GetxController {
         'jumlahPinjaman': jumlahPinjamanValue.value,
         'angsuran': angsuranValue.value,
         'bunga': bungaValue.value,
-        'tanggalPinjaman': tanggalPinjaman.value,
+        'tanggalPinjaman': Timestamp.fromDate(tanggalPinjaman.value!),
         'createdAt': DateTime.now(),
       });
+
+      // await firestore.collection('notifications').doc().set({
+      //   'title': namaPinjamanC.text,
+      //   'jumlahPinjaman': jumlahPinjamanValue.value,
+      //   'description':
+      //       'Bayar Angsuran Sebesar Rp. ${numberFormat.format((jumlahPinjamanValue.value + (jumlahPinjamanValue.value * bungaValue.value / 100)) / angsuranValue.value)}',
+      //   'tanggalPinjaman': Timestamp.fromDate(tanggalPinjaman.value!),
+      //   'createdAt': DateTime.now(),
+      //   'userId': FirebaseAuth.instance.currentUser!.uid,
+      // });
+
       return true;
     } catch (e) {
       return false;

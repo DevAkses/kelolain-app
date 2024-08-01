@@ -16,8 +16,8 @@ class MonthlyController extends GetxController {
   void fetchMonthlyData() async {
     String uid = _auth.currentUser!.uid;
     final now = DateTime.now();
-    final startOfMonth = DateTime(now.year, now.month, 1);
-    final endOfMonth = DateTime(now.year, now.month + 1, 1);
+    final startOfMonth = DateTime(now.year, now.month - 1);
+    final endOfMonth = DateTime(now.year, now.month);
 
     final incomeQuery = FirebaseFirestore.instance
         .collection('finances')
