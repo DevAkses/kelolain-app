@@ -81,6 +81,7 @@ class ChallangePageController extends GetxController {
     for (QueryDocumentSnapshot challenge in challengesSnapshot.docs) {
       int requiredCount = challenge['requiredCount'];
       int challengePoints = challenge['point'];
+      int challengeCoins = challenge['coin'];
       String challengeId = challenge.id;
 
       if (itemCount >= requiredCount) {
@@ -103,9 +104,12 @@ class ChallangePageController extends GetxController {
               Map<String, dynamic> userData =
                   userSnapshot.data() as Map<String, dynamic>;
               int currentPoints = userData['point'] ?? 0;
+              int currentCoins = userData['coin'] ?? 0;
               int newPoints = currentPoints + challengePoints;
+              int newCoins = currentCoins + challengeCoins;
 
-              transaction.update(userRef, {'point': newPoints});
+              transaction
+                  .update(userRef, {'point': newPoints, 'coin': newCoins});
             } else {
               print("User document does not exist");
             }
@@ -118,5 +122,89 @@ class ChallangePageController extends GetxController {
             "Challenge $challengeId not met ($challengeType count: $itemCount, required: $requiredCount)");
       }
     }
+  }
+
+  Future<void> checkAndCompleteFinanceChallenge(DateTime incomeDate) async {
+    if (_currentUser == null) return;
+
+    try {
+      QuerySnapshot financeChallenge = await firestore
+          .collection('challenges')
+          .where('category', isEqualTo: 'finance')
+          .limit(1)
+          .get();
+
+      if (financeChallenge.docs.isEmpty) return;
+
+      DocumentSnapshot challengeDoc = financeChallenge.docs.first;
+      String challengeId = challengeDoc.id;
+      Map<String, dynamic> challengeData =
+          challengeDoc.data() as Map<String, dynamic>;
+
+      String incomeMonthYear =
+          '${incomeDate.year}-${incomeDate.month.toString().padLeft(2, '0')}';
+
+      DateTime now = DateTime.now();
+      String currentMonthYear =
+          '${now.year}-${now.month.toString().padLeft(2, '0')}';
+
+      DocumentReference completionRef = firestore
+          .collection('challenges')
+          .doc(challengeId)
+          .collection('completedBy')
+          .doc(_currentUser!.uid);
+
+      DocumentSnapshot completionDoc = await completionRef.get();
+
+      if (incomeMonthYear == currentMonthYear) {
+        if (!completionDoc.exists ||
+            (completionDoc.data()
+                    as Map<String, dynamic>)['lastCompletedMonth'] !=
+                currentMonthYear) {
+          await completionRef.set({
+            'lastCompletedMonth': currentMonthYear,
+            'completedAt': FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
+
+          int challengePoints = challengeData['point'] ?? 0;
+          int challengeCoins = challengeData['coin'] ?? 0;
+
+          await updateUserPointsAndCoins(challengePoints, challengeCoins);
+
+          print(
+              "Finance challenge completed and rewards added for $currentMonthYear");
+        } else {
+          print("Finance challenge already completed for this month");
+        }
+      } else {
+        print("Income is not from the current month. Challenge not completed.");
+      }
+    } catch (e) {
+      print("Error in checkAndCompleteFinanceChallenge: $e");
+    }
+  }
+
+  Future<void> updateUserPointsAndCoins(int pointsToAdd, int coinsToAdd) async {
+    DocumentReference userRef =
+        firestore.collection('users').doc(_currentUser!.uid);
+
+    await firestore.runTransaction((transaction) async {
+      DocumentSnapshot userSnapshot = await transaction.get(userRef);
+
+      if (userSnapshot.exists) {
+        Map<String, dynamic> userData =
+            userSnapshot.data() as Map<String, dynamic>;
+        int currentPoints = userData['point'] ?? 0;
+        int currentCoins = userData['coin'] ?? 0;
+        int newPoints = currentPoints + pointsToAdd;
+        int newCoins = currentCoins + coinsToAdd;
+
+        transaction.update(userRef, {'point': newPoints, 'coin': newCoins});
+        print(
+            "User points updated to $newPoints and coins updated to $newCoins");
+      } else {
+        print("User document does not exist");
+      }
+    });
   }
 }
