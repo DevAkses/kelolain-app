@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_back_leading.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
@@ -90,7 +91,7 @@ class AddLoanView extends GetView<AddLoanController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                          'Tanggal Pinjaman: ${controller.tanggalPinjaman.value}'),
+                          'Tanggal Pinjaman: ${controller.tanggalPinjaman.value != null ? DateFormat('d/M/yyyy').format(controller.tanggalPinjaman.value!) : 'Belum Dipilih'}'),
                       InkWell(
                         onTap: () => controller.pickDate(context),
                         child: Container(

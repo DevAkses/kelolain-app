@@ -7,22 +7,28 @@ import 'package:intl/intl.dart';
 class AddLoanController extends GetxController {
   late TextEditingController namaPinjamanC;
   var jumlahPinjaman = 0.obs;
-  var angsuran = 1.obs; // Ensure minimum value is 1
+  var angsuran = 1.obs;
   var bunga = 0.obs;
-  var tanggalPinjaman = ''.obs;
+  var tanggalPinjaman = Rxn<DateTime>();
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<void> pickDate(BuildContext context) async {
     DateTime? selectedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: tanggalPinjaman.value ?? DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );
 
     if (selectedDate != null) {
-      tanggalPinjaman.value = DateFormat('dd/MM/yyyy').format(selectedDate);
+      tanggalPinjaman.value = DateTime(
+        selectedDate.year,
+        selectedDate.month,
+        selectedDate.day,
+        DateTime.now().hour,
+        DateTime.now().minute,
+      );
     }
   }
 
@@ -31,13 +37,15 @@ class AddLoanController extends GetxController {
         jumlahPinjaman.value == 0 ||
         angsuran.value == 0 ||
         bunga.value == 0 ||
-        tanggalPinjaman.value.isEmpty) {
+        tanggalPinjaman.value == null) {
       Get.snackbar('Error', 'All fields must be filled');
       return false;
     }
 
     try {
-      await firestore.collection('users')
+      final numberFormat = NumberFormat('#,##0', 'id_ID');
+      await firestore
+          .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection('loans')
           .add({
@@ -45,9 +53,20 @@ class AddLoanController extends GetxController {
         'jumlahPinjaman': jumlahPinjaman.value,
         'angsuran': angsuran.value,
         'bunga': bunga.value,
-        'tanggalPinjaman': tanggalPinjaman.value,
+        'tanggalPinjaman': Timestamp.fromDate(tanggalPinjaman.value!),
         'createdAt': DateTime.now(),
       });
+
+      await firestore.collection('notifications').doc().set({
+        'title': namaPinjamanC.text,
+        'jumlahPinjaman': jumlahPinjaman.value,
+        'description':
+            'Bayar Angsuran Sebesar Rp. ${numberFormat.format((jumlahPinjaman.value + (jumlahPinjaman.value * bunga.value / 100)) / angsuran.value)}',
+        'tanggalPinjaman': Timestamp.fromDate(tanggalPinjaman.value!),
+        'createdAt': DateTime.now(),
+        'userId': FirebaseAuth.instance.currentUser!.uid,
+      });
+
       return true;
     } catch (e) {
       Get.snackbar('Error', 'Failed to add loan: $e');
