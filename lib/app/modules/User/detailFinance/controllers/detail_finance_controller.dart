@@ -36,7 +36,8 @@ class DetailFinanceController extends GetxController {
         financeData.value = {
           'title': doc.data()?['title'] ?? 'N/A',
           'nominal': doc.data()?['nominal'] ?? 0.0,
-          'date': (doc.data()?['date'] as Timestamp?)?.toDate() ?? DateTime.now(),
+          'date':
+              (doc.data()?['date'] as Timestamp?)?.toDate() ?? DateTime.now(),
           'notes': doc.data()?['notes'] ?? 'N/A',
           'category': doc.data()?['category'] ?? 'N/A',
         };
@@ -48,23 +49,32 @@ class DetailFinanceController extends GetxController {
     }
   }
 
-  void updateFinanceData(String docId, String type, Map<String, dynamic> updatedData) async {
+  Future<void> updateFinanceData(
+      String docId, String type, Map<String, dynamic> updatedData) async {
     try {
       await firestore
           .collection('finances')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection(type)
           .doc(docId)
-          .update(updatedData);
+          .update({
+        'title': updatedData['title'],
+        'nominal': updatedData['nominal'],
+        'notes': updatedData['notes'],
+      });
 
       Get.snackbar('Success', 'Finance data updated successfully');
-      fetchFinanceData(docId, type); 
     } catch (e) {
       Get.snackbar('Error', 'Failed to update finance data: $e');
     }
   }
 
-  void deleteFinanceData(String docId, String type) async {
+  Future<void> deleteFinanceData(String docId, String type) async {
+    if (docId.isEmpty || type.isEmpty) {
+      Get.snackbar('Error', 'Invalid finance ID or type');
+      return;
+    }
+
     try {
       await firestore
           .collection('finances')
@@ -74,7 +84,6 @@ class DetailFinanceController extends GetxController {
           .delete();
 
       Get.snackbar('Success', 'Finance data deleted successfully');
-      Get.back();
     } catch (e) {
       Get.snackbar('Error', 'Failed to delete finance data: $e');
     }

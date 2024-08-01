@@ -34,6 +34,7 @@ class Question {
   final Map<String, String> opsiJawaban;
   final String penjelasan;
   final int poin;
+  final int coin;
 
   Question({
     required this.id,
@@ -42,6 +43,7 @@ class Question {
     required this.opsiJawaban,
     required this.penjelasan,
     required this.poin,
+    required this.coin,
   });
 
   factory Question.fromDocument(DocumentSnapshot doc) {
@@ -53,6 +55,7 @@ class Question {
       opsiJawaban: Map<String, String>.from(data['opsiJawaban'] ?? {}),
       penjelasan: data['penjelasan'] ?? '',
       poin: data['point'] ?? 0,
+      coin: data['coin'] ?? 0,
     );
   }
 }

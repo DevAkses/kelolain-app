@@ -7,14 +7,14 @@ import 'package:safeloan/app/utils/warna.dart';
 
 class QuizList extends GetView<QuizController> {
   const QuizList({super.key});
-  Widget cardItem(
-      String title, String deskripsi, String linkGambar, VoidCallback onTap) {
+
+  Widget cardItem(String title, String deskripsi, String linkGambar, bool isCompleted, VoidCallback onTap) {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Utils.backgroundCard,
+        color: isCompleted ? Colors.redAccent : Utils.backgroundCard,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
@@ -38,8 +38,8 @@ class QuizList extends GetView<QuizController> {
             style: Utils.subtitle,
           ),
           trailing: SizedBox(
-              width: 75,
-              height: 75,
+            width: 75,
+            height: 75,
             child: Image.network(
               linkGambar,
               fit: BoxFit.fitHeight,
@@ -77,12 +77,23 @@ class QuizList extends GetView<QuizController> {
               itemCount: controller.quizList.length,
               itemBuilder: (context, index) {
                 var quiz = controller.quizList[index];
+                bool isCompleted = controller.completedQuizzes.contains(quiz.id);
+
                 return cardItem(
                   quiz.titleQuiz,
                   quiz.deskripsiQuiz,
                   quiz.imageQuiz,
+                  isCompleted,
                   () {
-                    Get.to(() => DescriptionQuizPage(quiz: quiz));
+                    if (isCompleted) {
+                      Get.snackbar(
+                        'Quiz sudah dikerjakan',
+                        'Anda sudah pernah mengerjakan quiz ini.',
+                        snackPosition: SnackPosition.TOP,
+                      );
+                    } else {
+                      Get.to(() => DescriptionQuizPage(quiz: quiz));
+                    }
                   },
                 );
               },

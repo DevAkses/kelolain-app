@@ -77,13 +77,27 @@ class ResultPage extends GetView<QuizController> {
                   const SizedBox(height: 20),
                   Obx(() {
                     final point = quizController.quizResult['point'] ?? 0;
-                    return Text(
-                      '$point',
-                      style: const TextStyle(
-                        fontSize: 48,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
+                    final coin = quizController.quizResult['coin'] ?? 0;
+                    return Column(
+                      children: [
+                        Text(
+                          'Point: $point',
+                          style: const TextStyle(
+                            fontSize: 48,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          'Coin: $coin',
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ],
                     );
                   }),
                 ],
