@@ -82,28 +82,28 @@ class RegisterView extends GetView<RegisterController> {
                   isPassword: true,
                 ),
                 const SizedBox(height: 15),
-                Container(
-                  margin: EdgeInsets.only(right: lebar * 0.1),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      DropdownButton<String>(
-                            value: controller.roleController.text.isEmpty
-                                ? 'Pengguna'
-                                : controller.roleController.text,
-                            onChanged: (String? newValue) {
-                              controller.roleController.text = newValue!;
-                            },
-                            items: roles.map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          ),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   margin: EdgeInsets.only(right: lebar * 0.1),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.end,
+                //     children: [
+                //       DropdownButton<String>(
+                //             value: controller.roleController.text.isEmpty
+                //                 ? 'Pengguna'
+                //                 : controller.roleController.text,
+                //             onChanged: (String? newValue) {
+                //               controller.roleController.text = newValue!;
+                //             },
+                //             items: roles.map<DropdownMenuItem<String>>((String value) {
+                //               return DropdownMenuItem<String>(
+                //                 value: value,
+                //                 child: Text(value),
+                //               );
+                //             }).toList(),
+                //           ),
+                //     ],
+                //   ),
+                // ),
                 const SizedBox(height: 15),
                 ButtonWidget(
                     onPressed: () => controller.signup(context),
