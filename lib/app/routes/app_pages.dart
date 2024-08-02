@@ -48,6 +48,8 @@ import '../modules/User/counseling/bindings/counseling_binding.dart';
 import '../modules/User/counseling/views/counseling_view.dart';
 import '../modules/User/daftar_konseling/bindings/daftar_konseling_binding.dart';
 import '../modules/User/daftar_konseling/views/daftar_konseling_view.dart';
+import '../modules/User/detailFinance/bindings/detail_finance_binding.dart';
+import '../modules/User/detailFinance/views/detail_finance_view.dart';
 import '../modules/User/detailLoan/bindings/detail_loan_binding.dart';
 import '../modules/User/detailLoan/views/detail_loan_view.dart';
 import '../modules/User/editLoan/bindings/edit_loan_binding.dart';
@@ -76,8 +78,8 @@ import '../modules/User/tab_counseling/bindings/tab_counseling_binding.dart';
 import '../modules/User/tab_counseling/views/tab_counseling_view.dart';
 import '../modules/User/tab_quiz/bindings/tab_quiz_binding.dart';
 import '../modules/User/tab_quiz/views/tab_quiz_view.dart';
-import '../modules/User/detailFinance/bindings/detail_finance_binding.dart';
-import '../modules/User/detailFinance/views/detail_finance_view.dart';
+import '../modules/User/page_toko_koin/bindings/page_toko_koin_binding.dart';
+import '../modules/User/page_toko_koin/views/page_toko_koin_view.dart';
 
 part 'app_routes.dart';
 
@@ -281,6 +283,11 @@ class AppPages {
       name: _Paths.DETAIL_FINANCE,
       page: () => const DetailFinanceView(),
       binding: DetailFinanceBinding(),
+    ),
+    GetPage(
+      name: _Paths.PAGE_TOKO_KOIN,
+      page: () => const PageTokoKoinView(),
+      binding: PageTokoKoinBinding(),
     ),
   ];
 }

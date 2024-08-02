@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/counseling/views/counseling_view.dart';
 import 'package:safeloan/app/modules/User/daftar_konseling/views/daftar_konseling_view.dart';
+import 'package:safeloan/app/modules/User/page_toko_koin/views/page_toko_koin_view.dart';
 import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_back_leading.dart';
 
@@ -17,7 +18,13 @@ class TabCounselingView extends GetView<TabCounselingController> {
         appBar: AppBar(
             title: const Text('Konseling Keuangan', style: Utils.header),
             centerTitle: true,
-            leading: const ButtonBackLeading()),
+            leading: const ButtonBackLeading(),
+            actions: [Container(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: InkWell(
+                onTap: () => Get.to(const PageTokoKoinView()),
+                child: Image.asset("assets/images/toko.png", scale: 3,)))],),
+            
         body: Column(
           children: [
             Container(

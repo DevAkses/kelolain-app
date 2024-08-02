@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/homepage/views/list_category_by_day.dart';
 import 'package:safeloan/app/modules/User/homepage/views/list_category_by_months.dart';
 import 'package:safeloan/app/modules/User/homepage/views/list_category_by_weeks.dart';
+import 'package:safeloan/app/modules/User/page_toko_koin/views/page_toko_koin_view.dart';
 import 'package:safeloan/app/modules/User/profile/controllers/profile_controller.dart';
+import 'package:safeloan/app/modules/User/tab_quiz/views/leaderboard.dart';
 import 'package:safeloan/app/utils/warna.dart';
 import '../controllers/homepage_controller.dart';
 import 'package:badges/badges.dart' as badges;
@@ -43,30 +45,29 @@ class HomepageView extends GetView<HomepageController> {
     );
   }
 
-  Widget poin(String icon, String poin) {
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(10),
-          margin: const EdgeInsets.all(5),
-          decoration: BoxDecoration(
-              color: Utils.backgroundCard,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: const []),
-          child: Row(
-            children: [
-              Image.asset(icon),
-              const SizedBox(
-                width: 5,
-              ),
-              Text(
-                poin,
-                style: const TextStyle(fontSize: 12),
-              )
-            ],
-          ),
-        )
-      ],
+  Widget poin(String icon, String poin, {VoidCallback? onTap}) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+          color: Utils.backgroundCard,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: const []),
+      child: InkWell(
+        onTap: onTap,
+        child: Row(
+          children: [
+            Image.asset(icon),
+            const SizedBox(
+              width: 5,
+            ),
+            Text(
+              poin,
+              style: const TextStyle(fontSize: 12),
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -105,9 +106,15 @@ class HomepageView extends GetView<HomepageController> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             poin("assets/images/poin.png",
-                                '${detailController.userData['point']}'),
+                                '${detailController.userData['point'] ?? 0}',
+                                onTap: () {
+                              Get.to(LeaderBoard());
+                            }),
                             poin("assets/images/koin.png",
-                                '${detailController.userData['coin']}'),
+                                '${detailController.userData['coin'] ?? 0}',
+                                onTap: () {
+                              Get.to(const PageTokoKoinView());
+                            }),
                           ],
                         ),
                       ),
@@ -191,8 +198,7 @@ class HomepageView extends GetView<HomepageController> {
                                     fit: BoxFit.fitHeight,
                                     errorBuilder: (context, error, stackTrace) {
                                       return const Center(
-                                          child: Icon(Icons
-                                              .error)); 
+                                          child: Icon(Icons.error));
                                     },
                                   ),
                                 ),
@@ -277,7 +283,7 @@ class HomepageView extends GetView<HomepageController> {
                     ),
                     const SizedBox(height: 20),
                     const SizedBox(
-                      height: 400, 
+                      height: 400,
                       child: TabBarView(
                         children: [
                           ListCategoryByDays(),
