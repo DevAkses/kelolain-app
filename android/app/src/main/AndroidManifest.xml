@@ -26,6 +26,22 @@
                  while the Flutter UI initializes. After that, this theme continues
                  to determine the Window background behind the Flutter UI. -->
             <meta-data
+                android:name="com.google.firebase.messaging.default_notification_channel_id"
+                android:value="channel_id_5"/>
+            <!-- Additional channel configurations -->
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_channel_name"
+                android:value="channel_name"/>
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_channel_description"
+                android:value="Pembayaran"/>
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_channel_importance"
+                android:value="4"/> 
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_channel_priority"
+                android:value="2"/> 
+            <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />

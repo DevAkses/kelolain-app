@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:safeloan/app/services/notification_manager.dart';
 
 class AddLoanController extends GetxController {
   late TextEditingController namaPinjamanC;
@@ -44,11 +45,9 @@ class AddLoanController extends GetxController {
 
     try {
       final numberFormat = NumberFormat('#,##0', 'id_ID');
-      await firestore
-          .collection('users')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection('loans')
-          .add({
+      final userId = FirebaseAuth.instance.currentUser!.uid;
+
+      await firestore.collection('users').doc(userId).collection('loans').add({
         'namaPinjaman': namaPinjamanC.text,
         'jumlahPinjaman': jumlahPinjaman.value,
         'angsuran': angsuran.value,
@@ -64,8 +63,15 @@ class AddLoanController extends GetxController {
             'Bayar Angsuran Sebesar Rp. ${numberFormat.format((jumlahPinjaman.value + (jumlahPinjaman.value * bunga.value / 100)) / angsuran.value)}',
         'tanggalPinjaman': Timestamp.fromDate(tanggalPinjaman.value!),
         'createdAt': DateTime.now(),
-        'userId': FirebaseAuth.instance.currentUser!.uid,
+        'userId': userId,
       });
+
+      // Menampilkan notifikasi setelah 5 detik pinjaman ditambahkan
+      await NotificationManager().showDelayedNotification(
+        userId,
+        'Pinjaman Ditambahkan',
+        'Pinjaman baru sebesar Rp. ${numberFormat.format(jumlahPinjaman.value)} telah berhasil ditambahkan.',
+      );
 
       return true;
     } catch (e) {

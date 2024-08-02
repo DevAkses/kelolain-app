@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:safeloan/app/modules/Auth/splash.dart';
 import 'package:safeloan/firebase_options.dart';
 import 'package:safeloan/app/widgets/loading.dart';
 import 'app/modules/Auth/login/controllers/login_controller.dart';
 import 'app/routes/app_pages.dart';
+import 'app/services/notification_manager.dart';
+import 'app/services/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await Permission.notification.request();
+  await NotificationService().initNotification();
   runApp(MyApp());
 }
 
@@ -25,7 +29,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
+    return StreamBuilder(
       stream: authC.streamAuthStatus,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
@@ -40,8 +44,33 @@ class MyApp extends StatelessWidget {
                   if (userSnapshot.data != null && userSnapshot.data!.exists) {
                     String role = userSnapshot.data!['role'];
                     String nextRoute;
+
                     if (role == 'Pengguna') {
                       nextRoute = Routes.NAVIGATION;
+                      return FutureBuilder(
+                        future: NotificationManager().scheduleNotifications(snapshot.data!.uid),
+                        builder: (context, notificationSnapshot) {
+                          if (notificationSnapshot.connectionState == ConnectionState.done) {
+                            return GetMaterialApp(
+                              debugShowCheckedModeBanner: false,
+                              theme: ThemeData(
+                                textTheme: GoogleFonts.montserratTextTheme(
+                                  Theme.of(context).textTheme,
+                                ),
+                                appBarTheme: const AppBarTheme(
+                                  backgroundColor: Colors.white,
+                                ),
+                                scaffoldBackgroundColor: Colors.white,
+                              ),
+                              title: "Application",
+                              home: SplashView(nextRoute: nextRoute),
+                              getPages: AppPages.routes,
+                            );
+                          } else {
+                            return const LoadingView();
+                          }
+                        },
+                      );
                     } else if (role == 'Konselor') {
                       nextRoute = Routes.NAVIGATION_KONSELOR;
                     } else if (role == 'Admin') {
@@ -49,14 +78,18 @@ class MyApp extends StatelessWidget {
                     } else {
                       nextRoute = Routes.LOGIN;
                     }
+                    
                     return GetMaterialApp(
                       debugShowCheckedModeBanner: false,
                       theme: ThemeData(
-                          textTheme: GoogleFonts.montserratTextTheme(
-                              Theme.of(context).textTheme), appBarTheme: const AppBarTheme(
-                            backgroundColor: Colors.white,
-                          ),
-                          scaffoldBackgroundColor: Colors.white,),
+                        textTheme: GoogleFonts.montserratTextTheme(
+                          Theme.of(context).textTheme,
+                        ),
+                        appBarTheme: const AppBarTheme(
+                          backgroundColor: Colors.white,
+                        ),
+                        scaffoldBackgroundColor: Colors.white,
+                      ),
                       title: "Application",
                       home: SplashView(nextRoute: nextRoute),
                       getPages: AppPages.routes,
@@ -70,12 +103,14 @@ class MyApp extends StatelessWidget {
             return GetMaterialApp(
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
-                  textTheme: GoogleFonts.montserratTextTheme(
-                      Theme.of(context).textTheme),
-                      appBarTheme: const AppBarTheme(
-                            backgroundColor: Colors.white,
-                          ),
-                          scaffoldBackgroundColor: Colors.white,),
+                textTheme: GoogleFonts.montserratTextTheme(
+                  Theme.of(context).textTheme,
+                ),
+                appBarTheme: const AppBarTheme(
+                  backgroundColor: Colors.white,
+                ),
+                scaffoldBackgroundColor: Colors.white,
+              ),
               title: "Application",
               home: const SplashView(nextRoute: Routes.LOGIN),
               getPages: AppPages.routes,
