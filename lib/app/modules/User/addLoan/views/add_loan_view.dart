@@ -64,7 +64,7 @@ class AddLoanView extends GetView<AddLoanController> {
                 controller.formattedBungaValue,
                 controller.bungaValue,
                 (value) => controller.updateBungaFromTextField(value),
-                null, // Tidak ada slider untuk bunga
+                null, 
                 Icons.percent,
                 Colors.orange,
                 suffix: '%',
