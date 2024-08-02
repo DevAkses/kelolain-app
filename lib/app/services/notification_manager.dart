@@ -1,66 +1,99 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:safeloan/app/services/notification_service.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationManager {
   final NotificationService notificationService = NotificationService();
+  final Map<String, List<int>> scheduledNotifications = {}; // Mengelola ID notifikasi berdasarkan dokumen
 
   Future<void> scheduleNotifications(String userId) async {
+    await notificationService.initNotification();
     tz.initializeTimeZones();
-    final localTimezone = tz.local;
+    final localTimezone = tz.getLocation('Asia/Jakarta');
 
-    final loansSnapshot = await FirebaseFirestore.instance
+    // Memantau perubahan data secara real-time
+    FirebaseFirestore.instance
         .collection('users')
         .doc(userId)
         .collection('loans')
-        .get();
+        .snapshots()
+        .listen((snapshot) async {
+      for (var change in snapshot.docChanges) {
+        final docId = change.doc.id;
+        final data = change.doc.data();
 
-    for (var doc in loansSnapshot.docs) {
-      final data = doc.data();
-      final tanggalPinjaman = (data['tanggalPinjaman'] as Timestamp).toDate();
-      final angsuran = data['angsuran'] as int;
+        if (change.type == DocumentChangeType.added || change.type == DocumentChangeType.modified) {
+          final tanggalPinjaman = (data!['tanggalPinjaman'] as Timestamp).toDate();
+          final angsuran = data['angsuran'] as int;
 
-      final jatuhTempo = tanggalPinjaman;
-      final satuHariSebelum = jatuhTempo.subtract(Duration(days: 1));
+          final now = tz.TZDateTime.now(localTimezone);
+          final tzTanggalPinjaman = tz.TZDateTime.from(tanggalPinjaman, localTimezone);
+          final delay = tzTanggalPinjaman.difference(now).inSeconds;
 
-      final tzJatuhTempo = tz.TZDateTime.from(jatuhTempo, localTimezone);
-      final tzSatuHariSebelum = tz.TZDateTime.from(satuHariSebelum, localTimezone);
+          if (delay >= 0) {
+            // Hapus notifikasi yang sudah ada sebelum menjadwalkan yang baru
+            await cancelScheduledNotifications(docId);
 
-      await notificationService.showNotification(
-        id: doc.id.hashCode,
-        title: 'Peringatan Tagihan',
-        body: 'Tagihan Anda sebesar ${angsuran} akan jatuh tempo besok.',
-        sound: 'lagu2',
-        channelId: 'channel_id_29',
-        scheduledTime: tzSatuHariSebelum,
-      );
-
-      await notificationService.showNotification(
-        id: doc.id.hashCode + 1,
-        title: 'Jatuh Tempo Tagihan',
-        body: 'Tagihan Anda sebesar ${angsuran} jatuh tempo hari ini.',
-        sound: 'lagu2',
-        channelId: 'channel_id_22',
-        scheduledTime: tzJatuhTempo,
-      );
-    }
+            List<int> ids = [];
+            for (int i = 0; i < angsuran; i++) {
+              final notificationId = docId.hashCode + i;
+              ids.add(notificationId);
+              await Future.delayed(Duration(seconds: 7)); // Simulasi 1 hari, ganti sesuai kebutuhan
+              await notificationService.showNotification(
+                id: notificationId,
+                title: 'Tagihan Notification',
+                body: 'Ada Tagihan',
+                sound: 'lagu2',
+                channelId: 'channel_id_00',
+              );
+            }
+            scheduledNotifications[docId] = ids;
+          } else {
+            await notificationService.showNotification(
+              id: docId.hashCode,
+              title: 'Tagihan Notification',
+              body: '-------------',
+              sound: 'lagu2',
+              channelId: 'channel_id_00',
+            );
+          }
+        } else if (change.type == DocumentChangeType.removed) {
+          await cancelScheduledNotifications(docId);
+        }
+      }
+    });
   }
 
-  Future<void> showDelayedNotification(String userId, String title, String body) async {
-    tz.initializeTimeZones();
-    final localTimezone = tz.local;
+  Future<void> cancelScheduledNotifications(String docId) async {
+    final ids = scheduledNotifications[docId] ?? [];
+    for (int id in ids) {
+      await notificationService.cancelNotification(id);
+    }
+    scheduledNotifications.remove(docId);
+  }
 
-    final now = tz.TZDateTime.now(localTimezone);
-    final fiveSecondsLater = now.add(Duration(seconds: 5));
-
-    await notificationService.showNotification(
-      id: DateTime.now().hour, 
+  Future<void> showInstantNotification(String title, String body) async {
+    await notificationService.initNotification();
+    notificationService.showNotification(
+      id: 0,
       title: title,
       body: body,
       sound: 'lagu2',
-      channelId: 'channel_id_28',
-      scheduledTime: fiveSecondsLater,
+      channelId: 'channel_id_00',
+    );
+  }
+
+  Future<void> showDelayedNotification(String title, String body) async {
+    await notificationService.initNotification();
+    await Future.delayed(const Duration(seconds: 5));
+    notificationService.showNotification(
+      id: 0,
+      title: title,
+      body: body,
+      sound: 'lagu2',
+      channelId: 'channel_id_00',
     );
   }
 }

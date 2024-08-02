@@ -98,25 +98,7 @@ class AddLoanView extends GetView<AddLoanController> {
                   )),
               const SizedBox(height: 30),
               ButtonWidget(
-                onPressed: () async {
-                  try {
-                    bool success = await controller.addLoan();
-                    if (success) {
-                      Get.back(); 
-                      showDialogInfoWidget(
-                          "Berhasil mengupdate pinjaman", 'succes', context);
-                    } else {
-                      showDialogInfoWidget(
-                          "Gagal mengupdate pinjaman", 'fail', context);
-                    }
-                  } catch (e) {
-                    print('Error saat menambahkan pinjaman: $e');
-                    showDialogInfoWidget(
-                        "Terjadi masalah saat mengupdate pinjaman",
-                        'fail',
-                        context);
-                  }
-                },
+                onPressed: () => controller.addLoan(context),
                 nama: 'Tambah',
               ),
             ],

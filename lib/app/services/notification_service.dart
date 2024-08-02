@@ -2,8 +2,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
-  final FlutterLocalNotificationsPlugin notificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin notificationsPlugin = FlutterLocalNotificationsPlugin();
 
   Future<void> initNotification() async {
     AndroidInitializationSettings initializationSettingsAndroid =
@@ -19,22 +18,61 @@ class NotificationService {
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     await notificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse:
-            (NotificationResponse notificationsResponse) async {});
+        onDidReceiveNotificationResponse: (NotificationResponse notificationsResponse) async {});
   }
 
   NotificationDetails notificationDetails(String channelId) {
     return NotificationDetails(
-        android: AndroidNotificationDetails(channelId, 'channel_name', playSound : true,  sound: RawResourceAndroidNotificationSound('lagu2'),
-            importance: Importance.max),
-        iOS: DarwinNotificationDetails());
+        android: AndroidNotificationDetails(
+            channelId, 'channel_name',
+            playSound: true,
+            sound: const RawResourceAndroidNotificationSound('lagu2'),
+            importance: Importance.max,
+            priority: Priority.high,
+            enableLights: true,
+            enableVibration: true,
+            visibility: NotificationVisibility.public),
+        iOS: const DarwinNotificationDetails());
   }
 
-  Future<void> showNotification(
-      {int id = 0, String? title, String? body, String? payLoad, required String sound, required String channelId, required tz.TZDateTime scheduledTime}) async {
+  Future<void> showNotification({
+    required int id,
+    required String title,
+    required String body,
+    required String sound,
+    required String channelId,
+    tz.TZDateTime? scheduledTime,
+  }) async {
+    return notificationsPlugin.show(
+      id,
+      title,
+      body,
+      notificationDetails(channelId),
+    );
+  }
+
+  Future<void> scheduleNotification({
+    required int id,
+    required String title,
+    required String body,
+    required String sound,
+    required String channelId,
+    required tz.TZDateTime scheduledTime,
+  }) async {
+    print('Scheduling notification: $title at $scheduledTime'); // Log untuk debugging
     return notificationsPlugin.zonedSchedule(
-        id, title, body, scheduledTime, await notificationDetails(channelId),
-        payload: payLoad,
-        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime);
+      id, 
+      title, 
+      body, 
+      scheduledTime, 
+      notificationDetails(channelId),
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.time,
+    );
+  }
+
+  Future<void> cancelNotification(int id) async {
+    await notificationsPlugin.cancel(id);
   }
 }
