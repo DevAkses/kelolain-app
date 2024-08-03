@@ -294,7 +294,7 @@ class HomepageView extends GetView<HomepageController> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 70),
               ],
             ),
           ),

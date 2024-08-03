@@ -55,12 +55,17 @@ class ListCategoryByDays extends StatelessWidget {
       });
 
       if (categoryCards.isEmpty) {
-        return const Center(
-          child: Text(
-            'Tidak ada data hari ini',
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-          ),
-        );
+        return 
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            child: const Align(
+              alignment: Alignment.topCenter,
+              child: Text(
+                'Tidak ada data hari ini',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              ),
+            ),
+          );
       }
 
       return SingleChildScrollView(
