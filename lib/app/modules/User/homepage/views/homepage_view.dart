@@ -246,7 +246,7 @@ class HomepageView extends GetView<HomepageController> {
                 Column(
                   children: [
                     Container(
-                      margin: const EdgeInsets.all(20),
+                      margin: const EdgeInsets.only(right: 20, top: 10, left: 20),
                       padding: const EdgeInsets.all(2),
                       height: 50,
                       decoration: BoxDecoration(

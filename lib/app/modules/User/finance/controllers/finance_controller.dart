@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:safeloan/app/widgets/confirm_show_dialog_widget.dart';
+import 'package:safeloan/app/widgets/show_dialog_info_widget.dart';
 
 import '../../challange_page/controllers/challange_page_controller.dart';
 
@@ -18,7 +20,7 @@ class FinanceController extends GetxController {
   final ValueNotifier<String> selectedCategory = ValueNotifier<String>('');
 
   void addIncome(String title, double nominal, String category, DateTime date,
-      String notes) async {
+      String notes, BuildContext context) async {
     try {
       String uid = _auth.currentUser!.uid;
       CollectionReference incomeCollection =
@@ -43,9 +45,12 @@ class FinanceController extends GetxController {
       Get.back();
       Get.back();
       Get.back();
-      Get.snackbar('Success', 'Income added successfully');
+      showDialogInfoWidget(
+          "Berhasil menambahkan penghasilan", 'succes', context);
+     
     } catch (e) {
-      Get.snackbar('Error', 'Failed to add income');
+      showDialogInfoWidget(
+          "Gagal menambahkan penghasilan", 'fail', context);
     }
   }
 
@@ -76,20 +81,16 @@ class FinanceController extends GetxController {
 
   void confirmAddIncome(BuildContext context, String title, double nominal,
       String category, DateTime date, String notes) {
-    Get.defaultDialog(
-      title: "Confirm",
-      middleText: "Do you want to add this income?",
-      textConfirm: "Yes",
-      textCancel: "No",
-      onConfirm: () {
-        addIncome(title, nominal, category, date, notes);
-      },
-      onCancel: () => Get.back(),
-    );
+    confirmShowDialog(
+        judul: "Apakah kamu ingin menambah penghasilan ini?",
+        onPressed: () {
+          addIncome(title, nominal, category, date, notes, context);
+        },
+        context: context);
   }
 
   void addExpense(String title, double nominal, String category, DateTime date,
-      String notes) async {
+      String notes, BuildContext context) async {
     try {
       String uid = _auth.currentUser!.uid;
       CollectionReference expenseCollection =
@@ -109,24 +110,20 @@ class FinanceController extends GetxController {
       _resetInputs();
       Get.back();
       Get.back();
-      Get.snackbar('Success', 'Expense added successfully');
+      showDialogInfoWidget('Berhasil menambah pengeluaran', 'succes', context);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to add expense');
+      showDialogInfoWidget('Gagal menambah pengeluaran', 'fail', context);
     }
   }
 
   void confirmAddExpense(BuildContext context, String title, double nominal,
       String category, DateTime date, String notes) {
-    Get.defaultDialog(
-      title: "Confirm",
-      middleText: "Do you want to add this expense?",
-      textConfirm: "Yes",
-      textCancel: "No",
-      onConfirm: () {
-        addExpense(title, nominal, category, date, notes);
-      },
-      onCancel: () => Get.back(),
-    );
+    confirmShowDialog(
+        judul: "Apakah kamu ingin menambah pengeluaran ini?",
+        onPressed: () {
+          addExpense(title, nominal, category, date, notes, context);
+        },
+        context: context);
   }
 
   void _resetInputs() {

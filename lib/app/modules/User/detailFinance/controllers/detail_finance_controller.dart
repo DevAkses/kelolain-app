@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safeloan/app/widgets/show_dialog_info_widget.dart';
 
 class DetailFinanceController extends GetxController {
   var financeData = <String, dynamic>{}.obs;
@@ -49,8 +51,8 @@ class DetailFinanceController extends GetxController {
     }
   }
 
-  Future<void> updateFinanceData(
-      String docId, String type, Map<String, dynamic> updatedData) async {
+  Future<void> updateFinanceData(String docId, String type,
+      Map<String, dynamic> updatedData, BuildContext context) async {
     try {
       await firestore
           .collection('finances')
@@ -62,14 +64,16 @@ class DetailFinanceController extends GetxController {
         'nominal': updatedData['nominal'],
         'notes': updatedData['notes'],
       });
-
-      Get.snackbar('Success', 'Finance data updated successfully');
+      Get.back();
+      showDialogInfoWidget(
+          'Berhasil mengupdate data keuangan', 'succes', context);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to update finance data: $e');
+      showDialogInfoWidget('Gagal mengupdate data keuangan', 'fail', context);
     }
   }
 
-  Future<void> deleteFinanceData(String docId, String type) async {
+  Future<void> deleteFinanceData(
+      String docId, String type, BuildContext context) async {
     if (docId.isEmpty || type.isEmpty) {
       Get.snackbar('Error', 'Invalid finance ID or type');
       return;
@@ -82,10 +86,12 @@ class DetailFinanceController extends GetxController {
           .collection(type)
           .doc(docId)
           .delete();
+      Get.back();
 
-      Get.snackbar('Success', 'Finance data deleted successfully');
+      showDialogInfoWidget(
+          'Berhasil menghapus data keuangan', 'succes', context);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to delete finance data: $e');
+      showDialogInfoWidget('Gagal mengupdate data keuangan', 'fail', context);
     }
   }
 }

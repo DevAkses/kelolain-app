@@ -40,7 +40,7 @@ class ListCategoryByMonths extends StatelessWidget {
               alignment: Alignment.topCenter,
               child: Text(
                 'Tidak ada data bulan ini',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
               ),
             ),
           );
@@ -52,13 +52,6 @@ class ListCategoryByMonths extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Kategori Bulanan",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
               const SizedBox(height: 16),
               Wrap(
                 spacing: 16,

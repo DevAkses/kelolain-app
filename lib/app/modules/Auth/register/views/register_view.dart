@@ -45,7 +45,7 @@ class RegisterView extends GetView<RegisterController> {
                 Container(
                   width: lebar,
                   margin: EdgeInsets.only(
-                      left: lebar * 0.1, top: 20, right: lebar * 0.1),
+                      left: lebar * 0.1, top: 20, right: lebar * 0.1,bottom: 20,),
                   child: const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -81,30 +81,7 @@ class RegisterView extends GetView<RegisterController> {
                   leadingIcon: Icons.lock,
                   isPassword: true,
                 ),
-                const SizedBox(height: 15),
-                // Container(
-                //   margin: EdgeInsets.only(right: lebar * 0.1),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.end,
-                //     children: [
-                //       DropdownButton<String>(
-                //             value: controller.roleController.text.isEmpty
-                //                 ? 'Pengguna'
-                //                 : controller.roleController.text,
-                //             onChanged: (String? newValue) {
-                //               controller.roleController.text = newValue!;
-                //             },
-                //             items: roles.map<DropdownMenuItem<String>>((String value) {
-                //               return DropdownMenuItem<String>(
-                //                 value: value,
-                //                 child: Text(value),
-                //               );
-                //             }).toList(),
-                //           ),
-                //     ],
-                //   ),
-                // ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 30),
                 ButtonWidget(
                     onPressed: () => controller.signup(context),
                     nama: "Daftar"),
