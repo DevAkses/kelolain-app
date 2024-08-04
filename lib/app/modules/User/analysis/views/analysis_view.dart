@@ -47,7 +47,6 @@ class AnalysisView extends GetView<AnalysisController> {
                 ),
               ),
               const SizedBox(height: 30),
-              // Gunakan Obx untuk membuat widget reaktif
               SizedBox(
                 height: 300,
                 child: Obx(() => AnimatedContainer(

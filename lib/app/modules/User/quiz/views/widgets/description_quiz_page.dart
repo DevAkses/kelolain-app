@@ -55,7 +55,6 @@ class DescriptionQuizPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   _buildInfoColumn("10", "Soal"),
-                  _buildInfoColumn("30x", "Dimainkan"),
                   _buildInfoColumn("10", "Menit"),
                 ],
               ),

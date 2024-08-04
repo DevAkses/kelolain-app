@@ -16,14 +16,15 @@ class QuestionList extends GetView<QuizController> {
       width: 80,
       height: 80,
       child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Utils.biruDua,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Utils.biruDua,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
           ),
-          onPressed: onPressed,
-          child: icon),
+        ),
+        onPressed: onPressed,
+        child: icon,
+      ),
     );
   }
 
@@ -63,44 +64,61 @@ class QuestionList extends GetView<QuizController> {
                     Expanded(
                       child: ListView(
                         children: [
-                          ListTile(
-                            title: Container(
-                              margin: const EdgeInsets.only(
-                                  top: 25, bottom: 25, left: 10),
+                          Container(
+                            margin: const EdgeInsets.all(20),
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
                               color: Utils.backgroundCard,
-                              child: Text(
-                                question.pertanyaan,
-                                style: const TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.bold),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Text(
+                              question.pertanyaan,
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ...question.opsiJawaban.entries.map((entry) {
-                                  return Obx(() {
-                                    return Card.filled(
-                                      child: ListTile(
-                                        title: Center(child: Text(entry.value)),
-                                        tileColor: quizController
-                                                    .selectedAnswers[index] ==
-                                                entry.key
-                                            ? Utils.biruTiga
-                                            : null,
-                                        onTap: () {
-                                          quizController.selectAnswer(
-                                              index, entry.key);
-                                        },
+                          ),
+                          const SizedBox(height: 20),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: question.opsiJawaban.entries.map((entry) {
+                              return Obx(() {
+                                return GestureDetector(
+                                  onTap: () {
+                                    quizController.selectAnswer(index, entry.key);
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      vertical: 10,
+                                      horizontal: 20,
+                                    ),
+                                    padding: const EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
+                                      color: quizController.selectedAnswers[index] == entry.key
+                                          ? Utils.biruTiga
+                                          : Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(color: Utils.biruTiga),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        entry.value,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: quizController.selectedAnswers[index] == entry.key
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
                                       ),
-                                    );
-                                  });
-                                }),
-                              ],
-                            ),
+                                    ),
+                                  ),
+                                );
+                              });
+                            }).toList(),
                           ),
-                          const SizedBox(
-                            height: 50,
-                          ),
+                          const SizedBox(height: 50),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
