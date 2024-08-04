@@ -136,9 +136,9 @@ class QuestionList extends GetView<QuizController> {
                                 button(
                                   const Icon(Icons.save, color: Colors.white),
                                   () async {
-                                    print('Save button pressed');
                                     await quizController.checkAnswer(quizId);
                                     Get.off(ResultPage(quizId: quizId));
+                                    print('Save button pressed');
                                   },
                                 )
                               else

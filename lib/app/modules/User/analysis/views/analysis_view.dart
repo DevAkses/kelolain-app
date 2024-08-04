@@ -48,19 +48,22 @@ class AnalysisView extends GetView<AnalysisController> {
               ),
               const SizedBox(height: 30),
               // Gunakan Obx untuk membuat widget reaktif
-              Obx(() => AnimatedContainer(
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeInOut,
-                margin: EdgeInsets.only(top: controller.offset.value),
-                child: const Align(
-                  alignment: Alignment.center,
-                  child: Image(
-                    fit: BoxFit.cover,
-                    width: 250,
-                    image: AssetImage('assets/images/maskot.png'),
+              SizedBox(
+                height: 300,
+                child: Obx(() => AnimatedContainer(
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOut,
+                  margin: EdgeInsets.only(top: controller.offset.value),
+                  child: const Align(
+                    alignment: Alignment.center,
+                    child: Image(
+                      fit: BoxFit.cover,
+                      width: 250,
+                      image: AssetImage('assets/images/maskot.png'),
+                    ),
                   ),
-                ),
-              )),
+                )),
+              ),
               const SizedBox(height: 20),
               ButtonWidget(
                 onPressed: () {
