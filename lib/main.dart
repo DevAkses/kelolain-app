@@ -4,17 +4,22 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:safeloan/app/modules/Auth/splash.dart';
+import 'package:safeloan/app/services/notification_manager.dart';
 import 'package:safeloan/firebase_options.dart';
 import 'package:safeloan/app/widgets/loading.dart';
 import 'app/modules/Auth/login/controllers/login_controller.dart';
 import 'app/routes/app_pages.dart';
+import 'app/services/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await Permission.notification.request();
+  await NotificationService().initNotification();
   runApp(MyApp());
 }
 
@@ -42,6 +47,7 @@ class MyApp extends StatelessWidget {
                     String nextRoute;
                     if (role == 'Pengguna') {
                       nextRoute = Routes.NAVIGATION;
+                      NotificationManager().scheduleNotifications(snapshot.data!.uid);  // Gunakan NotificationManager
                     } else if (role == 'Konselor') {
                       nextRoute = Routes.NAVIGATION_KONSELOR;
                     } else if (role == 'Admin') {

@@ -3,12 +3,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:safeloan/app/services/notification_manager.dart';
+
+import '../../../../widgets/show_dialog_info_widget.dart';
 
 class AddLoanController extends GetxController {
   late TextEditingController namaPinjamanC;
   late TextEditingController jumlahPinjamanC;
   late TextEditingController angsuranC;
   late TextEditingController bungaC;
+  final NotificationManager notificationManager = NotificationManager();
 
   final jumlahPinjamanValue = 0.0.obs;
   final formattedJumlahPinjamanValue = '0'.obs;
@@ -63,7 +67,9 @@ class AddLoanController extends GetxController {
   }
 
   void updateJumlahPinjamanFromTextField(String value) {
-    _updateValueFromTextField(value, jumlahPinjamanValue, updateFormattedJumlahPinjamanValue, max: 100000000);
+    _updateValueFromTextField(
+        value, jumlahPinjamanValue, updateFormattedJumlahPinjamanValue,
+        max: 100000000);
   }
 
   void updateAngsuranFromSlider(double value) {
@@ -83,10 +89,13 @@ class AddLoanController extends GetxController {
   }
 
   void updateBungaFromTextField(String value) {
-    _updateValueFromTextField(value, bungaValue, updateFormattedBungaValue, max: 100);
+    _updateValueFromTextField(value, bungaValue, updateFormattedBungaValue,
+        max: 100);
   }
 
-  void _updateValueFromTextField(String value, RxDouble rxValue, Function(double) updateFormatted, {double max = 100000000}) {
+  void _updateValueFromTextField(
+      String value, RxDouble rxValue, Function(double) updateFormatted,
+      {double max = 100000000}) {
     String numericValue = value.replaceAll(RegExp(r'[^0-9.]'), '');
     if (numericValue.isNotEmpty) {
       double doubleValue = double.parse(numericValue);
@@ -117,7 +126,7 @@ class AddLoanController extends GetxController {
         RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.');
   }
 
-  Future<bool> addLoan() async {
+  Future<bool> addLoan(BuildContext context) async {
     if (namaPinjamanC.text.isEmpty ||
         jumlahPinjamanValue.value == 0 ||
         angsuranValue.value == 0 ||
@@ -128,28 +137,30 @@ class AddLoanController extends GetxController {
 
     try {
       final numberFormat = NumberFormat('#,##0', 'id_ID');
-      await firestore
-          .collection('users')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection('loans')
-          .add({
+      final userId = FirebaseAuth.instance.currentUser!.uid;
+
+      await firestore.collection('users').doc(userId).collection('loans').add({
         'namaPinjaman': namaPinjamanC.text,
         'jumlahPinjaman': jumlahPinjamanValue.value,
         'angsuran': angsuranValue.value,
         'bunga': bungaValue.value,
-        'tanggalPinjaman': Timestamp.fromDate(tanggalPinjaman.value!),
+        'tanggalPinjaman': Timestamp.fromDate(DateTime(
+          tanggalPinjaman.value!.year,
+          tanggalPinjaman.value!.month,
+          tanggalPinjaman.value!.day,
+          DateTime.now().hour,
+          DateTime.now().minute,
+          DateTime.now().second,
+        )),
         'createdAt': DateTime.now(),
       });
+      Get.back();
+      showDialogInfoWidget("Berhasil mengupdate pinjaman", 'succes', context);
 
-      // await firestore.collection('notifications').doc().set({
-      //   'title': namaPinjamanC.text,
-      //   'jumlahPinjaman': jumlahPinjamanValue.value,
-      //   'description':
-      //       'Bayar Angsuran Sebesar Rp. ${numberFormat.format((jumlahPinjamanValue.value + (jumlahPinjamanValue.value * bungaValue.value / 100)) / angsuranValue.value)}',
-      //   'tanggalPinjaman': Timestamp.fromDate(tanggalPinjaman.value!),
-      //   'createdAt': DateTime.now(),
-      //   'userId': FirebaseAuth.instance.currentUser!.uid,
-      // });
+      // await notificationManager.showDelayedNotification(
+      //   'Pinjaman Ditambahkan',
+      //   'Pinjaman sebesar ${numberFormat.format(jumlahPinjamanValue.value)} telah ditambahkan.',
+      // );
 
       return true;
     } catch (e) {

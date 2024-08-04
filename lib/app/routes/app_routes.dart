@@ -45,6 +45,7 @@ abstract class Routes {
   static const PINJOL_LIST = _Paths.PINJOL_LIST;
   static const CHALLENGE_ADMIN = _Paths.CHALLENGE_ADMIN;
   static const DETAIL_FINANCE = _Paths.DETAIL_FINANCE;
+  static const PAGE_TOKO_KOIN = _Paths.PAGE_TOKO_KOIN;
 }
 
 abstract class _Paths {
@@ -91,4 +92,5 @@ abstract class _Paths {
   static const PINJOL_LIST = '/pinjol-list';
   static const CHALLENGE_ADMIN = '/challenge-admin';
   static const DETAIL_FINANCE = '/detail-finance';
+  static const PAGE_TOKO_KOIN = '/page-toko-koin';
 }

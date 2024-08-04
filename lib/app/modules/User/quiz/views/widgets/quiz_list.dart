@@ -4,17 +4,19 @@ import 'package:get/get.dart';
 import 'package:safeloan/app/modules/User/quiz/controllers/quiz_controller.dart';
 import 'package:safeloan/app/modules/User/quiz/views/widgets/description_quiz_page.dart';
 import 'package:safeloan/app/utils/warna.dart';
+import 'package:safeloan/app/widgets/show_dialog_info_widget.dart';
 
 class QuizList extends GetView<QuizController> {
   const QuizList({super.key});
 
-  Widget cardItem(String title, String deskripsi, String linkGambar, bool isCompleted, VoidCallback onTap) {
+  Widget cardItem(String title, String deskripsi, String linkGambar,
+      bool isCompleted, VoidCallback onTap) {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: isCompleted ? Colors.redAccent : Utils.backgroundCard,
+        color: Utils.backgroundCard,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
@@ -29,13 +31,26 @@ class QuizList extends GetView<QuizController> {
         child: ListTile(
           title: Text(
             title,
-            style: Utils.titleStyle,
+            style: isCompleted
+                ? const TextStyle(
+                    decoration: TextDecoration.lineThrough,
+                    color: Colors.black26,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  )
+                : Utils.titleStyle,
           ),
           subtitle: Text(
             deskripsi,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: Utils.subtitle,
+            style: isCompleted
+                ? const TextStyle(
+                    decoration: TextDecoration.lineThrough,
+                    color: Colors.black26,
+                    fontSize: 12,
+                  )
+                : Utils.subtitle,
           ),
           trailing: SizedBox(
             width: 75,
@@ -77,7 +92,8 @@ class QuizList extends GetView<QuizController> {
               itemCount: controller.quizList.length,
               itemBuilder: (context, index) {
                 var quiz = controller.quizList[index];
-                bool isCompleted = controller.completedQuizzes.contains(quiz.id);
+                bool isCompleted =
+                    controller.completedQuizzes.contains(quiz.id);
 
                 return cardItem(
                   quiz.titleQuiz,
@@ -86,11 +102,8 @@ class QuizList extends GetView<QuizController> {
                   isCompleted,
                   () {
                     if (isCompleted) {
-                      Get.snackbar(
-                        'Quiz sudah dikerjakan',
-                        'Anda sudah pernah mengerjakan quiz ini.',
-                        snackPosition: SnackPosition.TOP,
-                      );
+                      showDialogInfoWidget(
+                          'Quiz sudah dikerjakan', 'fail', context);
                     } else {
                       Get.to(() => DescriptionQuizPage(quiz: quiz));
                     }

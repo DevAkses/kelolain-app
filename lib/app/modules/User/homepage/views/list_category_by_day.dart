@@ -55,27 +55,25 @@ class ListCategoryByDays extends StatelessWidget {
       });
 
       if (categoryCards.isEmpty) {
-        return const Center(
-          child: Text(
-            'Tidak ada data hari ini',
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-          ),
-        );
+        return 
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            child: const Align(
+              alignment: Alignment.topCenter,
+              child: Text(
+                'Tidak ada data hari ini',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
+              ),
+            ),
+          );
       }
 
       return SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(right: 16.0, left: 16,),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Kategori Hari Ini",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
               const SizedBox(height: 16),
               Wrap(
                 spacing: 16,

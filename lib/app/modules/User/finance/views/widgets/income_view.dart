@@ -5,6 +5,7 @@ import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_back_leading.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
 import 'package:safeloan/app/widgets/input_akun_widget.dart';
+import 'package:safeloan/app/widgets/show_dialog_info_widget.dart';
 
 import '../../controllers/finance_controller.dart';
 
@@ -130,18 +131,21 @@ class IncomeView extends GetView<FinanceController> {
                     dateText.isEmpty ||
                     category.isEmpty ||
                     notes.isEmpty) {
-                  Get.snackbar('Error', 'All fields are required');
+                  showDialogInfoWidget(
+                      "Semua field harus terisi", 'fail', context);
                 } else {
                   double? nominal = double.tryParse(nominalText);
                   if (nominal == null) {
-                    Get.snackbar('Error', 'Invalid nominal amount');
+                    showDialogInfoWidget(
+                      "Terdapat kesalahan", 'fail', context);
                     return;
                   }
                   DateTime? date;
                   try {
                     date = DateFormat('dd/MM/yyyy').parse(dateText);
                   } catch (e) {
-                    Get.snackbar('Error', 'Invalid date format');
+                    showDialogInfoWidget(
+                      "Format tanggal salah", 'fail', context);
                     return;
                   }
 
