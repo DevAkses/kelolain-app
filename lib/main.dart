@@ -12,6 +12,7 @@ import 'package:safeloan/app/widgets/loading.dart';
 import 'app/modules/Auth/login/controllers/login_controller.dart';
 import 'app/routes/app_pages.dart';
 import 'app/services/notification_service.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +21,7 @@ void main() async {
   );
   await Permission.notification.request();
   await NotificationService().initNotification();
+  await dotenv.load(fileName: ".env");
   runApp(MyApp());
 }
 

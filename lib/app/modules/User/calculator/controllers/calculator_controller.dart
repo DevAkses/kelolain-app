@@ -142,9 +142,15 @@ class CalculatorController extends GetxController {
         return;
       }
 
-      if (tenor == 0 || interestRate == 0 || loanAmount == 0) {
+      if (tenor == 0 || loanAmount == 0) {
         showDialogInfoWidget(
             'Nilai pinjaman, bunga, atau tenor tidak boleh nol', 'fail', context);
+        return;
+      }
+
+      if(interestRate > 0){
+        showDialogInfoWidget(
+            'Pinjaman tidak sehat', 'fail', context);
         return;
       }
 
