@@ -55,17 +55,19 @@ class PageTokoKoinView extends GetView<PageTokoKoinController> {
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
       margin: const EdgeInsets.only(left: 25, top: 10, bottom: 10),
       decoration: BoxDecoration(
-          color: Utils.backgroundCard,
-          borderRadius: BorderRadius.circular(20),
-          ),
+        color: Utils.backgroundCard,
+        borderRadius: BorderRadius.circular(20),
+      ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: [ 
+        children: [
           Text(
             'Poin Kamu :  $koin',
             style: const TextStyle(fontSize: 16),
           ),
-          const SizedBox(width: 5,),
+          const SizedBox(
+            width: 5,
+          ),
           Image.asset(icon),
         ],
       ),
@@ -78,7 +80,9 @@ class PageTokoKoinView extends GetView<PageTokoKoinController> {
       elevation: 4,
       color: Utils.biruLima,
       child: InkWell(
-        onTap: onTap,
+        onTap: () async {
+          await controller.startPayment();
+        },
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -95,7 +99,8 @@ class PageTokoKoinView extends GetView<PageTokoKoinController> {
                 width: 125,
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Utils.biruSatu),

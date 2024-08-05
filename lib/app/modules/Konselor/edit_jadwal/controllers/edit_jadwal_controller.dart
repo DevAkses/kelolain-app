@@ -54,9 +54,9 @@ class EditJadwalController extends GetxController {
   }
 
   Future<void> launchURL(String urlString) async {
-  final Uri url = Uri.parse(urlString);
-  if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
-    throw Exception('Could not launch $url');
+    final Uri url = Uri.parse(urlString);
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $url');
+    }
   }
-}
 }

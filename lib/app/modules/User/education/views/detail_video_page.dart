@@ -55,7 +55,7 @@ class YouTubePlayerScreen extends GetView<EducationController> {
                 youtubeController.metadata.title,
                 style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 18.0,
+                  fontSize: 20.0,
                 ),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
@@ -93,7 +93,7 @@ class YouTubePlayerScreen extends GetView<EducationController> {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     child: Padding(
-                      padding: const EdgeInsets.all(13.0),
+                      padding: const EdgeInsets.all(15.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

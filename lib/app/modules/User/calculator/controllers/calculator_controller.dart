@@ -132,8 +132,13 @@ class CalculatorController extends GetxController {
         return;
       }
 
-      if (tenor == 0 || interestRate == 0 || loanAmount == 0) {
-        Get.snackbar('Error', 'Nilai pinjaman, bunga, atau tenor tidak boleh nol');
+      if (tenor == 0 || loanAmount == 0) {
+        Get.snackbar('Error', 'Nilai pinjaman dan tenor tidak boleh nol');
+        return;
+      }
+
+      if(interestRate > 0){
+        Get.snackbar('Error', 'Pinjaman tidak sehat');
         return;
       }
 

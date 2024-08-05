@@ -18,4 +18,9 @@ class AnalysisController extends GetxController {
       return true;
     });
   }
+
+  Future<void> createAnalisis() async {
+    
+  }
 }
+
