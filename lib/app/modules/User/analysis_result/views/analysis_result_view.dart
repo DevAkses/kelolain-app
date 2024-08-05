@@ -26,7 +26,7 @@ class AnalysisResultView extends GetView<AnalysisResultController> {
             Container(
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
-                color: const Color(0xFF509FD0),
+                color: Utils.biruEmpat,
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: const Row(

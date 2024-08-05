@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class NotificationController extends GetxController {
@@ -8,13 +9,21 @@ class NotificationController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchNotifications();
+    String currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    fetchNotifications(currentUserId);
   }
 
-  void fetchNotifications() async {
+  void fetchNotifications(String userId) async {
     try {
-      QuerySnapshot snapshot = await _firestore.collection('notifications').get();
-      var data = snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+      QuerySnapshot snapshot = await _firestore
+          .collection('notifications')
+          .where('userId',
+              isEqualTo: userId)
+          .get();
+
+      var data = snapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
       notifications.value = data;
     } catch (e) {
       Get.snackbar('Error', 'Failed to load notifications');

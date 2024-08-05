@@ -10,7 +10,7 @@ class PengeluaranController extends GetxController {
 
   var expenseList = <Map<String, dynamic>>[].obs;
   var totalExpenses = 0.0.obs;
-  var selectedFilter = 'Harian'.obs; 
+  var selectedFilter = 'Semua Data'.obs; 
 
   @override
   void onInit() {

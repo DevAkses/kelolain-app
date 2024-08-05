@@ -20,6 +20,7 @@ class NavigationKonselorView extends GetView<NavigationKonselorController> {
     return Obx(() => Scaffold(
           body: pages[controller.selectedIndex.value],
           bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: Colors.white,
             currentIndex: controller.selectedIndex.value,
             onTap: controller.changePage,
             selectedItemColor: Utils.biruTiga,

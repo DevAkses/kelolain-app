@@ -19,7 +19,10 @@ class QuizController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchCompletedQuizzes();
+    // Ganti fetchCompletedQuizzes dengan pemantauan real-time
+    getCompletedQuizzes().listen((completedQuizIds) {
+      completedQuizzes.assignAll(completedQuizIds);
+    });
   }
 
   Stream<QuerySnapshot> getQuizList() {
@@ -78,7 +81,7 @@ class QuizController extends GetxController {
     });
     print('Result saved');
     await updateUserPointsAndCoins(); // Tambahkan ini
-    fetchCompletedQuizzes(); // Tambahkan ini untuk memperbarui status quiz yang sudah dikerjakan
+    // fetchCompletedQuizzes(); // Hapus panggilan ini karena sudah ada stream
     fetchQuizResult(quizId);
   }
 
@@ -100,16 +103,12 @@ class QuizController extends GetxController {
     }
   }
 
-  void fetchCompletedQuizzes() async {
-    final resultSnapshot = await firestore
+  Stream<List<String>> getCompletedQuizzes() {
+    return firestore
         .collection('quizResult')
         .where('userId', isEqualTo: firebaseAuth.currentUser!.uid)
-        .get();
-
-    completedQuizzes.clear();
-    for (var doc in resultSnapshot.docs) {
-      completedQuizzes.add(doc['quizId']);
-    }
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc['quizId'] as String).toList());
   }
 
   void fetchQuizResult(String quizId) async {
