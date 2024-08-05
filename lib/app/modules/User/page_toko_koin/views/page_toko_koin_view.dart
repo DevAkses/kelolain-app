@@ -76,6 +76,7 @@ class PageTokoKoinView extends GetView<PageTokoKoinController> {
 
   Widget _cardItem(String jumlahCoin, String linkImage, String hargaCoin,
       VoidCallback onTap) {
+    PageTokoKoinController controller = Get.put(PageTokoKoinController());
     return Card(
       elevation: 4,
       color: Utils.biruLima,

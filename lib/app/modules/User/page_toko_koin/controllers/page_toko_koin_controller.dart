@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:midtrans_sdk/midtrans_sdk.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:safeloan/app/modules/User/page_toko_koin/models/transaction_model.dart';
-import 'package:safeloan/app/services/midtrans_service.dart';
+import 'package:safeloan/app/services/transaction_service.dart';
 
 class PageTokoKoinController extends GetxController {
   MidtransSDK? _midtrans;
-  MidtransService midtransService = MidtransService();
+  TransactionService transactionService = TransactionService();
 
   @override
   void onInit() {
@@ -21,10 +23,8 @@ class PageTokoKoinController extends GetxController {
         clientKey: dotenv.env['MIDTRANS_CLIENT_KEY'] ?? "",
         merchantBaseUrl: dotenv.env['MIDTRANS_MERCHANT_BASE_URL'] ?? "",
         colorTheme: ColorTheme(
-            // colorPrimary: Theme.of(context).colorScheme.secondary,
-            // colorPrimaryDark: Theme.of(context).colorScheme.secondary,
-            // colorSecondary: Theme.of(context).colorScheme.secondary,
-            ),
+          colorPrimary: Colors.amber,
+        ),
       ),
     );
     _midtrans?.setUIKitCustomSetting(
@@ -37,30 +37,32 @@ class PageTokoKoinController extends GetxController {
 
   Future<void> startPayment() async {
     final transactionData = TransactionModel(
-        orderId: '9089deyudhd',
-        userId: 'test1234',
-        grossAmount: 50000,
-        firstName: 'ady',
-        lastName: 'firdaus',
-        email: 'adyfp242GMAIL.COM',
-        phone: '873490348923',
-        address: 'jalan jalan',
-        itemDetails: [
-          ItemDetail(
-            id: '1',
-            price: 50000,
-            quantity: 1,
-            name: 'test',
-          ),
-        ],
-        waktuPengiriman: 'PAGI',
-        createdAt: Timestamp.now(),
+      orderId: 'ORDER-${DateTime.now().millisecondsSinceEpoch}',
+      userId: 'test1234',
+      grossAmount: 50000,
+      firstName: 'ady',
+      lastName: 'firdaus',
+      email: 'adyfp24@gmail.com',
+      phone: '873490348923',
+      address: 'jalan jalan',
+      itemDetails: [
+        ItemDetail(
+          id: '1',
+          price: 50000,
+          quantity: 1,
+          name: 'test',
+        ),
+      ],
+      waktuPengiriman: 'PAGI',
+      createdAt: Timestamp.now(),
     );
-    final snapToken = await midtransService.getSnapToken(transactionData);
-    if (snapToken == null) {
+    final response = await transactionService.createTransaction(transactionData);
+    if (response['snap_token'] == null) {
+      print("Snap token is null");
       return;
     }
-    await _midtrans!.startPaymentUiFlow(token: snapToken);
+    print("Snap token received: ${response['snap_token']}");
+    await _midtrans!.startPaymentUiFlow(token: response['snap_token']);
   }
 
   @override
