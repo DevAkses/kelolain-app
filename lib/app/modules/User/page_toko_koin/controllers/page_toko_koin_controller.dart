@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ import 'package:safeloan/app/services/transaction_service.dart';
 class PageTokoKoinController extends GetxController {
   MidtransSDK? _midtrans;
   TransactionService transactionService = TransactionService();
+  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
   void onInit() {
@@ -23,7 +25,7 @@ class PageTokoKoinController extends GetxController {
         clientKey: dotenv.env['MIDTRANS_CLIENT_KEY'] ?? "",
         merchantBaseUrl: dotenv.env['MIDTRANS_MERCHANT_BASE_URL'] ?? "",
         colorTheme: ColorTheme(
-          colorPrimary: Colors.amber,
+          colorPrimary: const Color.fromARGB(255, 45, 130, 181),
         ),
       ),
     );
@@ -35,28 +37,22 @@ class PageTokoKoinController extends GetxController {
     });
   }
 
-  Future<void> startPayment() async {
+  Future<void> startPayment(ItemDetail item) async {
     final transactionData = TransactionModel(
       orderId: 'ORDER-${DateTime.now().millisecondsSinceEpoch}',
-      userId: 'test1234',
-      grossAmount: 50000,
-      firstName: 'ady',
-      lastName: 'firdaus',
-      email: 'adyfp24@gmail.com',
-      phone: '873490348923',
-      address: 'jalan jalan',
-      itemDetails: [
-        ItemDetail(
-          id: '1',
-          price: 50000,
-          quantity: 1,
-          name: 'test',
-        ),
-      ],
+      userId: _firebaseAuth.currentUser!.uid,
+      grossAmount: item.price,
+      firstName: 'kelolain',
+      lastName: 'user',
+      email: 'devakses@gmail.com',
+      phone: '08951518792',
+      address: 'jember',
+      itemDetails: [item],
       waktuPengiriman: 'PAGI',
       createdAt: Timestamp.now(),
     );
-    final response = await transactionService.createTransaction(transactionData);
+    final response =
+        await transactionService.createTransaction(transactionData);
     if (response['snap_token'] == null) {
       print("Snap token is null");
       return;
