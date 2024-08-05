@@ -128,7 +128,7 @@ class CalculatorController extends GetxController {
         RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.');
   }
 
- calculateLoan(BuildContext context) {
+  void calculateLoan(BuildContext context) {
     try {
       double income = incomeValue.value;
       double expense = expenseValue.value;
