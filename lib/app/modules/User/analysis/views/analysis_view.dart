@@ -13,8 +13,7 @@ class AnalysisView extends GetView<AnalysisController> {
   Widget build(BuildContext context) {
     final AnalysisResultController analysisResultController =
         Get.put(AnalysisResultController());
-    final AnalysisController controller =
-        Get.put(AnalysisController());
+    final AnalysisController controller = Get.put(AnalysisController());
     // Tambahkan controller untuk animasi
 
     return Scaffold(
@@ -50,23 +49,24 @@ class AnalysisView extends GetView<AnalysisController> {
               SizedBox(
                 height: 300,
                 child: Obx(() => AnimatedContainer(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeInOut,
-                  margin: EdgeInsets.only(top: controller.offset.value),
-                  child: const Align(
-                    alignment: Alignment.center,
-                    child: Image(
-                      fit: BoxFit.cover,
-                      width: 250,
-                      image: AssetImage('assets/images/maskot.png'),
-                    ),
-                  ),
-                )),
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                      margin: EdgeInsets.only(top: controller.offset.value),
+                      child: const Align(
+                        alignment: Alignment.center,
+                        child: Image(
+                          fit: BoxFit.cover,
+                          width: 250,
+                          image: AssetImage('assets/images/maskot.png'),
+                        ),
+                      ),
+                    )),
               ),
               const SizedBox(height: 20),
               ButtonWidget(
                 onPressed: () {
                   try {
+                    controller.createAnalisis();
                     analysisResultController.showLoadingAndNavigate();
                   } catch (e) {
                     if (kDebugMode) {
