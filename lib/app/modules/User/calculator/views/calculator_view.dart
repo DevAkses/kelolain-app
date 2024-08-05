@@ -112,7 +112,7 @@ class CalculatorView extends GetView<CalculatorController> {
               ),
               const SizedBox(height: 20),
               ButtonWidget(
-                  onPressed: controller.calculateLoan, nama: "Kalkulasi"),
+                  onPressed: controller.calculateLoan(context), nama: "Kalkulasi"),
             ],
           ),
         ),

@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:math';
 
+import 'package:safeloan/app/widgets/show_dialog_info_widget.dart';
+
 class CalculatorController extends GetxController {
   final incomeController = TextEditingController();
   final expenseController = TextEditingController();
   final loanAmountController = TextEditingController();
   final interestRateController = TextEditingController();
   final tenorController = TextEditingController();
-  
+
   final incomeValue = 0.0.obs;
   final formattedIncomeValue = '0'.obs;
 
@@ -35,14 +37,15 @@ class CalculatorController extends GetxController {
   }
 
   void updateIncomeFromSlider(double value) {
-  if (value >= 0 && value <= 100000000) {
-    incomeValue.value = value;
-    updateFormattedIncomeValue(value);
+    if (value >= 0 && value <= 100000000) {
+      incomeValue.value = value;
+      updateFormattedIncomeValue(value);
+    }
   }
-}
 
   void updateIncomeFromTextField(String value) {
-    _updateValueFromTextField(value, incomeValue, updateFormattedIncomeValue, max: 100000000);
+    _updateValueFromTextField(value, incomeValue, updateFormattedIncomeValue,
+        max: 100000000);
   }
 
   void updateExpenseFromSlider(double value) {
@@ -51,7 +54,8 @@ class CalculatorController extends GetxController {
   }
 
   void updateExpenseFromTextField(String value) {
-    _updateValueFromTextField(value, expenseValue, updateFormattedExpenseValue, max: 100000000);
+    _updateValueFromTextField(value, expenseValue, updateFormattedExpenseValue,
+        max: 100000000);
   }
 
   void updateTenorFromSlider(double value) {
@@ -71,14 +75,19 @@ class CalculatorController extends GetxController {
   }
 
   void updateLoanAmountFromTextField(String value) {
-    _updateValueFromTextField(value, loanAmountValue, updateFormattedLoanAmountValue);
+    _updateValueFromTextField(
+        value, loanAmountValue, updateFormattedLoanAmountValue);
   }
 
   void updateInterestRateFromTextField(String value) {
-    _updateValueFromTextField(value, interestRateValue, updateFormattedInterestRateValue, max: 100);
+    _updateValueFromTextField(
+        value, interestRateValue, updateFormattedInterestRateValue,
+        max: 100);
   }
 
-  void _updateValueFromTextField(String value, RxDouble rxValue, Function(double) updateFormatted, {double max = 100000000}) {
+  void _updateValueFromTextField(
+      String value, RxDouble rxValue, Function(double) updateFormatted,
+      {double max = 100000000}) {
     String numericValue = value.replaceAll(RegExp(r'[^0-9]'), '');
     if (numericValue.isNotEmpty) {
       double doubleValue = double.parse(numericValue);
@@ -119,7 +128,7 @@ class CalculatorController extends GetxController {
         RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.');
   }
 
-  void calculateLoan() {
+ calculateLoan(BuildContext context) {
     try {
       double income = incomeValue.value;
       double expense = expenseValue.value;
@@ -128,12 +137,14 @@ class CalculatorController extends GetxController {
       int tenor = tenorValue.value;
 
       if (expense > income) {
-        Get.snackbar('Error', 'Pengeluaran melebihi penghasilan');
+        showDialogInfoWidget(
+            'Pengeluaran melebihi penghasilan', 'fail', context);
         return;
       }
 
       if (tenor == 0 || interestRate == 0 || loanAmount == 0) {
-        Get.snackbar('Error', 'Nilai pinjaman, bunga, atau tenor tidak boleh nol');
+        showDialogInfoWidget(
+            'Nilai pinjaman, bunga, atau tenor tidak boleh nol', 'fail', context);
         return;
       }
 
@@ -143,32 +154,40 @@ class CalculatorController extends GetxController {
       double remainingIncome = income - expense;
 
       if (remainingIncome < monthlyInstallment) {
-        Get.snackbar('Error', 'Penghasilan tidak cukup untuk membayar cicilan');
+        showDialogInfoWidget(
+            'Penghasilan tidak cukup untuk membayar cicilan', 'fail', context);
         return;
       }
 
       if (remainingIncome > (monthlyInstallment + (income * 0.1))) {
-        Get.snackbar('Healthy Loan', 'Pinjaman terlihat sehat');
+        showDialogInfoWidget(
+            'Pinjaman terlihat sehat', 'succes', context);
       } else {
-        Get.snackbar('Warning', 'Pinjaman tidak sehat');
+        showDialogInfoWidget(
+            'Pinjaman tidak sehat', 'succes', context);
       }
 
       double totalRepayment = monthlyInstallment * tenor;
       double totalInterest = totalRepayment - loanAmount;
 
       if (totalInterest > loanAmount) {
-        Get.snackbar('Warning', 'Total bunga lebih besar dari jumlah pinjaman');
+        showDialogInfoWidget(
+            'Total bunga lebih besar dari jumlah pinjaman', 'fail', context);
       } else {
-        Get.snackbar('Info', 'Total bunga tidak melebihi jumlah pinjaman');
+        showDialogInfoWidget(
+            'Total bunga tidak melebihi jumlah pinjaman', 'succes', context);
       }
 
       if (monthlyInstallment > (income * 0.3)) {
-        Get.snackbar('Warning', 'Cicilan bulanan melebihi 30% dari penghasilan bulanan');
+        showDialogInfoWidget(
+            'Cicilan bulanan melebihi 30% dari penghasilan bulanan', 'fail', context);
       } else {
-        Get.snackbar('Info', 'Cicilan bulanan tidak melebihi 30% dari penghasilan bulanan');
+        showDialogInfoWidget(
+            'Cicilan bulanan tidak melebihi 30% dari penghasilan bulanan', 'succes', context);
       }
     } catch (e) {
-      Get.snackbar('Error', 'Terjadi kesalahan dalam perhitungan');
+      showDialogInfoWidget(
+            'Terjadi kesalahan dalam perhitungan', 'fail', context);
     }
   }
 
