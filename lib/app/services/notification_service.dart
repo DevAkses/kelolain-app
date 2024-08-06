@@ -26,7 +26,7 @@ class NotificationService {
         android: AndroidNotificationDetails(
             channelId, 'channel_name',
             playSound: true,
-            sound: const RawResourceAndroidNotificationSound('lagu2'),
+            sound: const RawResourceAndroidNotificationSound('notif'),
             importance: Importance.max,
             priority: Priority.high,
             enableLights: true,
@@ -48,27 +48,6 @@ class NotificationService {
       title,
       body,
       notificationDetails(channelId),
-    );
-  }
-
-  Future<void> scheduleNotification({
-    required int id,
-    required String title,
-    required String body,
-    required String sound,
-    required String channelId,
-    required tz.TZDateTime scheduledTime,
-  }) async {
-    print('Scheduling notification: $title at $scheduledTime'); // Log untuk debugging
-    return notificationsPlugin.zonedSchedule(
-      id, 
-      title, 
-      body, 
-      scheduledTime, 
-      notificationDetails(channelId),
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-      matchDateTimeComponents: DateTimeComponents.time,
     );
   }
 

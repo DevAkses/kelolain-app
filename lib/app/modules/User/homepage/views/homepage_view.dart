@@ -12,21 +12,22 @@ import '../controllers/homepage_controller.dart';
 import 'package:badges/badges.dart' as badges;
 
 class HomepageView extends GetView<HomepageController> {
-  HomepageView({super.key});
-  final RxInt _notifBadgeAmount = 1.obs;
-  final RxBool _showCartBadge = true.obs;
+  const HomepageView({super.key});
 
   Widget _notifBadge() {
+  final HomepageController controller = Get.put(HomepageController());
+
+  return Obx(() {
     return badges.Badge(
       position: badges.BadgePosition.topEnd(top: 3, end: 7),
       badgeAnimation: const badges.BadgeAnimation.slide(),
-      showBadge: _showCartBadge.value,
+      showBadge: controller.showCartBadge.value,
       badgeStyle: const badges.BadgeStyle(
         badgeColor: Colors.red,
         padding: EdgeInsets.all(5),
       ),
       badgeContent: Text(
-        _notifBadgeAmount.value.toString(),
+        controller.notifBadgeAmount.value.toString(),
         style: const TextStyle(color: Colors.white, fontSize: 10),
       ),
       child: CircleAvatar(
@@ -39,11 +40,13 @@ class HomepageView extends GetView<HomepageController> {
           ),
           onPressed: () {
             Get.toNamed('/notification');
+            controller.markNotificationsAsRead(); 
           },
         ),
       ),
     );
-  }
+  });
+}
 
   Widget poin(String icon, String poin, {VoidCallback? onTap}) {
     return Container(
