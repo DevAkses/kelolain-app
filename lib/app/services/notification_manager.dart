@@ -28,6 +28,7 @@ class NotificationManager {
           final tanggalPinjaman = (data!['tanggalPinjaman'] as Timestamp).toDate();
           final angsuran = data['angsuran'] as int;
           final jumlahPinjaman = data['jumlahPinjaman'] as double;
+          final namaPinjaman = data['namaPinjaman'] as String;
 
           final tzTanggalPinjaman = tz.TZDateTime.from(tanggalPinjaman, localTimezone);
 
@@ -64,7 +65,7 @@ class NotificationManager {
                 'description': 'Bayar Angsuran Sebesar Rp. ${jumlahPinjaman / angsuran}',
                 'jumlahPinjaman': jumlahPinjaman,
                 'tanggalPinjaman': Timestamp.fromDate(tanggalPinjaman),
-                'title': 'Tagihan Pinjaman',
+                'title': 'Tagihan Pinjaman: $namaPinjaman',
                 'read': false,
                 'userId': userId,
                 'loanId': docId,
@@ -87,9 +88,9 @@ class NotificationManager {
 
             await notificationService.showNotification(
               id: notificationId,
-              title: 'Tagihan Pinjaman',
+              title: notificationData['title'],
               body: notificationData['description'],
-              sound: 'lagu2',
+              sound: 'notif',
               channelId: 'channel_id_00',
               scheduledTime: notificationTzDate,
             );

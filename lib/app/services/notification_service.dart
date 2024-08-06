@@ -26,7 +26,7 @@ class NotificationService {
         android: AndroidNotificationDetails(
             channelId, 'channel_name',
             playSound: true,
-            sound: const RawResourceAndroidNotificationSound('lagu2'),
+            sound: const RawResourceAndroidNotificationSound('notif'),
             importance: Importance.max,
             priority: Priority.high,
             enableLights: true,
