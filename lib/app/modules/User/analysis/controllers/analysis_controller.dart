@@ -5,7 +5,7 @@ import 'package:safeloan/app/services/analysis_service.dart';
 
 class AnalysisController extends GetxController {
   final offset = 0.0.obs;
-  final AnalysisService _analysisService = Get.find<AnalysisService>();
+  final AnalysisService _analysisService = Get.put(AnalysisService());
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
