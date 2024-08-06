@@ -11,6 +11,9 @@ class NavigationKonselorView extends GetView<NavigationKonselorController> {
   @override
   Widget build(BuildContext context) {
     final NavigationKonselorController controller = Get.put(NavigationKonselorController());
+    final int initialIndex = Get.arguments?['initialIndex'] ?? 0;
+    controller.selectedIndex.value = initialIndex;
+    
     final List<Widget> pages = [
       const HomepageKonselorView(),
       const EditJadwalView(),

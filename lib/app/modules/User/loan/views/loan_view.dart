@@ -48,8 +48,7 @@ class LoanView extends GetView<LoanController> {
                     var loanId = loanDocs[index].id;
 
                     return GestureDetector(
-                      onTap: () =>
-                          Get.toNamed('/detail-loan', arguments: loanId),
+                      onTap: () {},
                       child: Container(
                         decoration: BoxDecoration(
                           color: Utils.backgroundCard,

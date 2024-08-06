@@ -14,6 +14,9 @@ class NavigationAdminView extends GetView<NavigationAdminController> {
     final NavigationAdminController controller =
         Get.put(NavigationAdminController());
 
+    final int initialIndex = Get.arguments?['initialIndex'] ?? 0;
+    controller.selectedIndex.value = initialIndex;
+
     final List<Widget> pages = [
       const HomepageAdminView(),
       const QuizAdminView(),

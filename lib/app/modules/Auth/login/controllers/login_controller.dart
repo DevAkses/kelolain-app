@@ -95,13 +95,13 @@ class LoginController extends GetxController {
   void _navigateBasedOnRole(String role) {
     switch (role) {
       case 'Pengguna':
-        Get.offAllNamed(Routes.NAVIGATION);
+        Get.offAllNamed(Routes.NAVIGATION, arguments: {'initialIndex': 0});
         break;
       case 'Konselor':
-        Get.offAllNamed(Routes.NAVIGATION_KONSELOR);
+        Get.offAllNamed(Routes.NAVIGATION_KONSELOR, arguments: {'initialIndex': 0});
         break;
       case 'Admin':
-        Get.offAllNamed(Routes.NAVIGATION_ADMIN);
+        Get.offAllNamed(Routes.NAVIGATION_ADMIN, arguments: {'initialIndex': 0});
         break;
       default:
         Get.snackbar('Error', 'Role tidak dikenali');
