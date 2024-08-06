@@ -40,7 +40,7 @@ class AnalysisController extends GetxController {
       final expenseSnapshot = await _firestore
           .collection('finances')
           .doc(userId)
-          .collection('expanse')
+          .collection('expense')
           .get();
 
       // Hitung total pendapatan
@@ -61,13 +61,13 @@ class AnalysisController extends GetxController {
         totalPengeluaran += nominal;
         
         switch (category.toLowerCase()) {
-          case 'darurat':
+          case 'Darurat':
             pengeluaranDarurat += nominal;
             break;
-          case 'hiburan':
+          case 'Hiburan':
             pengeluaranHiburan += nominal;
             break;
-          case 'pendidikan':
+          case 'Pendidikan':
             pengeluaranPendidikan += nominal;
             break;
         }
