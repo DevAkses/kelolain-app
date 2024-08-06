@@ -126,6 +126,43 @@ class AddLoanController extends GetxController {
         RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.');
   }
 
+  // Future<bool> addLoan(BuildContext context) async {
+  //   if (namaPinjamanC.text.isEmpty ||
+  //       jumlahPinjamanValue.value == 0 ||
+  //       angsuranValue.value == 0 ||
+  //       bungaValue.value == 0 ||
+  //       tanggalPinjaman.value == null) {
+  //     return false;
+  //   }
+
+  //   try {
+  //     final numberFormat = NumberFormat('#,##0', 'id_ID');
+  //     final userId = FirebaseAuth.instance.currentUser!.uid;
+
+  //     await firestore.collection('users').doc(userId).collection('loans').add({
+  //       'namaPinjaman': namaPinjamanC.text,
+  //       'jumlahPinjaman': jumlahPinjamanValue.value,
+  //       'angsuran': angsuranValue.value,
+  //       'bunga': bungaValue.value,
+  //       'tanggalPinjaman': Timestamp.fromDate(DateTime(
+  //         tanggalPinjaman.value!.year,
+  //         tanggalPinjaman.value!.month,
+  //         tanggalPinjaman.value!.day,
+  //         DateTime.now().hour,
+  //         DateTime.now().minute,
+  //         DateTime.now().second,
+  //       )),
+  //       'createdAt': DateTime.now(),
+  //     });
+  //     Get.back();
+  //     showDialogInfoWidget("Berhasil menambahkan pinjaman", 'succes', context);
+
+  //     return true;
+  //   } catch (e) {
+  //     return false;
+  //   }
+  // }
+
   Future<bool> addLoan(BuildContext context) async {
     if (namaPinjamanC.text.isEmpty ||
         jumlahPinjamanValue.value == 0 ||
@@ -136,10 +173,9 @@ class AddLoanController extends GetxController {
     }
 
     try {
-      final numberFormat = NumberFormat('#,##0', 'id_ID');
       final userId = FirebaseAuth.instance.currentUser!.uid;
 
-      await firestore.collection('users').doc(userId).collection('loans').add({
+      final loanData = {
         'namaPinjaman': namaPinjamanC.text,
         'jumlahPinjaman': jumlahPinjamanValue.value,
         'angsuran': angsuranValue.value,
@@ -153,20 +189,58 @@ class AddLoanController extends GetxController {
           DateTime.now().second,
         )),
         'createdAt': DateTime.now(),
-      });
+      };
+
+      await firestore
+          .collection('users')
+          .doc(userId)
+          .collection('loans')
+          .add(loanData);
+
+      final notificationManager = NotificationManager();
+      await notificationManager.scheduleNotifications(userId);
+
       Get.back();
       showDialogInfoWidget("Berhasil mengupdate pinjaman", 'succes', context);
-
-      // await notificationManager.showDelayedNotification(
-      //   'Pinjaman Ditambahkan',
-      //   'Pinjaman sebesar ${numberFormat.format(jumlahPinjamanValue.value)} telah ditambahkan.',
-      // );
 
       return true;
     } catch (e) {
       return false;
     }
   }
+
+  // Future<void> checkAndShowNotifications(
+  //     String userId, Map<String, dynamic> loanData) async {
+  //   final now = DateTime.now();
+  //   final tanggalPinjaman = (loanData['tanggalPinjaman'] as Timestamp).toDate();
+  //   final angsuran = loanData['angsuran'] as int;
+
+  //   final nextMonthDate = DateTime(
+  //     tanggalPinjaman.year,
+  //     tanggalPinjaman.month + 1,
+  //     tanggalPinjaman.day,
+  //     now.hour,
+  //     now.minute,
+  //     now.second,
+  //   );
+
+  //   if (now.year == nextMonthDate.year &&
+  //       now.month == nextMonthDate.month &&
+  //       now.day == nextMonthDate.day) {
+  //     final notificationManager = NotificationManager();
+  //     await notificationManager.notificationService.initNotification();
+  //     for (int i = 0; i < angsuran; i++) {
+  //       final notificationId = userId.hashCode + i;
+  //       await notificationManager.notificationService.showNotification(
+  //         id: notificationId,
+  //         title: 'Tagihan Notification',
+  //         body: 'Ada Tagihan',
+  //         sound: 'lagu2',
+  //         channelId: 'channel_id_00',
+  //       );
+  //     }
+  //   }
+  // }
 
   @override
   void dispose() {

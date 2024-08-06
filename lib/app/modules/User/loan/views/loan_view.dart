@@ -160,25 +160,7 @@ class LoanView extends GetView<LoanController> {
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              bottom: 20,
-              right: 100,
-              child: GestureDetector(
-                onTap: () => controller.showNotification(),
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: Utils.biruSatu),
-                  child: const Icon(
-                    Icons.notification_add,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                ),
-              ),
-            ),
+            )
           ],
         ),
       ),

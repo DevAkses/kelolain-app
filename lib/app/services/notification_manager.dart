@@ -1,25 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:safeloan/app/services/notification_service.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationManager {
   final NotificationService notificationService = NotificationService();
-  final Map<String, List<int>> scheduledNotifications = {}; // Mengelola ID notifikasi berdasarkan dokumen
+  final Map<String, List<int>> scheduledNotifications = {};
 
   Future<void> scheduleNotifications(String userId) async {
     await notificationService.initNotification();
     tz.initializeTimeZones();
     final localTimezone = tz.getLocation('Asia/Jakarta');
 
-    // Memantau perubahan data secara real-time
     FirebaseFirestore.instance
         .collection('users')
         .doc(userId)
         .collection('loans')
         .snapshots()
         .listen((snapshot) async {
+      final now = tz.TZDateTime.now(localTimezone);
+
       for (var change in snapshot.docChanges) {
         final docId = change.doc.id;
         final data = change.doc.data();
@@ -27,37 +27,75 @@ class NotificationManager {
         if (change.type == DocumentChangeType.added || change.type == DocumentChangeType.modified) {
           final tanggalPinjaman = (data!['tanggalPinjaman'] as Timestamp).toDate();
           final angsuran = data['angsuran'] as int;
+          final jumlahPinjaman = data['jumlahPinjaman'] as double;
 
-          final now = tz.TZDateTime.now(localTimezone);
           final tzTanggalPinjaman = tz.TZDateTime.from(tanggalPinjaman, localTimezone);
-          final delay = tzTanggalPinjaman.difference(now).inSeconds;
 
-          if (delay >= 0) {
-            // Hapus notifikasi yang sudah ada sebelum menjadwalkan yang baru
-            await cancelScheduledNotifications(docId);
+          // Check existing notifications for this loan
+          final existingNotificationsSnapshot = await FirebaseFirestore.instance
+              .collection('notifications')
+              .where('userId', isEqualTo: userId)
+              .where('loanId', isEqualTo: docId)
+              .get();
 
-            List<int> ids = [];
-            for (int i = 0; i < angsuran; i++) {
-              final notificationId = docId.hashCode + i;
-              ids.add(notificationId);
-              await Future.delayed(Duration(seconds: 7)); // Simulasi 1 hari, ganti sesuai kebutuhan
-              await notificationService.showNotification(
-                id: notificationId,
-                title: 'Tagihan Notification',
-                body: 'Ada Tagihan',
-                sound: 'lagu2',
-                channelId: 'channel_id_00',
-              );
+          final existingNotifications = existingNotificationsSnapshot.docs
+              .map((doc) => (doc['scheduledTime'] as Timestamp).toDate())
+              .map((dateTime) => tz.TZDateTime.from(dateTime, localTimezone))
+              .toSet();
+
+          final newNotifications = <Map<String, dynamic>>[];
+          final batch = FirebaseFirestore.instance.batch();
+
+          for (int i = 0; i < angsuran; i++) {
+            final notificationDate = tz.TZDateTime(
+              localTimezone,
+              tzTanggalPinjaman.year,
+              tzTanggalPinjaman.month + i,
+              tzTanggalPinjaman.day,
+              now.hour,
+              now.minute,
+              now.second,
+            );
+
+            if (notificationDate.isAfter(now) && !existingNotifications.contains(notificationDate)) {
+              final notificationId = '${docId}_${notificationDate.toIso8601String()}';
+              final notificationData = {
+                'createdAt': Timestamp.fromDate(now),
+                'description': 'Bayar Angsuran Sebesar Rp. ${jumlahPinjaman / angsuran}',
+                'jumlahPinjaman': jumlahPinjaman,
+                'tanggalPinjaman': Timestamp.fromDate(tanggalPinjaman),
+                'title': 'Tagihan Pinjaman',
+                'read': false,
+                'userId': userId,
+                'loanId': docId,
+                'scheduledTime': Timestamp.fromDate(notificationDate),
+              };
+
+              final notificationRef = FirebaseFirestore.instance.collection('notifications').doc(notificationId);
+              batch.set(notificationRef, notificationData);
+              newNotifications.add(notificationData);
             }
-            scheduledNotifications[docId] = ids;
-          } else {
+          }
+
+          await batch.commit();
+
+          // Schedule notifications after batch commit
+          for (final notificationData in newNotifications) {
+            final notificationDate = (notificationData['scheduledTime'] as Timestamp).toDate();
+            final notificationTzDate = tz.TZDateTime.from(notificationDate, localTimezone);
+            final notificationId = (docId.hashCode ^ notificationTzDate.millisecondsSinceEpoch) % (1 << 31);
+
             await notificationService.showNotification(
-              id: docId.hashCode,
-              title: 'Tagihan Notification',
-              body: '-------------',
+              id: notificationId,
+              title: 'Tagihan Pinjaman',
+              body: notificationData['description'],
               sound: 'lagu2',
               channelId: 'channel_id_00',
+              scheduledTime: notificationTzDate,
             );
+
+            // Save notification ID for future removal
+            scheduledNotifications.putIfAbsent(docId, () => []).add(notificationId);
           }
         } else if (change.type == DocumentChangeType.removed) {
           await cancelScheduledNotifications(docId);
@@ -72,28 +110,21 @@ class NotificationManager {
       await notificationService.cancelNotification(id);
     }
     scheduledNotifications.remove(docId);
+
+    // Remove related notifications from Firestore
+    final notificationsSnapshot = await FirebaseFirestore.instance
+        .collection('notifications')
+        .where('loanId', isEqualTo: docId)
+        .get();
+
+    final batch = FirebaseFirestore.instance.batch();
+    for (var doc in notificationsSnapshot.docs) {
+      batch.delete(doc.reference);
+    }
+    await batch.commit();
   }
 
-  Future<void> showInstantNotification(String title, String body) async {
-    await notificationService.initNotification();
-    notificationService.showNotification(
-      id: 0,
-      title: title,
-      body: body,
-      sound: 'lagu2',
-      channelId: 'channel_id_00',
-    );
-  }
-
-  Future<void> showDelayedNotification(String title, String body) async {
-    await notificationService.initNotification();
-    await Future.delayed(const Duration(seconds: 5));
-    notificationService.showNotification(
-      id: 0,
-      title: title,
-      body: body,
-      sound: 'lagu2',
-      channelId: 'channel_id_00',
-    );
+  Future<void> deleteLoanNotifications(String loanId) async {
+    await cancelScheduledNotifications(loanId);
   }
 }

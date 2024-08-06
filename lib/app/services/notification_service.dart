@@ -51,27 +51,6 @@ class NotificationService {
     );
   }
 
-  Future<void> scheduleNotification({
-    required int id,
-    required String title,
-    required String body,
-    required String sound,
-    required String channelId,
-    required tz.TZDateTime scheduledTime,
-  }) async {
-    print('Scheduling notification: $title at $scheduledTime'); // Log untuk debugging
-    return notificationsPlugin.zonedSchedule(
-      id, 
-      title, 
-      body, 
-      scheduledTime, 
-      notificationDetails(channelId),
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-      matchDateTimeComponents: DateTimeComponents.time,
-    );
-  }
-
   Future<void> cancelNotification(int id) async {
     await notificationsPlugin.cancel(id);
   }

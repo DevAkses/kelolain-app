@@ -18,7 +18,7 @@ class NotificationController extends GetxController {
       QuerySnapshot snapshot = await _firestore
           .collection('notifications')
           .where('userId',
-              isEqualTo: userId)
+              isEqualTo: userId).orderBy('createdAt', descending: true)
           .get();
 
       var data = snapshot.docs
