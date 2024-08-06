@@ -28,14 +28,14 @@ class AnalysisController extends GetxController {
   Future<Map<String, dynamic>> createAnalisis() async {
     try {
       final userId = _firebaseAuth.currentUser!.uid;
-      
+
       // Ambil data pendapatan dari subcollection income
       final incomeSnapshot = await _firestore
           .collection('finances')
           .doc(userId)
           .collection('income')
           .get();
-      
+
       // Ambil data pengeluaran dari subcollection expanse
       final expenseSnapshot = await _firestore
           .collection('finances')
@@ -57,10 +57,10 @@ class AnalysisController extends GetxController {
       for (var doc in expenseSnapshot.docs) {
         double nominal = doc.data()['nominal'] as double;
         String category = doc.data()['category'] as String;
-        
+
         totalPengeluaran += nominal;
-        
-        switch (category.toLowerCase()) {
+
+        switch (category) {
           case 'Darurat':
             pengeluaranDarurat += nominal;
             break;
@@ -74,24 +74,30 @@ class AnalysisController extends GetxController {
       }
 
       // Ambil data user
-      final userSnapshot = await _firestore.collection('users').doc(userId).get();
+      final userSnapshot =
+          await _firestore.collection('users').doc(userId).get();
       final userData = userSnapshot.data() as Map<String, dynamic>;
 
       // Ambil data hutang jika ada
       double totalHutang = 0;
-      if (await userSnapshot.reference.collection('loans').get().then((value) => value.docs.isNotEmpty)) {
-        final loansSnapshot = await userSnapshot.reference.collection('loans').get();
+      if (await userSnapshot.reference
+          .collection('loans')
+          .get()
+          .then((value) => value.docs.isNotEmpty)) {
+        final loansSnapshot =
+            await userSnapshot.reference.collection('loans').get();
         totalHutang = loansSnapshot.docs
             .map((doc) => doc.data()['jumlahPinjaman'] as double)
             .fold(0, (sum, amount) => sum + amount);
       }
 
       // Hitung rasio-rasio
-      double rasioTabungan = (totalPendapatan - totalPengeluaran) / totalPendapatan;
+      double rasioTabungan =
+          (totalPendapatan - totalPengeluaran) / totalPendapatan;
       double rasioDarurat = pengeluaranDarurat / totalPendapatan;
       double rasioHiburan = pengeluaranHiburan / totalPendapatan;
       double rasioPendidikan = pengeluaranPendidikan / totalPendapatan;
-
+      String profesi = userData['profession'];
       // Siapkan data untuk dikirim ke API
       Map<String, dynamic> apiData = {
         'pendapatan': totalPendapatan,
@@ -100,8 +106,8 @@ class AnalysisController extends GetxController {
         'rasio_darurat': rasioDarurat,
         'rasio_liburan': rasioHiburan,
         'rasio_pendidikan': rasioPendidikan,
-        'usia': userData['usia'] ?? 0,
-        'profesi': userData['profesi'] ?? '',
+        'usia': userData['age'] ?? 0,
+        'profesi': profesi.toLowerCase() ?? '',
         'total_hutang': totalHutang,
       };
 
