@@ -64,9 +64,9 @@ class AnalysisView extends GetView<AnalysisController> {
               ),
               const SizedBox(height: 20),
               ButtonWidget(
-                onPressed: () {
+                onPressed: () async {
                   try {
-                    controller.createAnalisis();
+                    await analysisResultController.fetchAnalysisResult();
                     analysisResultController.showLoadingAndNavigate();
                   } catch (e) {
                     if (kDebugMode) {

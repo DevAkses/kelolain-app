@@ -25,7 +25,7 @@ class PageTokoKoinView extends GetView<PageTokoKoinController> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          koin('assets/images/koin.png', '${coinController.userData['coin'] ?? 0}'),
+          Obx(()=> koin('assets/images/koin.png', '${coinController.userData['coin'] ?? 0}')),
           Expanded(
             child: GridView(
               padding: const EdgeInsets.all(16),

@@ -76,10 +76,12 @@ class AnalysisResultView extends GetView<AnalysisResultController> {
                       ],
                     ),
                     SizedBox(height: 8.0),
-                    Text(
-                      controller.analysisResult['analysis'] ?? '',
-                      style: TextStyle(fontSize: 14.0),
-                      textAlign: TextAlign.justify,
+                    Obx(
+                      ()=> Text(
+                        controller.analysisResult['analysis'] ?? 'data Anda belum cukup lengkap untuk dianalisa, silahkan lengkapi profil dan juga data pencatatan keuangan terlebih dahulu',
+                        style: TextStyle(fontSize: 14.0),
+                        textAlign: TextAlign.justify,
+                      ),
                     ),
                     SizedBox(height: 16.0),
                     Row(
@@ -96,10 +98,12 @@ class AnalysisResultView extends GetView<AnalysisResultController> {
                       ],
                     ),
                     SizedBox(height: 8.0),
-                    Text(
-                      controller.analysisResult['recommendation'] ?? '',
-                      style: TextStyle(fontSize: 14.0),
-                      textAlign: TextAlign.justify,
+                    Obx(
+                      ()=> Text(
+                        controller.analysisResult['recommendation'] ?? 'data Anda belum cukup lengkap untuk dianalisa, silahkan lengkapi profil dan juga data pencatatan keuangan terlebih dahulu',
+                        style: TextStyle(fontSize: 14.0),
+                        textAlign: TextAlign.justify,
+                      ),
                     ),
                   ],
                 ),

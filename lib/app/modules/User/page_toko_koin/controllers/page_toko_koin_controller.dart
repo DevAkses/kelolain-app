@@ -12,6 +12,7 @@ class PageTokoKoinController extends GetxController {
   MidtransSDK? _midtrans;
   TransactionService transactionService = TransactionService();
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void onInit() {
@@ -32,8 +33,11 @@ class PageTokoKoinController extends GetxController {
     _midtrans?.setUIKitCustomSetting(
       skipCustomerDetailsPages: true,
     );
-    _midtrans!.setTransactionFinishedCallback((result) {
+    _midtrans!.setTransactionFinishedCallback((result) async {
       print(result.toJson());
+      if (result.transactionStatus == 'settlement') {
+        await _updateUserCoins();
+      }
     });
   }
 
@@ -59,6 +63,27 @@ class PageTokoKoinController extends GetxController {
     }
     print("Snap token received: ${response['snap_token']}");
     await _midtrans!.startPaymentUiFlow(token: response['snap_token']);
+    _updateUserCoins();
+  }
+
+  Future<void> _updateUserCoins() async {
+    String userId = _firebaseAuth.currentUser!.uid;
+    DocumentReference userRef = _firestore.collection('users').doc(userId);
+
+    await _firestore.runTransaction((transaction) async {
+      DocumentSnapshot userSnapshot = await transaction.get(userRef);
+
+      if (!userSnapshot.exists) {
+        throw Exception("User does not exist!");
+      }
+
+      Map<String, dynamic> userData =
+          userSnapshot.data() as Map<String, dynamic>;
+      int currentCoins = userData['coin'] ?? 0;
+      int newCoins = currentCoins + 55;
+
+      transaction.update(userRef, {'coin': newCoins});
+    });
   }
 
   @override
