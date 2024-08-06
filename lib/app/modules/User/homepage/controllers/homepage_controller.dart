@@ -6,6 +6,8 @@ import 'package:safeloan/app/modules/User/education/models/article_model.dart';
 import 'package:safeloan/app/modules/User/education/views/detail_article_page.dart';
 
 class HomepageController extends GetxController {
+  final notifBadgeAmount = 0.obs;
+  final showCartBadge = true.obs;
   var todayIncome = <Map<String, dynamic>>[].obs;
   var todayExpenses = <Map<String, dynamic>>[].obs;
   var weeklyIncomeData = <Map<String, dynamic>>[].obs;
@@ -58,12 +60,42 @@ class HomepageController extends GetxController {
     fetchTodayData();
     fetchMonthlyData();
     fetchWeeklyData();
+    _initializeNotificationListener();
   }
 
   @override
   void onClose() {
     pageController.dispose();
     super.onClose();
+  }
+
+  void _initializeNotificationListener() {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+
+    FirebaseFirestore.instance
+        .collection('notifications')
+        .where('userId', isEqualTo: userId)
+        .where('read', isEqualTo: false) 
+        .snapshots()
+        .listen((snapshot) {
+      final unreadCount =
+          snapshot.docs.length; 
+      notifBadgeAmount.value = unreadCount;
+    });
+  }
+
+  void markNotificationsAsRead() async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    final notifications = await FirebaseFirestore.instance
+        .collection('notifications')
+        .where('userId', isEqualTo: userId)
+        .get();
+
+    for (var doc in notifications.docs) {
+      await doc.reference.update({'read': true});
+    }
+
+    notifBadgeAmount.value = 0;
   }
 
   void loadArticles() async {
