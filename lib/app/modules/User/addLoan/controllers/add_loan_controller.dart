@@ -136,10 +136,9 @@ class AddLoanController extends GetxController {
     }
 
     try {
-      final numberFormat = NumberFormat('#,##0', 'id_ID');
       final userId = FirebaseAuth.instance.currentUser!.uid;
 
-      await firestore.collection('users').doc(userId).collection('loans').add({
+      final loanData = {
         'namaPinjaman': namaPinjamanC.text,
         'jumlahPinjaman': jumlahPinjamanValue.value,
         'angsuran': angsuranValue.value,
@@ -153,14 +152,19 @@ class AddLoanController extends GetxController {
           DateTime.now().second,
         )),
         'createdAt': DateTime.now(),
-      });
-      Get.back();
-      showDialogInfoWidget("Berhasil mengupdate pinjaman", 'succes', context);
+      };
 
-      // await notificationManager.showDelayedNotification(
-      //   'Pinjaman Ditambahkan',
-      //   'Pinjaman sebesar ${numberFormat.format(jumlahPinjamanValue.value)} telah ditambahkan.',
-      // );
+      await firestore
+          .collection('users')
+          .doc(userId)
+          .collection('loans')
+          .add(loanData);
+
+      final notificationManager = NotificationManager();
+      await notificationManager.scheduleNotifications(userId);
+
+      Get.back();
+      showDialogInfoWidget("Berhasil menambahkan pinjaman", 'succes', context);
 
       return true;
     } catch (e) {

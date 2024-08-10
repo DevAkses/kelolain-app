@@ -11,7 +11,7 @@ class PemasukanController extends GetxController {
 
   var incomeList = <Map<String, dynamic>>[].obs;
   var totalIncome = 0.0.obs;
-  var selectedFilter = 'Harian'.obs; 
+  var selectedFilter = 'Semua Data'.obs; 
 
   @override
   void onInit() {

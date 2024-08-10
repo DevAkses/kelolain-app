@@ -7,7 +7,7 @@ import '../../../../routes/app_pages.dart';
 import '../controllers/calculator_controller.dart';
 
 class CalculatorView extends GetView<CalculatorController> {
-  CalculatorView({Key? key}) : super(key: key);
+  const CalculatorView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +112,7 @@ class CalculatorView extends GetView<CalculatorController> {
               ),
               const SizedBox(height: 20),
               ButtonWidget(
-                  onPressed: controller.calculateLoan, nama: "Kalkulasi"),
+                  onPressed: () => controller.calculateLoan(context), nama: "Kalkulasi"),
             ],
           ),
         ),

@@ -67,7 +67,7 @@ class ChallangePageView extends GetView<ChallangePageController> {
                         challengeDetails['category']),
                     _buildInfoColumn(
                         challengeDetails['point']?.toString() ?? 'N/A', "Poin"),
-                    _buildInfoColumn('5', "Menit"),
+                    _buildInfoColumn(challengeDetails['coin']?.toString() ?? 'N/A', "Koin"),
                   ],
                 ),
                 const SizedBox(height: 40),

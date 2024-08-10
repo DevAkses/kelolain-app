@@ -24,10 +24,10 @@ void showDialogInfoWidget(judul, icon, BuildContext context) {
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Image.asset(
-                'assets/images/${icon}.png',
+                'assets/images/$icon.png',
                 scale: 3,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               ButtonWidget(

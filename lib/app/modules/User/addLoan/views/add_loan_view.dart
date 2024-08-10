@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:safeloan/app/utils/warna.dart';
 import 'package:safeloan/app/widgets/button_back_leading.dart';
 import 'package:safeloan/app/widgets/button_widget.dart';
-import 'package:safeloan/app/widgets/show_dialog_info_widget.dart';
 import '../controllers/add_loan_controller.dart';
 
 class AddLoanView extends GetView<AddLoanController> {
